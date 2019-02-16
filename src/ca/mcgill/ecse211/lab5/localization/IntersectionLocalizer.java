@@ -1,6 +1,8 @@
 package ca.mcgill.ecse211.lab5.localization;
 
+import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
+import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
 import lejos.hardware.Button;
 
 /**

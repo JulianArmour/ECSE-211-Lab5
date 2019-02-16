@@ -1,6 +1,6 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
-import ca.mcgill.ecse211.odometer.Odometer;
+import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
