@@ -1,5 +1,10 @@
 package ca.mcgill.ecse211.lab5;
 
+import ca.mcgill.ecse211.lab5.display.Display;
+import ca.mcgill.ecse211.lab5.localization.LightLocalisation;
+import ca.mcgill.ecse211.lab5.localization.USLocalisation;
+import ca.mcgill.ecse211.lab5.odometer.Odometer;
+import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -11,7 +16,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
-public class Lab4 {
+public class Lab5 {
 
 	/** Initialize variables for radius of the wheel and track, assign ports for left and rightMotor 
 	 * Define boolean "wall" to simply lightLocalizer method of assigning fallingEdge or risingEdge constructors. 

@@ -1,5 +1,8 @@
-package ca.mcgill.ecse211.lab5;
+package ca.mcgill.ecse211.lab5.localization;
 
+import ca.mcgill.ecse211.lab5.Lab5;
+import ca.mcgill.ecse211.lab5.odometer.Odometer;
+import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -69,9 +72,9 @@ public class USLocalisation implements Runnable {
 		} catch (InterruptedException e) {
 		}
 
-		if (Lab4.wall) { 
+		if (Lab5.wall) { 
 			fallingEdge();
-		} else if (!Lab4.wall) { 
+		} else if (!Lab5.wall) { 
 			risingEdge();
 		}
 
