@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
+import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.UltrasonicMedianFilter;
 
 public class wallFollower {
 
@@ -12,20 +13,25 @@ public class wallFollower {
 	private Odometer odo;
 	private double[] odoData;
 	private double error;
+	private static int MOTOR_SPEED = 100; 
+	private UltrasonicMedianFilter USdata;
+	private double distance;
 	
 	//constructor for wallFollower class
-	public wallFollower(MovementController movementCtr, Odometer odometer) {
+	public wallFollower(MovementController movementCtr, Odometer odometer,UltrasonicMedianFilter USfilter) {
 		
 		this.movementControler = movementCtr;
 		this.odo = odometer;
+		this.USdata = USfilter;
 	}
 	
 	public void wallFollow(){
 		
 	odoData = odo.getXYT();	 //gets the initial XYT when wallfollower is started
 	
-	while(odoData[2]-5 <= odo.getXYT()[2] && odo.getXYT()[2]< odoData[2]) { //main class!?!?!
+	while(odoData[2]-5 <= odo.getXYT()[2] && odo.getXYT()[2]< odoData[2]) { 
 		
+		distance = USdata.getMedian();
 
 		error = BAND_CENTER - distance;
 		
@@ -41,20 +47,21 @@ public class wallFollower {
 				scaledDelta = MAX_DELTA;
 			}
 			
-			this.scaledSpeed = scaledDelta;
+		//	this.scaledSpeed = scaledDelta;  why is dis here?
 			
 			// too close to the wall
 			if (error >= 0) {
-				MovementController.turnRight(scaledDelta + 10);
+				
+				movementControler.turnRight(MOTOR_SPEED,scaledDelta + 10 );
 			}
 			// too far away from the wall
 			else {
-				MovementController.turnLeft(scaledDelta);
+				movementControler.turnLeft(MOTOR_SPEED,scaledDelta);
 			}
 		}
 		else {
 			
-			motorController.goStraight();
+			movementControler.driveForward();
 		}
 		
 		try {

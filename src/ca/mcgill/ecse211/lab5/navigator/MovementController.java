@@ -231,4 +231,19 @@ public class MovementController {
          }
     	return angleToHead;
     }
+    
+    public void turnLeft(int MOTOR_SPEED, int delta) {
+		leftMotor.setSpeed(MOTOR_SPEED - delta);
+		rightMotor.setSpeed(MOTOR_SPEED + delta);
+		leftMotor.forward();
+		rightMotor.forward();
+	}
+
+	
+	public void turnRight(int MOTOR_SPEED, int delta) {
+		leftMotor.setSpeed(MOTOR_SPEED + delta);
+		rightMotor.setSpeed(MOTOR_SPEED - delta);
+		leftMotor.forward();
+		rightMotor.forward();
+	}
 }
