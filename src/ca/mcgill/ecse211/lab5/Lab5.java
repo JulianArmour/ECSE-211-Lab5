@@ -9,14 +9,15 @@ import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.port.MotorPort;
-import lejos.hardware.port.Port;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.hardware.sensor.SensorModes;
-import lejos.robotics.SampleProvider;
 
 public class Lab5 {
+    // Global Parameters
+    private static final int LLx = 3;
+    private static final int LLy = 3;
+    private static final int URx = 7;
+    private static final int URy = 7;
+    private static final int SC = 0;
+    private static final int TR = 0;
 
 	/** Initialize variables for radius of the wheel and track, assign ports for left and rightMotor 
 	 * Define boolean "wall" to simply lightLocalizer method of assigning fallingEdge or risingEdge constructors. 
@@ -27,7 +28,7 @@ public class Lab5 {
 
 	public static final double WHEEL_RAD = 2.2;
 	public static final double TRACK = 11.75;
-	public static boolean wall; 
+	public static boolean wall;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
@@ -35,8 +36,9 @@ public class Lab5 {
 		Odometer odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 		USLocalisation usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 		LightLocalisation lightLocalizer = new LightLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-
 		Display odometryDisplay = new Display(lcd);
+		
+		
 		do {
 			/**
 			 * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?
