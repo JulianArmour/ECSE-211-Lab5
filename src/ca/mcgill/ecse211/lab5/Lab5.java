@@ -18,6 +18,8 @@ public class Lab5 {
     private static final int URy = 7;
     private static final int SC = 0;
     private static final int TR = 0;
+    
+    // physical values for LLx, LLy, URx, URy
 
 	/** Initialize variables for radius of the wheel and track, assign ports for left and rightMotor 
 	 * Define boolean "wall" to simply lightLocalizer method of assigning fallingEdge or risingEdge constructors. 
@@ -26,12 +28,17 @@ public class Lab5 {
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
+	/** The tile's length. */
+    public static final double TILE_SIZE = 30.48;
 	public static final double WHEEL_RAD = 2.2;
 	public static final double TRACK = 11.75;
 	public static boolean wall;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
+		
+		// convert grid system to physial locations
+		this.PLLx = 30.48 * (double) LLx;
 
 		Odometer odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 		USLocalisation usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
