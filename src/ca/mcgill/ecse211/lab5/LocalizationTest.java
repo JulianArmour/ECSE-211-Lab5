@@ -1,10 +1,12 @@
 package ca.mcgill.ecse211.lab5;
 
 import ca.mcgill.ecse211.lab5.display.Display;
-import ca.mcgill.ecse211.lab5.localization.LightLocalisation;
+import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USLocalisation;
+import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
+import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -13,6 +15,7 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorMode;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
@@ -27,15 +30,59 @@ public class LocalizationTest {
 
 	public static final double WHEEL_RAD = 2.2;
 	public static final double TRACK = 11.75;
-	public static boolean wall; 
+	public static boolean wall;
+	
+    private static Port sideUSPort;
+    private static EV3UltrasonicSensor sideUltrasonicSensor;
+    private static SensorMode sideDistanceProvider;
+    private static float[] sideUSSample;
+    private static Port backLeftLSPort;
+    private static EV3ColorSensor backLeftLS;
+    private static SensorMode backLeftLSProvider;
+    private static float[] backLeftLSSample;
+    private static Port backRightLSPort;
+    private static EV3ColorSensor backRightLS;
+    private static SensorMode backRightLSProvider;
+    private static float[] backRightLSSample;
+    private static Odometer odometer;
+    private static USLocalisation usLocalizer;
+    private static DifferentialLightSensor leftDifferentialLightSensor;
+    private static DifferentialLightSensor rightDifferentialLightSensor;
+    private static MovementController movementController;
+    private static LightLocalizer lightLocalizer; 
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
+		
+		// set up side ultrasonic sensor
+		sideUSPort = LocalEV3.get().getPort("S1");
+		sideUltrasonicSensor = new EV3UltrasonicSensor(sideUSPort);
+		sideDistanceProvider = sideUltrasonicSensor.getMode("Distance");
+		sideUSSample = new float[sideDistanceProvider.sampleSize()];
+		
+		// set up back-left light sensor
+		backLeftLSPort = LocalEV3.get().getPort("S2");
+		backLeftLS = new EV3ColorSensor(backLeftLSPort);
+		backLeftLSProvider = backLeftLS.getMode("Red");
+		backLeftLSSample = new float[backLeftLSProvider.sampleSize()];
+		
+		// set up back-right light sensor
+		backRightLSPort = LocalEV3.get().getPort("S3");
+        backRightLS = new EV3ColorSensor(backLeftLSPort);
+        backRightLSProvider = backLeftLS.getMode("Red");
+        backRightLSSample = new float[backLeftLSProvider.sampleSize()];
+        
+        
+		
 
-		Odometer odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-		USLocalisation usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-		LightLocalizer lightLocalizer
-		LightLocalisation lightLocalizer = new LightLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+		odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+		movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
+		usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+		
+		leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
+		rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
+		
+		lightLocalizer = new LightLocalizer(rightDifferentialLightSensor, movementController, odometer);
 
 		Display odometryDisplay = new Display(lcd);
 		do {

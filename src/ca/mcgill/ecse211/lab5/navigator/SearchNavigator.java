@@ -10,6 +10,7 @@ public class SearchNavigator {
     private double llY;
     private double urX;
     private double urY;
+    private double[] destination;
 
     public SearchNavigator(Odometer odometer, MovementController movementController, 
                            double llX, double llY, double urX, double urY) 
@@ -22,6 +23,12 @@ public class SearchNavigator {
         this.urY = urY;
     }
     
+    public double[] getDestination() {
+        return destination;
+    }
     
+    public void setDestination(double[] destination) {
+        this.destination = destination;
+    }
     
 }
