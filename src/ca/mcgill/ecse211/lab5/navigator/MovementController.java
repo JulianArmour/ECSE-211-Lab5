@@ -246,4 +246,38 @@ public class MovementController {
 		leftMotor.forward();
 		rightMotor.forward();
 	}
+	
+	public void travelCloseToOrigin(Odometer odo) {
+
+        //double[] odoData = odo.getXYT();
+        double angleToTurn = calculateAngle(odo.getXYT()[0], odo.getXYT()[1], -5.0, -5.0);
+        System.out.println("ANGLE TO TURN: "+angleToTurn);
+        turnTo(angleToTurn);
+
+        // give the robot some time to stop
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        driveDistance(calculateDistance(odo.getXYT()[0], odo.getXYT()[1], -5.0, -5.0));
+       
+    }
+	public void travelTo(Odometer odo,double Xf, double Yf) {
+	
+        double angleToTurn = calculateAngle(odo.getXYT()[0], odo.getXYT()[1], Xf, Yf);
+       // System.out.println("ANGLE TO TURN: "+angleToTurn);
+        turnTo(angleToTurn);
+
+        // give the robot some time to stop
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        driveDistance(calculateDistance(odo.getXYT()[0], odo.getXYT()[1], Xf, Yf));
+		
+	}
 }
