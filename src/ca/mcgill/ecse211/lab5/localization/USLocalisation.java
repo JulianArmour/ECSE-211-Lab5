@@ -56,7 +56,7 @@ public class USLocalisation implements Runnable {
 		this.rightMotor = rightMotor;
 		odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 
-		SensorModes ultrasonicSensor = new EV3UltrasonicSensor(LocalEV3.get().getPort("S1"));
+		SensorModes ultrasonicSensor = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
 		this.usSensor = ultrasonicSensor.getMode("Distance");
 		this.usData = new float[usSensor.sampleSize()];
 	}

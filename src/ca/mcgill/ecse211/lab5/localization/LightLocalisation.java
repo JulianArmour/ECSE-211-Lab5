@@ -46,7 +46,7 @@ public class LightLocalisation implements Runnable {
 		this.TRACK = TRACK;
 		this.WHEEL_RAD = WHEEL_RAD;
 
-		EV3ColorSensor lightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S4")); //Port assigned to 4 for the lightSensor
+		EV3ColorSensor lightSensor = new EV3ColorSensor(LocalEV3.get().getPort("A")); //Port assigned to 4 for the lightSensor
 		color = lightSensor.getMode("Red"); //LightSensor operates on the "Red" mode that measures Red light reflection intensity
 		lsData = new float[lightSensor.sampleSize()];
 	}

@@ -21,12 +21,12 @@ public class Lab5 {
 	/** Initialize variables for radius of the wheel and track, assign ports for left and rightMotor 
 	 * Define boolean "wall" to simply lightLocalizer method of assigning fallingEdge or risingEdge constructors. 
 	 */
-	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
 	public static final double WHEEL_RAD = 2.2;
-	public static final double TRACK = 11.0;
+	public static final double TRACK = 11.75;
 	public static boolean wall; 
 
 	public static void main(String[] args) throws OdometerExceptions {
