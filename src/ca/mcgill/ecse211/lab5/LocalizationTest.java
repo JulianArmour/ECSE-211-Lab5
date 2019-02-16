@@ -34,6 +34,7 @@ public class LocalizationTest {
 
 		Odometer odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 		USLocalisation usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+		LightLocalizer lightLocalizer
 		LightLocalisation lightLocalizer = new LightLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 
 		Display odometryDisplay = new Display(lcd);
