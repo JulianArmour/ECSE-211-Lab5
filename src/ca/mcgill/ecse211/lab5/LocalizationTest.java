@@ -3,30 +3,20 @@ package ca.mcgill.ecse211.lab5;
 import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.LightLocalisation;
 import ca.mcgill.ecse211.lab5.localization.USLocalisation;
-import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
-import ca.mcgill.ecse211.lab5.navigator.MovementController;
-import ca.mcgill.ecse211.lab5.navigator.URnavigator;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.MotorPort;
+import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorModes;
+import lejos.robotics.SampleProvider;
 
-public class Lab5 {
-    // Global Parameters
-    private static final int LLx = 3;
-    private static final int LLy = 3;
-    private static final int URx = 7;
-    private static final int URy = 7;
-    private static final int SC = 0;
-    private static final int TR = 0;
-    
-    // physical values for LLx, LLy, URx, URy
-    private static double PLLx;
-    private static double PLLy;
-    private static double PURx;
-    private static double PURy;
+public class LocalizationTest {
 
 	/** Initialize variables for radius of the wheel and track, assign ports for left and rightMotor 
 	 * Define boolean "wall" to simply lightLocalizer method of assigning fallingEdge or risingEdge constructors. 
@@ -35,31 +25,19 @@ public class Lab5 {
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
-	/** The tile's length. */
-    public static final double TILE_SIZE = 30.48;
 	public static final double WHEEL_RAD = 2.2;
 	public static final double TRACK = 11.75;
-	public static boolean wall;
-	
-    private static MovementController movementController;
-    private static LLnavigator llNavigator;
+	public static boolean wall; 
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
-		
-		// convert grid system to physial locations
-		PLLx = TILE_SIZE * (double) LLx;
-		PLLy = TILE_SIZE * (double) LLy;
-		PURx = TILE_SIZE * (double) URx;
-		PURy = TILE_SIZE * (double) URy;
 
 		Odometer odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 		USLocalisation usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+		LightLocalizer lightLocalizer
 		LightLocalisation lightLocalizer = new LightLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+
 		Display odometryDisplay = new Display(lcd);
-		movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
-		llNavigator = new LLnavigator(SC, PLLx, PLLy);
-		
 		do {
 			/**
 			 * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?
