@@ -147,6 +147,13 @@ public class MovementController {
         leftMotor.stop(true);
         rightMotor.stop(false);
     }
+    
+    public void stopMotor(boolean right) {
+    	
+    	if(right) rightMotor.stop(true);
+    	else leftMotor.stop(true);
+    	
+    }
 
     /**
      * This method allows the conversion of a distance to the total rotation of each
