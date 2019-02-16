@@ -8,7 +8,7 @@ public class wallFollower {
 	private static int BAND_CENTER = 5; //(in cm)
 	private static int BAND_WIDTH = 1; //(in cm)
 	private static int MAX_DELTA = 50; 
-	private static double  pFactor;
+	private static double  pFactor = 1.5;
 	private MovementController movementControler;
 	private Odometer odo;
 	private double[] odoData;
@@ -37,11 +37,8 @@ public class wallFollower {
 		
 		// out of bounds
 		if (Math.abs(error) > BAND_WIDTH / 2) {
-		//	int scaledDelta = Math.min(maxDelta, Math.abs( error * pFactor)));
 			
-//			int scaledDelta = Math.abs((int) (error * pFactor));
-			
-			int scaledDelta = (int) (Math.abs(error*1.5));
+			int scaledDelta = (int) (Math.abs(error*pFactor));
 			
 			if (scaledDelta > MAX_DELTA) {
 				scaledDelta = MAX_DELTA;
