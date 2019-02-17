@@ -154,7 +154,7 @@ public class MovementController {
     	else leftMotor.stop(true);
     	
     }
-
+    
     /**
      * This method allows the conversion of a distance to the total rotation of each
      * wheel needed to cover that distance.
@@ -286,5 +286,9 @@ public class MovementController {
 
         driveDistance(calculateDistance(odo.getXYT()[0], odo.getXYT()[1], Xf, Yf));
 		
+	}
+	public double roundAngle(Odometer odo) {
+		double roundedTheta = Math.round(odo.getXYT()[2]/90.0)*90%360; //Kazamour method
+		return roundedTheta;
 	}
 }
