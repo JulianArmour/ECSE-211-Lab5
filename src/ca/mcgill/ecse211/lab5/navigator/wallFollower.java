@@ -32,6 +32,7 @@ public class wallFollower {
     public void wallFollow() {
 
         odoBeforeWallFollow = odo.getXYT(); // gets the initial XYT when wallfollower is started
+        
 //        USdata.flush(); // reset filtered data
 
         // TODO start collecting colour data
@@ -74,7 +75,9 @@ public class wallFollower {
             }
 
         }
-        // TODO make the robot go back to it's original position and orientation
+        // make the robot go back to it's original position and orientation
+        movementControler.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1]);
+        movementControler.turnTo(odoBeforeWallFollow[2]);
     }
 
 }
