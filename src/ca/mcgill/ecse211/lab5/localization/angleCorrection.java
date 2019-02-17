@@ -51,6 +51,6 @@ public class angleCorrection {
             }
 		
 		}
-		odo.setTheta(movCon.roundAngle(odo));
+		odo.setTheta(movCon.roundAngle());
 	}
 }

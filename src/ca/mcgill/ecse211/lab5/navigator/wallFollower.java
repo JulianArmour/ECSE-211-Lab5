@@ -11,7 +11,7 @@ public class wallFollower {
     private static double pFactor = 1.5;
     private MovementController movementControler;
     private Odometer odo;
-    private double[] odoData;
+    private double[] odoBeforeWallFollow;
     private double error;
     private static int MOTOR_SPEED = 100;
     private MedianDistanceSensor USdata;
@@ -25,13 +25,19 @@ public class wallFollower {
         this.USdata = USfilter;
     }
 
+    /**
+     * Moves the robot around the can and polls colour samples, then returns 
+     * the robot to it's original position before going around the can
+     */
     public void wallFollow() {
 
-        odoData = odo.getXYT(); // gets the initial XYT when wallfollower is started
-        USdata.flush(); // reset filtered data
+        odoBeforeWallFollow = odo.getXYT(); // gets the initial XYT when wallfollower is started
+//        USdata.flush(); // reset filtered data
 
-        while (odoData[2] - 5 <= odo.getXYT()[2] && odo.getXYT()[2] < odoData[2]) {
-
+        // TODO start collecting colour data
+        
+        // do 7/8th of a circle around the can
+        while (odoBeforeWallFollow[2] + 40 <= odo.getXYT()[2] && odo.getXYT()[2] < odoBeforeWallFollow[2] + 45) {
             
             distance = USdata.getFilteredDistance();
 
@@ -50,7 +56,6 @@ public class wallFollower {
 
                 // too close to the wall
                 if (error >= 0) {
-
                     movementControler.turnRight(MOTOR_SPEED, scaledDelta + 10);
                 }
                 // too far away from the wall
@@ -58,7 +63,6 @@ public class wallFollower {
                     movementControler.turnLeft(MOTOR_SPEED, scaledDelta);
                 }
             } else {
-
                 movementControler.driveForward();
             }
 
@@ -70,7 +74,7 @@ public class wallFollower {
             }
 
         }
-
+        // TODO make the robot go back to it's original position and orientation
     }
 
 }

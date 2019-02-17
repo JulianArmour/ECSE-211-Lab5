@@ -25,30 +25,30 @@ public class URnavigator {
 	public void navigateToUr() {
 		currentPos=odo.getXYT();
 
-		if(movCon.roundAngle(odo) == 0) {
+		if(movCon.roundAngle() == 0) {
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(odo, urX, urY);
+			movCon.travelTo(urX, urY);
 		}
 
-		if(movCon.roundAngle(odo) == 90) {
+		if(movCon.roundAngle() == 90) {
 			movCon.driveDistance(5); //just to be in the middle of tile
 			movCon.rotateAngle(90, false);
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(odo, urX, urY);
+			movCon.travelTo(urX, urY);
 		}
-		if(movCon.roundAngle(odo) == 180) {
+		if(movCon.roundAngle() == 180) {
 
 			movCon.rotateAngle(180, false);
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(odo, urX, urY);
+			movCon.travelTo(urX, urY);
 
 		}
 
-		if(movCon.roundAngle(odo) == 270) {
+		if(movCon.roundAngle() == 270) {
 			movCon.driveDistance(5); //just to be in the middle of tile
 			movCon.rotateAngle(90, true);
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(odo, urX, urY);
+			movCon.travelTo(urX, urY);
 
 		}
 

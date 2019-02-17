@@ -271,9 +271,14 @@ public class MovementController {
         driveDistance(calculateDistance(odo.getXYT()[0], odo.getXYT()[1], -5.0, -5.0));
        
     }
-	public void travelTo(Odometer odo,double Xf, double Yf) {
+	/**
+	 * Travels the robot to a spefic position (x,y)
+	 * @param x
+	 * @param y
+	 */
+	public void travelTo(double x, double y) {
 	
-        double angleToTurn = calculateAngle(odo.getXYT()[0], odo.getXYT()[1], Xf, Yf);
+        double angleToTurn = calculateAngle(odometer.getXYT()[0], odometer.getXYT()[1], x, y);
        // System.out.println("ANGLE TO TURN: "+angleToTurn);
         turnTo(angleToTurn);
 
@@ -284,11 +289,15 @@ public class MovementController {
             e.printStackTrace();
         }
 
-        driveDistance(calculateDistance(odo.getXYT()[0], odo.getXYT()[1], Xf, Yf));
+        driveDistance(calculateDistance(odometer.getXYT()[0], odometer.getXYT()[1], x, y));
 		
 	}
-	public double roundAngle(Odometer odo) {
-		double roundedTheta = Math.round(odo.getXYT()[2]/90.0)*90%360; //Kazamour method
+	/**
+	 * 
+	 * @return the angle of the odometer, roundest to the nearest 0,90,180,270 angle
+	 */
+	public double roundAngle() {
+		double roundedTheta = (Math.round(odometer.getXYT()[2]/90.0)*90)%360; //Kazour method
 		return roundedTheta;
 	}
 }

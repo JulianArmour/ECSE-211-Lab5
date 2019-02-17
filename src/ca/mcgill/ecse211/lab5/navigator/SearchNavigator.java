@@ -57,7 +57,7 @@ public class SearchNavigator implements TimerListener {
         movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
 
-        // for loop for remaning path
+        // for loop of remaning path
         for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
             movementController.rotateAngle(90, false);
             Ydistance = (n + 1) * TILE_LENGTH;
@@ -76,21 +76,25 @@ public class SearchNavigator implements TimerListener {
 
         // if US sensor detects a can
         if (canDist < 10) {
+            
+            movementController.stopMotors();
 
             canDetected = true; // maybe use this to influence the for loop to interrupt
+            
             // set up things before going into wallfollowing mode
             // if robot is moving in x-axis
-            if (movementController.roundAngle(odometer) == 90 || movementController.roundAngle(odometer) == 270) {
+            if (movementController.roundAngle() == 90 || movementController.roundAngle() == 270) {
                 distanceLeft = (Xdistance) - odometer.getXYT()[0];
             }
             // if robot is moving in y-axis
-            if (movementController.roundAngle(odometer) == 0 || movementController.roundAngle(odometer) == 180) {
+            if (movementController.roundAngle() == 0 || movementController.roundAngle() == 180) {
                 distanceLeft = (Ydistance) - odometer.getXYT()[1];
             }
+            // where the robot is before wall following
             referencePos = odometer.getXYT();
-
             // goes into wallfollowing mode
             wallF.wallFollow();
+            
         }
         // NEED TO DO CALCULATIONS HERE!!!!!!!
 
