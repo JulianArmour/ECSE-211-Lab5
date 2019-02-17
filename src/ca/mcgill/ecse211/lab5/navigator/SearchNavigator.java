@@ -3,7 +3,8 @@ package ca.mcgill.ecse211.lab5.navigator;
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
-import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.UltrasonicMedianFilter;
+
+import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 import lejos.utility.TimerListener;
 
 //takes in integer, not physical measures
@@ -11,7 +12,7 @@ public class SearchNavigator implements TimerListener{
 	
     private Odometer odometer;
     private MovementController movementController;
-    private UltrasonicMedianFilter USdata;
+    private MedianDistanceSensor USdata;
     private wallFollower wallF;
     private angleCorrection angleCorrector;
     private int llX;
@@ -29,9 +30,9 @@ public class SearchNavigator implements TimerListener{
     
 
     public SearchNavigator(Odometer odometer, MovementController movementController, 
-                           int llX, int llY, int urX, int urY, UltrasonicMedianFilter USdata, 
-                           wallFollower wallFollower, angleCorrection angleCorrector) 
-    {
+                           int llX, int llY, int urX, int urY, MedianDistanceSensor USdata, 
+                           wallFollower wallFollower, angleCorrection angleCorrector) {
+
         this.odometer = odometer;
         this.movementController = movementController;
         this.USdata=USdata;
@@ -57,8 +58,6 @@ public class SearchNavigator implements TimerListener{
 		Xdistance = deltaX+ 0.5;
 		movementController.driveDistance(Xdistance);
 		
-		
-		
 		//for loop for remaning path
     	for(int n=deltaY, m=deltaX, i=0 ; n>0 & m>0 & i<10; n--, m--,i++) {
     		movementController.rotateAngle(90, false);
@@ -78,7 +77,7 @@ public class SearchNavigator implements TimerListener{
 	@Override
 	public void timedOut() {
 		
-		double canDist= USdata.getMedian();
+		double canDist= USdata.getFilteredDistance();
 		
 		//if US sensor detects a can
 		if (canDist<10){
