@@ -59,13 +59,13 @@ public class SearchNavigator implements TimerListener{
 		movementController.driveDistance(Xdistance);
 		
 		//for loop for remaning path
-    	for(int n=deltaY, m=deltaX, i=0 ; n>0 & m>0 & i<10; n--, m--,i++) {
+    	for(int i = 0; deltaX > 0 & deltaY > 0 & i < 10; deltaX--, deltaY--,i++) {
     		movementController.rotateAngle(90, false);
-    		Ydistance = (n+1)*TILE_LENGTH;
+    		Ydistance = (deltaX+1)*TILE_LENGTH;
     		movementController.driveDistance(Ydistance,true);
     		//poll USsensor somhow in for loop
     		movementController.rotateAngle(90, false);
-    		Xdistance = (m+1)*TILE_LENGTH;
+    		Xdistance = (deltaY+1)*TILE_LENGTH;
     		movementController.driveDistance(Xdistance,true);
     	
     		
@@ -77,21 +77,25 @@ public class SearchNavigator implements TimerListener{
 	@Override
 	public void timedOut() {
 		
-		double canDist= USdata.getFilteredDistance();
+		double canDist = USdata.getFilteredDistance();
 		
 		//if US sensor detects a can
 		if (canDist<10){
-		distanceLeft = (deltaX+0.5)-odometer.getXYT()[0];
-		referencePos = odometer.getXYT();
-		wallF.wallFollow();
+    		/* TODO deltaX needs to be updated in the for loop since since it changes
+    		 * with each iteration
+    		 */		 
+    		distanceLeft = (deltaX+0.5)-odometer.getXYT()[0];
+    		referencePos = odometer.getXYT();
+    		wallF.wallFollow();
+    		//after it breaks from wallfollowing (3/4 of a circle around the can)
+    		movementController.turnTo(angleSnap(odometer.getXYT()[2]));
+    		movementController.driveDistance(TILE_LENGTH/2);
+    		movementController.rotateAngle(90, false);
+    		angleCorrector.quickThetaCorrection();
 		}
-		//after it breaks from wallfollowing
-		movementController.driveDistance(-TILE_LENGTH/2);
-		movementController.driveDistance(2*TILE_LENGTH, true);
-		angleCorrector.quickThetaCorrection();
-		
-	//	movementController.travelTo(odometer, referencePos[0], referencePos[1]);
-		movementController.driveDistance(distanceLeft);
-		
 	} 
+	
+	private static double angleSnap(double angle) {
+	    return (Math.round(angle / 90.0) * 90) % 360;
+	}
 }

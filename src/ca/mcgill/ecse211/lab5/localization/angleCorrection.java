@@ -34,13 +34,6 @@ public class angleCorrection {
 			//poll left sensor
 			int deltaL = dLTleft.getDeltaL();
 
-
-			try {
-				Thread.sleep(TIME_OUT);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
 			if (Math.abs(deltaR) > DIFFERENTIAL_THRESHOLD) {
 				RLineDetected = true;
 				movCon.stopMotor(true);
@@ -50,13 +43,15 @@ public class angleCorrection {
 				LLineDetected = true;
 				movCon.stopMotor(false);
 			}
+			
+			try {
+                Thread.sleep(TIME_OUT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 		
 		}
 
-		//Kazour method
-		odo.setTheta(Math.round(odo.getXYT()[2]/90.0)*90%360);
-		
+		odo.setTheta((Math.round(odo.getXYT()[2] / 90.0) * 90) % 360);
 	}
-	
-	
 }
