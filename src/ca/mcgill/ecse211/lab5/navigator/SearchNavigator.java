@@ -3,9 +3,10 @@ package ca.mcgill.ecse211.lab5.navigator;
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.UltrasonicMedianFilter;
+import lejos.utility.TimerListener;
 
 //takes in integer, not physical measures
-public class SearchNavigator {
+public class SearchNavigator implements TimerListener{
 	//
     private Odometer odometer;
     private MovementController movementController;
@@ -35,7 +36,7 @@ public class SearchNavigator {
         this.wallF=wallFollower;
     }
     
-    private void searchPath() {
+    public void searchPath() {
     	
     	//start an angle correction thread
     	
