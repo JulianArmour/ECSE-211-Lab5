@@ -6,7 +6,7 @@ import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.UltrasonicMedianFilter;
 
 //takes in integer, not physical measures
 public class SearchNavigator {
-
+	//
     private Odometer odometer;
     private MovementController movementController;
     private UltrasonicMedianFilter USdata;
