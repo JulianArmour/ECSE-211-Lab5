@@ -25,7 +25,7 @@ public class angleCorrection {
 		this.odo=odo;
 	}
 
-	public void QuickThetaCorrection() {
+	public void quickThetaCorrection() {
 		
 		movCon.driveForward();
 		while (!RLineDetected || !LLineDetected) {

@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
 import ca.mcgill.ecse211.lab5.Lab5;
+import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.UltrasonicMedianFilter;
 import lejos.utility.TimerListener;
@@ -12,6 +13,7 @@ public class SearchNavigator implements TimerListener{
     private MovementController movementController;
     private UltrasonicMedianFilter USdata;
     private wallFollower wallF;
+    private angleCorrection angleCorrector;
     private int llX;
     private int llY;
     private int urX;
@@ -21,14 +23,19 @@ public class SearchNavigator implements TimerListener{
     private int deltaX;
     private double distanceLeft;
     private double canDist;
+    private double[] referencePos;
+    private double Xdistance;
+    private double Ydistance;
     
 
     public SearchNavigator(Odometer odometer, MovementController movementController, 
-                           int llX, int llY, int urX, int urY, UltrasonicMedianFilter USdata, wallFollower wallFollower) 
+                           int llX, int llY, int urX, int urY, UltrasonicMedianFilter USdata, 
+                           wallFollower wallFollower, angleCorrection angleCorrector) 
     {
         this.odometer = odometer;
         this.movementController = movementController;
         this.USdata=USdata;
+        this.angleCorrector=angleCorrector;
         this.llX = llX;
         this.llY = llY;
         this.urX = urX;
@@ -47,32 +54,45 @@ public class SearchNavigator implements TimerListener{
 		movementController.turnTo(90);
 		//hardcoded part on x axis
 		
-		movementController.driveDistance(deltaX+0.5);
+		Xdistance = deltaX+ 0.5;
+		movementController.driveDistance(Xdistance);
 		
-		while(true) {
-			
-			canDist = USdata.getMedian();
-			if(canDist<10) break;
-		}
-		//if US sensor detects a can
 		
-			distanceLeft = (deltaX+0.5)-odometer.getXYT()[0];
-			wallF.wallFollow();
-			movementController.driveDistance(distanceLeft);
-		
-			
 		
 		//for loop for remaning path
     	for(int n=deltaY, m=deltaX, i=0 ; n>0 & m>0 & i<10; n--, m--,i++) {
     		movementController.rotateAngle(90, false);
-    		movementController.driveDistance((n+1)*TILE_LENGTH,true);
+    		Ydistance = (n+1)*TILE_LENGTH;
+    		movementController.driveDistance(Ydistance,true);
     		//poll USsensor somhow in for loop
     		movementController.rotateAngle(90, false);
-    		movementController.driveDistance((m+1)*TILE_LENGTH,true);
+    		Xdistance = (m+1)*TILE_LENGTH;
+    		movementController.driveDistance(Xdistance,true);
     	
     		
     	}
+   
     
-    
-    } 
+    }
+
+	@Override
+	public void timedOut() {
+		
+		double canDist= USdata.getMedian();
+		
+		//if US sensor detects a can
+		if (canDist<10){
+		distanceLeft = (deltaX+0.5)-odometer.getXYT()[0];
+		referencePos = odometer.getXYT();
+		wallF.wallFollow();
+		}
+		//after it breaks from wallfollowing
+		movementController.driveDistance(-TILE_LENGTH/2);
+		movementController.driveDistance(2*TILE_LENGTH, true);
+		angleCorrector.quickThetaCorrection();
+		
+	//	movementController.travelTo(odometer, referencePos[0], referencePos[1]);
+		movementController.driveDistance(distanceLeft);
+		
+	} 
 }
