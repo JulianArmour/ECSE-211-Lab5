@@ -9,8 +9,8 @@ import ca.mcgill.ecse211.lab5.odometer.Odometer;
 public class LLnavigator {
 
 	private static int StartC;
-	private static double LLx;
-	private static double LLy;
+	private static double PLLX;
+	private static double PLLY;
 	private USLocalisation usLocalizer;
 	private IntersectionLocalizer interLocalizer;
 	private AxesLocalizer axesLocalizer;
@@ -18,13 +18,13 @@ public class LLnavigator {
 	private Odometer odo;
 	
 
-	public LLnavigator(int SC, double LLx, double LLy, USLocalisation usLocalizer,
+	public LLnavigator(int SC, double PPLLX, double PPLLY, USLocalisation usLocalizer,
 			IntersectionLocalizer interLocalizer, AxesLocalizer axesLocalizer, 
 			MovementController movCon,Odometer odo) {
 
 		this.StartC = SC;
-		this.LLx= LLx;
-		this.LLy=LLy;
+		this.PLLX= PPLLX;
+		this.PLLY=PPLLY;
 		this.usLocalizer = usLocalizer;
 		this.interLocalizer = interLocalizer;
 		this.axesLocalizer=axesLocalizer;
@@ -47,8 +47,8 @@ public class LLnavigator {
 			interLocalizer.correctAngle();		//corrects theta
 			interLocalizer.correctPosition();	//corrects X and Y pos.
 			
-			//navigate to LLx,LLy
-			movCon.travelTo(odo, LLx, LLy);
+			//navigate to PLLX,PLLY
+			movCon.travelTo(odo, PLLX, PLLY);
 		}
 
 		else if (StartC == 1) {
@@ -76,7 +76,7 @@ public class LLnavigator {
 			
 			odo.setXYT(Lab5.TILE_SIZE, Lab5.TILE_SIZE, 0);
 			
-			movCon.travelTo(odo, LLx, LLy);
+			movCon.travelTo(odo, PLLX, PLLY);
 			
 			
 
@@ -107,7 +107,7 @@ public class LLnavigator {
 			
 			odo.setXYT(Lab5.TILE_SIZE, Lab5.TILE_SIZE, 0);
 			
-			movCon.travelTo(odo, LLx, LLy);
+			movCon.travelTo(odo, PLLX, PLLY);
 			
 			
 
@@ -138,7 +138,7 @@ public class LLnavigator {
 			
 			odo.setXYT(Lab5.TILE_SIZE, Lab5.TILE_SIZE, 0);
 			
-			movCon.travelTo(odo, LLx, LLy);
+			movCon.travelTo(odo, PLLX, PLLY);
 			
 		}
 
