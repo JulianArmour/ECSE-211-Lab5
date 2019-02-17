@@ -3,7 +3,6 @@ package ca.mcgill.ecse211.lab5.navigator;
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
-
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 import lejos.utility.TimerListener;
 
@@ -27,6 +26,7 @@ public class SearchNavigator implements TimerListener{
     private double[] referencePos;
     private double Xdistance;
     private double Ydistance;
+    boolean canDetected=false;
     
 
     public SearchNavigator(Odometer odometer, MovementController movementController, 
@@ -63,12 +63,9 @@ public class SearchNavigator implements TimerListener{
     		movementController.rotateAngle(90, false);
     		Ydistance = (n+1)*TILE_LENGTH;
     		movementController.driveDistance(Ydistance,true);
-    		//poll USsensor somhow in for loop
     		movementController.rotateAngle(90, false);
     		Xdistance = (m+1)*TILE_LENGTH;
     		movementController.driveDistance(Xdistance,true);
-    	
-    		
     	}
    
     
@@ -81,12 +78,25 @@ public class SearchNavigator implements TimerListener{
 		
 		//if US sensor detects a can
 		if (canDist<10){
-		distanceLeft = (deltaX+0.5)-odometer.getXYT()[0];
+		canDetected = true;					//maybe use this to influence the for loop to interrupt
+		//set up things before going into wallfollowing mode
+			//if robot is moving in x-axis
+			if(movementController.roundAngle(odometer) == 90 || movementController.roundAngle(odometer) == 270) {
+		distanceLeft = (Xdistance)-odometer.getXYT()[0];
+			}
+			//if robot is moving in y-axis
+			if(movementController.roundAngle(odometer) == 0 || movementController.roundAngle(odometer) == 180) {
+		distanceLeft = (Ydistance)-odometer.getXYT()[1];
+		}
 		referencePos = odometer.getXYT();
+		
+		//goes into wallfollowing mode
 		wallF.wallFollow();
 		}
+		//NEED TO DO CALCULATIONS HERE!!!!!!!
+		
 		//after it breaks from wallfollowing
-		movementController.driveDistance(-TILE_LENGTH/2);
+	//	movementController.driveDistance(-TILE_LENGTH/2);   might not need it because sensor in the back
 		movementController.driveDistance(2*TILE_LENGTH, true);
 		angleCorrector.quickThetaCorrection();
 		

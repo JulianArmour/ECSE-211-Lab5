@@ -53,8 +53,8 @@ public class angleCorrection {
 		
 		}
 
-		//Kazour method
-		odo.setTheta(Math.round(odo.getXYT()[2]/90.0)*90%360);
+		
+		odo.setTheta(movCon.roundAngle(odo));
 		
 	}
 	
