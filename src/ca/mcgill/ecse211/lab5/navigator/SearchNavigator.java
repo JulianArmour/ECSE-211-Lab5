@@ -55,14 +55,15 @@ public class SearchNavigator implements TimerListener {
 
         Xdistance = deltaX + 0.5;
         movementController.driveDistance(Xdistance);
+        // TODO check for cans while driving
 
         // for loop for remaning path
-        for (int i = 0; deltaX > 0 & deltaY > 0 & i < 10; deltaX--, deltaY--, i++) {
+        for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
             movementController.rotateAngle(90, false);
-            Ydistance = (deltaX + 1) * TILE_LENGTH;
+            Ydistance = (n + 1) * TILE_LENGTH;
             movementController.driveDistance(Ydistance, true);
             movementController.rotateAngle(90, false);
-            Xdistance = (deltaY + 1) * TILE_LENGTH;
+            Xdistance = (m + 1) * TILE_LENGTH;
             movementController.driveDistance(Xdistance, true);
         }
 
