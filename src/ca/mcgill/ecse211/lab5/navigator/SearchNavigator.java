@@ -8,7 +8,7 @@ import lejos.utility.TimerListener;
 
 //takes in integer, not physical measures
 public class SearchNavigator implements TimerListener{
-	//
+	
     private Odometer odometer;
     private MovementController movementController;
     private UltrasonicMedianFilter USdata;
