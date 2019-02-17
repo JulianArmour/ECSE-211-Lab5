@@ -2,14 +2,14 @@ package ca.mcgill.ecse211.lab5.navigator;
 
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
-import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.UltrasonicMedianFilter;
+import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 
 //takes in integer, not physical measures
 public class SearchNavigator {
 	//
     private Odometer odometer;
     private MovementController movementController;
-    private UltrasonicMedianFilter USdata;
+    private MedianDistanceSensor USdata;
     private wallFollower wallF;
     private int llX;
     private int llY;
@@ -23,7 +23,7 @@ public class SearchNavigator {
     
 
     public SearchNavigator(Odometer odometer, MovementController movementController, 
-                           int llX, int llY, int urX, int urY, UltrasonicMedianFilter USdata, wallFollower wallFollower) 
+                           int llX, int llY, int urX, int urY, MedianDistanceSensor USdata, wallFollower wallFollower) 
     {
         this.odometer = odometer;
         this.movementController = movementController;
@@ -50,7 +50,7 @@ public class SearchNavigator {
 		
 		while(true) {
 			
-			canDist = USdata.getMedian();
+			canDist = USdata.getFilteredDistance();
 			if(canDist<10) break;
 		}
 		//if US sensor detects a can
