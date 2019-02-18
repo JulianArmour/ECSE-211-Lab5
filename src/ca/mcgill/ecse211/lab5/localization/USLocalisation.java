@@ -175,6 +175,8 @@ public class USLocalisation implements Runnable {
 			theta = odometer.getXYT()[2]; //Here, we record the value of the angle obtained. 
 		}
 
+		// TODO change algo to work with distance sensor on the side.
+		
 		/** 
 		 * Final part of the fallingEdge method: Adjusts the angle of the robot to 0 degrees (facing NORTH)
 		 * by applying the fallingEdge method (theta1 + theta2)/2. 

@@ -276,7 +276,7 @@ public class MovementController {
 	 * @param x
 	 * @param y
 	 */
-	public void travelTo(double x, double y) {
+	public void travelTo(double x, double y, boolean immediateReturn) {
 	
         double angleToTurn = calculateAngle(odometer.getXYT()[0], odometer.getXYT()[1], x, y);
        // System.out.println("ANGLE TO TURN: "+angleToTurn);
@@ -289,7 +289,7 @@ public class MovementController {
             e.printStackTrace();
         }
 
-        driveDistance(calculateDistance(odometer.getXYT()[0], odometer.getXYT()[1], x, y));
+        driveDistance(calculateDistance(odometer.getXYT()[0], odometer.getXYT()[1], x, y), immediateReturn);
 		
 	}
 	/**

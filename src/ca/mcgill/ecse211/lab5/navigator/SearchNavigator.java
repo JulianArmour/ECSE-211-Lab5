@@ -64,7 +64,7 @@ public class SearchNavigator implements TimerListener {
         Xdistance = deltaX + 0.5;
         currentPos = odometer.getXYT();
         destination = new double[] {currentPos[0] + Xdistance*TILE_LENGTH, currentPos[1], currentPos[2] };
-        movementController.travelTo(destination[0], destination[1]);
+        movementController.travelTo(destination[0], destination[1], false);
         
 //        movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
@@ -94,7 +94,10 @@ public class SearchNavigator implements TimerListener {
                     e.printStackTrace();
                 }
             }
+            // stop looking for cans
             timer.stop();
+            // the robot is now within DESTINATION_THRESHOLD. Move the robot the remaining distance
+            movementController.travelTo(destination[0], destination[1], false);
             
             // TODO move to next navigation after reaching destination
             

@@ -76,7 +76,7 @@ public class wallFollower {
 
         }
         // make the robot go back to it's original position and orientation
-        movementControler.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1]);
+        movementControler.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
         movementControler.turnTo(odoBeforeWallFollow[2]);
     }
 
