@@ -28,6 +28,7 @@ public class SearchNavigator implements TimerListener {
     private double Ydistance;
     boolean canDetected = false;
     private double[] destination;
+    double[] currentPos;
 
     public SearchNavigator(Odometer odometer, MovementController movementController, int llX, int llY, int urX, int urY,
             MedianDistanceSensor USdata, wallFollower wallFollower, angleCorrection angleCorrector) {
@@ -56,7 +57,7 @@ public class SearchNavigator implements TimerListener {
 
         // TODO use movementController.travelTo(x,y) instead
         Xdistance = deltaX + 0.5;
-        double[] currentPos = odometer.getXYT();
+        currentPos = odometer.getXYT();
         destination = new double[] {currentPos[0] + Xdistance*TILE_LENGTH, currentPos[1], currentPos[2] };
         movementController.travelTo(destination[0], destination[1]);
         
@@ -68,6 +69,10 @@ public class SearchNavigator implements TimerListener {
             movementController.rotateAngle(90, false);
             // perform a quick angle correction
             angleCorrector.quickThetaCorrection();
+            
+            double[] currentPos = odometer.getXYT();
+            
+            
             
             // start traveling
             Ydistance = (n + 1) * TILE_LENGTH;
