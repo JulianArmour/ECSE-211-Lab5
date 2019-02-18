@@ -42,6 +42,7 @@ public class SearchNavigator implements TimerListener {
         this.urX = urX;
         this.urY = urY;
         this.wallF = wallFollower;
+        this.currentPos = new double[3];
     }
 
     public void searchPath() {
