@@ -83,24 +83,30 @@ public class SearchNavigator implements TimerListener {
 
             canDetected = true; // maybe use this to influence the for loop to interrupt
             
-            // set up things before going into wallfollowing mode
-            // if robot is moving in x-axis
-            if (movementController.roundAngle() == 90 || movementController.roundAngle() == 270) {
-                distanceLeft = (Xdistance) - odometer.getXYT()[0];
-            }
-            // if robot is moving in y-axis
-            if (movementController.roundAngle() == 0 || movementController.roundAngle() == 180) {
-                distanceLeft = (Ydistance) - odometer.getXYT()[1];
-            }
-            // where the robot is before wall following
+            // where the robot is before wall following. TODO probably not needed, this is done in WallFollower
             referencePos = odometer.getXYT();
             // goes into wallfollowing mode and collects colour data
             wallF.wallFollow();
-            // at this point the robot is back to where it was before wall-following
-            //TODO angle correction
+            // Note: at this point the robot is back to where it was before wall-following
+            
+            // angle correction
+            angleCorrector.quickThetaCorrection();
+            
             //TODO keep moving remaining distance
+            // if robot is moving in x-axis
+            if (movementController.roundAngle() == 90 || movementController.roundAngle() == 270) {
+                distanceLeft = (Xdistance) - odometer.getXYT()[0]; 
+                /*
+                 *  TODO this probably won't work, I think we need a destination variable instead
+                 *  of a distance remaining. distance = pos_destination - pos_current
+                 */
+            }
+            // if robot is moving in y-axis
+            else if (movementController.roundAngle() == 0 || movementController.roundAngle() == 180) {
+                distanceLeft = (Ydistance) - odometer.getXYT()[1];
+            }
         }
-        // NEED TO DO CALCULATIONS HERE!!!!!!!
+        // TODO NEED TO DO CALCULATIONS HERE!!!!!!!
 
         // after it breaks from wallfollowing
         // movementController.driveDistance(-TILE_LENGTH/2); might not need it because
