@@ -109,10 +109,13 @@ public class SearchNavigator implements TimerListener {
                 }
             }
             timer.stop();
+            movementController.travelTo(destination[0], destination[1], false);
             
             // TODO move to next navigation after reaching destination
             
             movementController.rotateAngle(90, false);
+            angleCorrector.quickThetaCorrection();
+            
             Xdistance = (m + 1) * TILE_LENGTH;
             
             if(movementController.roundAngle() == 90) {
