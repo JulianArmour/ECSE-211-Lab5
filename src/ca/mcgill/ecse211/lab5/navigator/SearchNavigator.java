@@ -127,7 +127,7 @@ public class SearchNavigator implements TimerListener {
             movementController.travelTo(destination[0], destination[1]);
             // TODO check for cans
         }
-
+//
     }
 
     private double distanceToDestination() {
