@@ -9,7 +9,8 @@ import lejos.utility.TimerListener;
 
 //takes in integer, not physical measures
 public class SearchNavigator implements TimerListener {
-//
+
+
 
     private static final double DESTINATION_THRESHOLD = 2.0;
     private static final int CAN_SCAN_PERIOD = 100;
