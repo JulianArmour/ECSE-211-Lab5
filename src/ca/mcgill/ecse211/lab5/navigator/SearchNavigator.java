@@ -62,18 +62,21 @@ public class SearchNavigator implements TimerListener {
         movementController.turnTo(90);
         // hardcoded part on x axis
 
-        // 
+        //start the timer
+        timer = new Timer(CAN_SCAN_PERIOD, this);
+        timer.start();
+        
         Xdistance = (deltaX + 0.5)*TILE_LENGTH;
         currentPos = odometer.getXYT();
         destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
         movementController.travelTo(destination[0], destination[1],true);
-        movementController.travelTo(destination[0], destination[1], true);
-        movementController.travelTo(destination[0], destination[1], true);
         
 //        movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
-        timer = new Timer(CAN_SCAN_PERIOD, this);
-        timer.start();
+        
+        
+        
+        
 
         // for loop of remaning path
         for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
