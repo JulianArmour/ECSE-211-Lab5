@@ -88,9 +88,12 @@ public class SearchNavigator implements TimerListener {
         movementController.travelTo(destination[0], destination[1], false);
         
         
-
+        
+        
+        
         // for loop of remaining path
         for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
+        	
             movementController.rotateAngle(90, false);
             // perform a quick angle correction
             angleCorrector.quickThetaCorrection();
@@ -112,7 +115,8 @@ public class SearchNavigator implements TimerListener {
             }
             
             movementController.travelTo(destination[0], destination[1],true);
-            movementController.travelTo(destination[0], destination[1], true);
+            timer.start();
+            
             // TODO check for cans
             
             // pause until destination is reached
@@ -148,6 +152,7 @@ public class SearchNavigator implements TimerListener {
             	destination[2]= currentPos[2];
             }
             movementController.travelTo(destination[0], destination[1],true);
+            timer.start();
             // TODO check for cans
             
             // pause until destination is reached
