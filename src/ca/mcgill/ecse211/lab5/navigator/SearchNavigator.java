@@ -78,7 +78,7 @@ public class SearchNavigator implements TimerListener {
         
         
 
-        // for loop of remaning path
+        // for loop of remaining path
         for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
             movementController.rotateAngle(90, false);
             // perform a quick angle correction
