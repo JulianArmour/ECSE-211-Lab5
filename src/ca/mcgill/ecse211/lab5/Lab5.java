@@ -1,14 +1,22 @@
 package ca.mcgill.ecse211.lab5;
 
 import ca.mcgill.ecse211.lab5.display.Display;
-import ca.mcgill.ecse211.lab5.localization.LightLocalisation;
+import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USLocalisation;
+import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
+import ca.mcgill.ecse211.lab5.navigator.MovementController;
+import ca.mcgill.ecse211.lab5.navigator.URnavigator;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
+import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorMode;
 
 public class Lab5 {
     // Global Parameters
@@ -20,6 +28,10 @@ public class Lab5 {
     private static final int TR = 0;
     
     // physical values for LLx, LLy, URx, URy
+    private static double PLLx;
+    private static double PLLy;
+    private static double PURx;
+    private static double PURy;
 
 	/** Initialize variables for radius of the wheel and track, assign ports for left and rightMotor 
 	 * Define boolean "wall" to simply lightLocalizer method of assigning fallingEdge or risingEdge constructors. 
@@ -33,19 +45,64 @@ public class Lab5 {
 	public static final double WHEEL_RAD = 2.2;
 	public static final double TRACK = 11.75;
 	public static boolean wall;
+	
+    private static MovementController movementController;
+    private static LLnavigator llNavigator;
+    private static Port sideUSPort;
+    private static EV3UltrasonicSensor sideUltrasonicSensor;
+    private static SensorMode sideDistanceProvider;
+    private static float[] sideUSSample;
+    private static Port backLeftLSPort;
+    private static EV3ColorSensor backLeftLS;
+    private static SensorMode backLeftLSProvider;
+    private static float[] backLeftLSSample;
+    private static Port backRightLSPort;
+    private static EV3ColorSensor backRightLS;
+    private static SensorMode backRightLSProvider;
+    private static float[] backRightLSSample;
+    private static Odometer odometer;
+    private static USLocalisation usLocalizer;
+    private static DifferentialLightSensor leftDifferentialLightSensor;
+    private static DifferentialLightSensor rightDifferentialLightSensor;
+    private static LightLocalizer lightLocalizer;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
 		
-		// convert grid system to physial locations
-		this.PLLx = 30.48 * (double) LLx;
+		// coordinate conversion
+		PLLx = TILE_SIZE * (double) LLx;
+		PLLy = TILE_SIZE * (double) LLy;
+		PURx = TILE_SIZE * (double) URx;
+		PURy = TILE_SIZE * (double) URy;
+		
+		// set up side ultrasonic sensor
+        sideUSPort = LocalEV3.get().getPort("S1");
+        sideUltrasonicSensor = new EV3UltrasonicSensor(sideUSPort);
+        sideDistanceProvider = sideUltrasonicSensor.getMode("Distance");
+        sideUSSample = new float[sideDistanceProvider.sampleSize()];
+        
+        // set up back-left light sensor
+        backLeftLSPort = LocalEV3.get().getPort("S2");
+        backLeftLS = new EV3ColorSensor(backLeftLSPort);
+        backLeftLSProvider = backLeftLS.getMode("Red");
+        backLeftLSSample = new float[backLeftLSProvider.sampleSize()];
+        
+        // set up back-right light sensor
+        backRightLSPort = LocalEV3.get().getPort("S3");
+        backRightLS = new EV3ColorSensor(backLeftLSPort);
+        backRightLSProvider = backLeftLS.getMode("Red");
+        backRightLSSample = new float[backLeftLSProvider.sampleSize()];
+        
+        odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
+        usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        
+        leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
+        rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
+        
+        lightLocalizer = new LightLocalizer(rightDifferentialLightSensor, movementController, odometer);
 
-		Odometer odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-		USLocalisation usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-		LightLocalisation lightLocalizer = new LightLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-		Display odometryDisplay = new Display(lcd);
-		
-		
+        Display odometryDisplay = new Display(lcd);
 		do {
 			/**
 			 * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?

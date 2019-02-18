@@ -147,7 +147,14 @@ public class MovementController {
         leftMotor.stop(true);
         rightMotor.stop(false);
     }
-
+    
+    public void stopMotor(boolean right) {
+    	
+    	if(right) rightMotor.stop(true);
+    	else leftMotor.stop(true);
+    	
+    }
+    
     /**
      * This method allows the conversion of a distance to the total rotation of each
      * wheel needed to cover that distance.
@@ -245,5 +252,52 @@ public class MovementController {
 		rightMotor.setSpeed(MOTOR_SPEED - delta);
 		leftMotor.forward();
 		rightMotor.forward();
+	}
+	
+	public void travelCloseToOrigin(Odometer odo) {
+
+        //double[] odoData = odo.getXYT();
+        double angleToTurn = calculateAngle(odo.getXYT()[0], odo.getXYT()[1], -5.0, -5.0);
+        System.out.println("ANGLE TO TURN: "+angleToTurn);
+        turnTo(angleToTurn);
+
+        // give the robot some time to stop
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        driveDistance(calculateDistance(odo.getXYT()[0], odo.getXYT()[1], -5.0, -5.0));
+       
+    }
+	/**
+	 * Travels the robot to a spefic position (x,y)
+	 * @param x
+	 * @param y
+	 */
+	public void travelTo(double x, double y, boolean immediateReturn) {
+	
+        double angleToTurn = calculateAngle(odometer.getXYT()[0], odometer.getXYT()[1], x, y);
+       // System.out.println("ANGLE TO TURN: "+angleToTurn);
+        turnTo(angleToTurn);
+
+        // give the robot some time to stop
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        driveDistance(calculateDistance(odometer.getXYT()[0], odometer.getXYT()[1], x, y), immediateReturn);
+		
+	}
+	/**
+	 * 
+	 * @return the angle of the odometer, roundest to the nearest 0,90,180,270 angle
+	 */
+	public double roundAngle() {
+		double roundedTheta = (Math.round(odometer.getXYT()[2]/90.0)*90)%360; //Kazour method
+		return roundedTheta;
 	}
 }
