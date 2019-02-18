@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.lab5.sensors.detectors;
 
 public class ColourDetector {
+	private static final int N_SD = 2;
 
 	private static final float RCAN_RMEAN = 0.0116f;
 	private static final float RCAN_RSD = 0.0030f;
@@ -9,26 +10,26 @@ public class ColourDetector {
 	private static final float RCAN_BMEAN = 0.0035f;
 	private static final float RCAN_BSD = 0.0013f;
 	
-	private static final float BCAN_RMEAN = 0.0064f;
-	private static final float BCAN_RSD = 0.0027f;
-	private static final float BCAN_GMEAN = 0.0075f;
+	private static final float BCAN_RMEAN = 0.0063f;
+	private static final float BCAN_RSD = 0.0023f;
+	private static final float BCAN_GMEAN = 0.0073f;
 	private static final float BCAN_GSD = 0.0017f;
-	private static final float BCAN_BMEAN = 0.0078f;
-	private static final float BCAN_BSD = 0.0015f;
+	private static final float BCAN_BMEAN = 0.0094f;
+	private static final float BCAN_BSD = 0.0014f;
 	
-	private static final float YCAN_RMEAN = 0.0116f;
-	private static final float YCAN_RSD = 0.0014f;
-	private static final float YCAN_GMEAN = 0.0080f;
-	private static final float YCAN_GSD = 0.0015f;
-	private static final float YCAN_BMEAN = 0.0043f;
-	private static final float YCAN_BSD = 0.001f;
+	private static final float YCAN_RMEAN = 0.013f;
+	private static final float YCAN_RSD = 0.0021f;
+	private static final float YCAN_GMEAN = 0.0091f;
+	private static final float YCAN_GSD = 0.0021f;
+	private static final float YCAN_BMEAN = 0.0060f;
+	private static final float YCAN_BSD = 0.0025f;
 	
-	private static final float GCAN_RMEAN = 0.0068f;
-	private static final float GCAN_RSD = 0.0031f;
-	private static final float GCAN_GMEAN = 0.0081f;
-	private static final float GCAN_GSD = 0.0018f;
-	private static final float GCAN_BMEAN = 0.0051f;
-	private static final float GCAN_BSD = 0.0022f;
+	private static final float GCAN_RMEAN = 0.0069f;
+	private static final float GCAN_RSD = 0.0030f;
+	private static final float GCAN_GMEAN = 0.0086f;
+	private static final float GCAN_GSD = 0.0019f;
+	private static final float GCAN_BMEAN = 0.006f;
+	private static final float GCAN_BSD = 0.0024f;
 	
 	public static boolean verifyCan(float[][] data, int canColor) {
 		float RMean = 0.0f;
@@ -51,9 +52,9 @@ public class ColourDetector {
 	}
 	
 	private static boolean colorMatch(float RMean, float GMean, float BMean, float[] canColor) {
-		if(RMean >= (canColor[0]-2*canColor[1]) && RMean <= (canColor[0]+2*canColor[1])) {
-			if(GMean >= (canColor[2]-2*canColor[3]) && GMean <= (canColor[3]+2*canColor[3])) {
-				if(BMean >= (canColor[4]-2*canColor[5]) && BMean <= (canColor[4]+2*canColor[5])) {
+		if(RMean >= (canColor[0]-N_SD*canColor[1]) && RMean <= (canColor[0]+N_SD*canColor[1])) {
+			if(GMean >= (canColor[2]-N_SD*canColor[3]) && GMean <= (canColor[3]+N_SD*canColor[3])) {
+				if(BMean >= (canColor[4]-N_SD*canColor[5]) && BMean <= (canColor[4]+N_SD*canColor[5])) {
 					return true;
 				}
 			}
