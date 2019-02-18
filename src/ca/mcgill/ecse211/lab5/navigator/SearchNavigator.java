@@ -87,6 +87,7 @@ public class SearchNavigator implements TimerListener {
             movementController.driveDistance(Ydistance, true);
             // TODO check for cans
             
+            // pause until we reach the destination
             while (distanceToDestination() > DESTINATION_THRESHOLD) {
                 try {
                     Thread.sleep(1000);
@@ -99,12 +100,27 @@ public class SearchNavigator implements TimerListener {
             // the robot is now within DESTINATION_THRESHOLD. Move the robot the remaining distance
             movementController.travelTo(destination[0], destination[1], false);
             
-            // TODO move to next navigation after reaching destination
+            // TODO do x navigation after reaching destination
             
             movementController.rotateAngle(90, false);
+            angleCorrector.quickThetaCorrection();
+            
             Xdistance = (m + 1) * TILE_LENGTH;
             movementController.driveDistance(Xdistance, true);
             // TODO check for cans
+            
+            // pause until we reach the destination
+            while (distanceToDestination() > DESTINATION_THRESHOLD) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            // stop looking for cans
+            timer.stop();
+            // the robot is now within DESTINATION_THRESHOLD. Move the robot the remaining distance
+            movementController.travelTo(destination[0], destination[1], false);
         }
 
     }
