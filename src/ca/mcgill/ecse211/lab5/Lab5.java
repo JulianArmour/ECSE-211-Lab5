@@ -1,7 +1,5 @@
 package ca.mcgill.ecse211.lab5;
 
-import java.awt.font.GlyphJustificationInfo;
-
 import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USLocalisation;
