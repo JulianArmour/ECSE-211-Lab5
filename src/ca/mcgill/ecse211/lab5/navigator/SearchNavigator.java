@@ -194,7 +194,7 @@ public class SearchNavigator implements TimerListener {
 			angleCorrector.quickThetaCorrection();
 			// TODO NEED TO DO CALCULATIONS HERE!!!!!!!
 
-			//TODO keep moving remaining distance/is this the right destination?
+			//keep moving remaining distance/is this the right destination?
 			movementController.travelTo(destination[0], destination[1],true);
 			
 		}

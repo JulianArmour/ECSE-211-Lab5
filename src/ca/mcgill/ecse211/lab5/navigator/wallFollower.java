@@ -1,5 +1,8 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
+import java.util.List;
+import java.util.LinkedList;
+
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
@@ -18,7 +21,9 @@ public class wallFollower {
     private static int MOTOR_SPEED = 100;
     private MedianDistanceSensor USdata;
     private double distance;
-    private float[][] LTdata; // = new float[50]; null pointer?
+    
+    private List<float[]> LTdata;
+	private float[][] colourdata;
 
     // constructor for wallFollower class
     public wallFollower(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
@@ -28,6 +33,8 @@ public class wallFollower {
         this.odo = odometer;
         this.USdata = USfilter;
         this.colorsensor = colorsensor;
+        this.LTdata = new LinkedList<float[]>();
+        		
     }
 
     /**
@@ -40,7 +47,7 @@ public class wallFollower {
         
 //        USdata.flush(); // reset filtered data
 
-        // TODO start collecting colour data
+        //  start collecting colour data
         
         
         // do 7/8th of a circle around the can
@@ -49,11 +56,7 @@ public class wallFollower {
         	// polls the ColorSensor and puts it in an array
         	float [] colorData = colorsensor.fetchColorSamples();
         	
-        	int i = 0;
-        	LTdata[i][0]=  colorData[0]; //set up red channel
-        	LTdata[i][1] = colorData[1]; //set up green channel
-        	LTdata[i][2] = colorData[2]; //set up blue channel
-        	i+=i;
+        	LTdata.add(colorData);
         	
         	//polls the ultrasonic distance
             distance = USdata.getFilteredDistance();
@@ -96,6 +99,7 @@ public class wallFollower {
         // make the robot go back to it's original position and orientation
         movementControler.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
         movementControler.turnTo(odoBeforeWallFollow[2]);
+       colourdata =  (float[][]) LTdata.toArray();
     }
 
 }
