@@ -74,7 +74,16 @@ public class SearchNavigator implements TimerListener {
 //        movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
         
-        
+        //pause until robot reaches destination
+        while (distanceToDestination() > DESTINATION_THRESHOLD) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        timer.stop();
+        movementController.travelTo(destination[0], destination[1], false);
         
         
 
