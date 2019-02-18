@@ -180,43 +180,19 @@ public class SearchNavigator implements TimerListener {
 
 		// if US sensor detects a can
 		if (canDist < 10) {
-
 			movementController.stopMotors();
-
-			canDetected = true; // maybe use this to influence the for loop to interrupt
-
-
+			
 			// goes into wallfollowing mode and collects colour data
 			wallF.wallFollow();
 			// Note: at this point the robot is back to where it was before wall-following
 
+			// TODO perform colour calculations
+			
 			// angle correction
 			angleCorrector.quickThetaCorrection();
 
-			//TODO keep moving remaining distance
-			// if robot is moving in x-axis
-			if (movementController.roundAngle() == 90 || movementController.roundAngle() == 270) {
-				distanceLeft = (Xdistance) - odometer.getXYT()[0]; 
-				/*
-				 *  
-				 *  of a distance remaining. distance = pos_destination - pos_current
-				 */
-			}
-			// if robot is moving in y-axis
-			else if (movementController.roundAngle() == 0 || movementController.roundAngle() == 180) {
-				distanceLeft = (Ydistance) - odometer.getXYT()[1];
-			}
+			// keep moving remaining distance
+			movementController.travelTo(destination[0], destination[1], true);
 		}
-		// TODO NEED TO DO CALCULATIONS HERE!!!!!!!
-
-		// after it breaks from wallfollowing
-		// movementController.driveDistance(-TILE_LENGTH/2); might not need it because
-		// sensor in the back
-		//        movementController.driveDistance(2 * TILE_LENGTH, true); // why drive 2 tiles?
-		angleCorrector.quickThetaCorrection();
-
-		// movementController.travelTo(odometer, referencePos[0], referencePos[1]);
-		movementController.driveDistance(distanceLeft);
-
 	}
 }
