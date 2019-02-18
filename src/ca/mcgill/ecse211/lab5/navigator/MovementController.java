@@ -116,7 +116,7 @@ public class MovementController {
     
     /**
      * Causes the robot to move forward the specified distance. Can cause the thread
-     * not not wait for the move to complete if immediateReturn is true.
+     * to not wait for the move to complete if immediateReturn is true.
      * 
      * @param distance          The distance in centimeters the robot should move
      * @param immediateReturn   If true, do not wait for the move to complete
@@ -126,7 +126,7 @@ public class MovementController {
         rightMotor.setSpeed(FORWARD_SPEED);
 
         leftMotor.rotate(convertDistance(wheelRadius, distance), true);
-        rightMotor.rotate(convertDistance(wheelRadius, distance), true);
+        rightMotor.rotate(convertDistance(wheelRadius, distance), immediateReturn);
     }
     
     /**
