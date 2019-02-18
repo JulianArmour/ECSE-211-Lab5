@@ -66,7 +66,7 @@ public class SearchNavigator implements TimerListener {
         Xdistance = (deltaX + 0.5)*TILE_LENGTH;
         currentPos = odometer.getXYT();
         destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
-        movementController.travelTo(destination[0], destination[1]);
+        movementController.travelTo(destination[0], destination[1], true);
         
 //        movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
@@ -95,7 +95,7 @@ public class SearchNavigator implements TimerListener {
 	            destination[2] = currentPos[2];
             }
             
-            movementController.travelTo(destination[0], destination[1]);
+            movementController.travelTo(destination[0], destination[1], true);
             // TODO check for cans
             
             // pause until we reach the destination
@@ -127,7 +127,7 @@ public class SearchNavigator implements TimerListener {
             	destination[1]=currentPos[1];
             	destination[2]= currentPos[2];
             }
-            movementController.travelTo(destination[0], destination[1]);
+            movementController.travelTo(destination[0], destination[1], true);
             // TODO check for cans
             
             // pause until we reach the destination
