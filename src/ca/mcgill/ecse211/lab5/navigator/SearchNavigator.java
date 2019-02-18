@@ -82,7 +82,9 @@ public class SearchNavigator implements TimerListener {
                 e.printStackTrace();
             }
         }
+        // stop looking for cans
         timer.stop();
+        // robot is now within DESTINATION_THRESHOLD, move remaining distance
         movementController.travelTo(destination[0], destination[1], false);
         
         
@@ -113,6 +115,7 @@ public class SearchNavigator implements TimerListener {
             movementController.travelTo(destination[0], destination[1], true);
             // TODO check for cans
             
+            // pause until destination is reached
             while (distanceToDestination() > DESTINATION_THRESHOLD) {
                 try {
                     Thread.sleep(1000);
@@ -120,7 +123,9 @@ public class SearchNavigator implements TimerListener {
                     e.printStackTrace();
                 }
             }
+            // stop looking for cans
             timer.stop();
+            // robot is now within DESTINATION_THRESHOLD, move remaining distance
             movementController.travelTo(destination[0], destination[1], false);
             
             // TODO move to next navigation after reaching destination
@@ -144,6 +149,19 @@ public class SearchNavigator implements TimerListener {
             }
             movementController.travelTo(destination[0], destination[1],true);
             // TODO check for cans
+            
+            // pause until destination is reached
+            while (distanceToDestination() > DESTINATION_THRESHOLD) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            // stop looking for cans
+            timer.stop();
+            // robot is now within DESTINATION_THRESHOLD, move remaining distance
+            movementController.travelTo(destination[0], destination[1], false);
         }
 //
     }
