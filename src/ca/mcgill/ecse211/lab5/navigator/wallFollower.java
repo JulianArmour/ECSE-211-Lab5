@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
+import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 
 public class wallFollower {
@@ -11,18 +12,22 @@ public class wallFollower {
     private static double pFactor = 1.5;
     private MovementController movementControler;
     private Odometer odo;
+    private ColourLightSensor colorsensor;
     private double[] odoBeforeWallFollow;
     private double error;
     private static int MOTOR_SPEED = 100;
     private MedianDistanceSensor USdata;
     private double distance;
+    private float[][] LTdata; // = new float[50]; null pointer?
 
     // constructor for wallFollower class
-    public wallFollower(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter) {
+    public wallFollower(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
+    		ColourLightSensor colorsensor) {
 
         this.movementControler = movementCtr;
         this.odo = odometer;
         this.USdata = USfilter;
+        this.colorsensor = colorsensor;
     }
 
     /**
@@ -37,11 +42,24 @@ public class wallFollower {
 
         // TODO start collecting colour data
         
+        
         // do 7/8th of a circle around the can
         while (odoBeforeWallFollow[2] + 40 <= odo.getXYT()[2] && odo.getXYT()[2] < odoBeforeWallFollow[2] + 45) {
             
+        	// polls the ColorSensor and puts it in an array
+        	float [] colorData = colorsensor.fetchColorSamples();
+        	
+        	int i = 0;
+        	LTdata[i][0]=  colorData[0]; //set up red channel
+        	LTdata[i][1] = colorData[1]; //set up green channel
+        	LTdata[i][2] = colorData[2]; //set up blue channel
+        	i+=i;
+        	
+        	//polls the ultrasonic distance
             distance = USdata.getFilteredDistance();
 
+            
+            //start of actual wallfollowing code
             error = BAND_CENTER - distance;
 
             // out of bounds

@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.lab5;
 
+import java.awt.font.GlyphJustificationInfo;
+
 import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USLocalisation;
@@ -60,6 +62,12 @@ public class Lab5 {
     private static EV3ColorSensor backRightLS;
     private static SensorMode backRightLSProvider;
     private static float[] backRightLSSample;
+    private static Port sideLSPort;
+    private static EV3ColorSensor sideLS;
+    private static SensorMode sideLSProvider;
+    private static float[] sideLSSample;
+    
+
     private static Odometer odometer;
     private static USLocalisation usLocalizer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
@@ -92,6 +100,13 @@ public class Lab5 {
         backRightLS = new EV3ColorSensor(backLeftLSPort);
         backRightLSProvider = backLeftLS.getMode("Red");
         backRightLSSample = new float[backLeftLSProvider.sampleSize()];
+        
+        // set up side light sensor
+        sideLSPort = LocalEV3.get().getPort("S4");
+        sideLS= new EV3ColorSensor(sideLSPort);
+        sideLSProvider = sideLS.getMode("RGB");
+        sideLSSample = new float[sideLSProvider.sampleSize()];
+        
         
         odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
