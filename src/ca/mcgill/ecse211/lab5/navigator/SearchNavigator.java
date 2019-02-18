@@ -62,9 +62,11 @@ public class SearchNavigator implements TimerListener {
             movementController.rotateAngle(90, false);
             Ydistance = (n + 1) * TILE_LENGTH;
             movementController.driveDistance(Ydistance, true);
+            // TODO check for cans
             movementController.rotateAngle(90, false);
             Xdistance = (m + 1) * TILE_LENGTH;
             movementController.driveDistance(Xdistance, true);
+            // TODO check for cans
         }
 
     }
@@ -92,16 +94,18 @@ public class SearchNavigator implements TimerListener {
             }
             // where the robot is before wall following
             referencePos = odometer.getXYT();
-            // goes into wallfollowing mode
+            // goes into wallfollowing mode and collects colour data
             wallF.wallFollow();
-            
+            // at this point the robot is back to where it was before wall-following
+            //TODO angle correction
+            //TODO keep moving remaining distance
         }
         // NEED TO DO CALCULATIONS HERE!!!!!!!
 
         // after it breaks from wallfollowing
         // movementController.driveDistance(-TILE_LENGTH/2); might not need it because
         // sensor in the back
-        movementController.driveDistance(2 * TILE_LENGTH, true);
+//        movementController.driveDistance(2 * TILE_LENGTH, true); // why drive 2 tiles?
         angleCorrector.quickThetaCorrection();
 
         // movementController.travelTo(odometer, referencePos[0], referencePos[1]);
