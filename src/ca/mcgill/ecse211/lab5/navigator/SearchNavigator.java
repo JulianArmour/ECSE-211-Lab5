@@ -62,18 +62,18 @@ public class SearchNavigator implements TimerListener {
 		movementController.turnTo(90);
 		// hardcoded part on x axis
 
-		//start the timer
+		// create the timer
 		timer = new Timer(CAN_SCAN_PERIOD, this);
-		timer.start();
+		
 
 		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
 		movementController.travelTo(destination[0], destination[1],true);
 
-		//        movementController.driveDistance(Xdistance);
-		// TODO check for cans while driving
-
+		// check for cans while driving
+		timer.start();
+		
 		//pause until robot reaches destination
 		while (distanceToDestination() > DESTINATION_THRESHOLD) {
 			try {
@@ -86,9 +86,6 @@ public class SearchNavigator implements TimerListener {
 		timer.stop();
 		// robot is now within DESTINATION_THRESHOLD, move remaining distance
 		movementController.travelTo(destination[0], destination[1], false);
-
-
-
 
 
 		// for loop of remaining path
@@ -115,9 +112,8 @@ public class SearchNavigator implements TimerListener {
 			}
 
 			movementController.travelTo(destination[0], destination[1],true);
+			// check for cans
 			timer.start();
-
-			// TODO check for cans
 
 			// pause until destination is reached
 			while (distanceToDestination() > DESTINATION_THRESHOLD) {
@@ -132,7 +128,7 @@ public class SearchNavigator implements TimerListener {
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
 			movementController.travelTo(destination[0], destination[1], false);
 
-			// TODO move to next navigation after reaching destination
+			// move in y direction after reaching destination
 
 			movementController.rotateAngle(90, false);
 			angleCorrector.quickThetaCorrection();
@@ -153,7 +149,6 @@ public class SearchNavigator implements TimerListener {
 			}
 			movementController.travelTo(destination[0], destination[1],true);
 			timer.start();
-			// TODO check for cans
 
 			// pause until destination is reached
 			while (distanceToDestination() > DESTINATION_THRESHOLD) {
