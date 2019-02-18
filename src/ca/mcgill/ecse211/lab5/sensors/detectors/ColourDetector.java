@@ -61,6 +61,7 @@ public class ColourDetector {
 		}
 		return false;
 	}
+	//method
 	private static float[] chooseCanColor(int canColor) {
 		float[] redCan = {RCAN_RMEAN, RCAN_RSD, RCAN_GMEAN, RCAN_GSD, RCAN_BMEAN, RCAN_BSD};
 		float[] blueCan = {BCAN_RMEAN, BCAN_RSD, BCAN_GMEAN, BCAN_GSD, BCAN_BMEAN, BCAN_BSD};
