@@ -4,6 +4,7 @@ import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
+import lejos.utility.Timer;
 import lejos.utility.TimerListener;
 
 //takes in integer, not physical measures
@@ -11,6 +12,7 @@ public class SearchNavigator implements TimerListener {
 //
 
     private static final double DESTINATION_THRESHOLD = 2.0;
+    private static final int CAN_SCAN_PERIOD = 100;
     private Odometer odometer;
     private MovementController movementController;
     private MedianDistanceSensor USdata;
@@ -31,6 +33,7 @@ public class SearchNavigator implements TimerListener {
     boolean canDetected = false;
     private double[] destination;
     double[] currentPos;
+    Timer timer;
 
     public SearchNavigator(Odometer odometer, MovementController movementController, int llX, int llY, int urX, int urY,
             MedianDistanceSensor USdata, wallFollower wallFollower, angleCorrection angleCorrector) {
@@ -66,6 +69,8 @@ public class SearchNavigator implements TimerListener {
         
 //        movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
+        timer = new Timer(CAN_SCAN_PERIOD, this);
+        timer.start();
 
         // for loop of remaning path
         for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
@@ -99,6 +104,7 @@ public class SearchNavigator implements TimerListener {
                     e.printStackTrace();
                 }
             }
+            timer.stop();
             
             // TODO move to next navigation after reaching destination
             
