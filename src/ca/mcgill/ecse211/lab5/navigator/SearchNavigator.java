@@ -10,6 +10,7 @@ import lejos.utility.TimerListener;
 public class SearchNavigator implements TimerListener {
 //
 
+    private static final double DESTINATION_THRESHOLD = 2.0;
     private Odometer odometer;
     private MovementController movementController;
     private MedianDistanceSensor USdata;
@@ -91,6 +92,14 @@ public class SearchNavigator implements TimerListener {
             movementController.travelTo(destination[0], destination[1]);
             // TODO check for cans
             
+            while (distanceToDestination() > DESTINATION_THRESHOLD) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            
             // TODO move to next navigation after reaching destination
             
             movementController.rotateAngle(90, false);
@@ -112,6 +121,13 @@ public class SearchNavigator implements TimerListener {
             // TODO check for cans
         }
 
+    }
+
+    private double distanceToDestination() {
+        double[] curPos = odometer.getXYT();
+        double dX = destination[0] - curPos[0];
+        double dY = destination[1] - curPos[1];
+        return Math.sqrt(dX * dX + dY * dY);
     }
 
     @Override
