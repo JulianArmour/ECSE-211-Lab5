@@ -27,6 +27,7 @@ public class SearchNavigator implements TimerListener {
     private double Xdistance;
     private double Ydistance;
     boolean canDetected = false;
+    private double[] destination;
 
     public SearchNavigator(Odometer odometer, MovementController movementController, int llX, int llY, int urX, int urY,
             MedianDistanceSensor USdata, wallFollower wallFollower, angleCorrection angleCorrector) {
@@ -46,23 +47,36 @@ public class SearchNavigator implements TimerListener {
 
         // start an angle correction thread
 
-        deltaY = (int) ((urY - llY) / TILE_LENGTH);
-        deltaX = (int) ((urX - llX) / TILE_LENGTH);
+        deltaY = (int) (urY - llY);
+        deltaX = (int) (urX - llX);
 
         movementController.driveDistance(-TILE_LENGTH / 2);
         movementController.turnTo(90);
         // hardcoded part on x axis
 
+        // TODO use movementController.travelTo(x,y) instead
         Xdistance = deltaX + 0.5;
-        movementController.driveDistance(Xdistance);
+        double[] currentPos = odometer.getXYT();
+        destination = new double[] {currentPos[0] + Xdistance*TILE_LENGTH, currentPos[1], currentPos[2] };
+        movementController.travelTo(destination[0], destination[1]);
+        
+//        movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
 
         // for loop of remaning path
         for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
             movementController.rotateAngle(90, false);
+            // perform a quick angle correction
+            angleCorrector.quickThetaCorrection();
+            
+            // start traveling
             Ydistance = (n + 1) * TILE_LENGTH;
+            
             movementController.driveDistance(Ydistance, true);
             // TODO check for cans
+            
+            // TODO move to next navigation after reaching destination
+            
             movementController.rotateAngle(90, false);
             Xdistance = (m + 1) * TILE_LENGTH;
             movementController.driveDistance(Xdistance, true);
