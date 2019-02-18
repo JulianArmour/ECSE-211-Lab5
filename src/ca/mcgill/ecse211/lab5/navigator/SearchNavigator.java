@@ -57,9 +57,9 @@ public class SearchNavigator implements TimerListener {
         // hardcoded part on x axis
 
         // TODO use movementController.travelTo(x,y) instead
-        Xdistance = deltaX + 0.5;
+        Xdistance = (deltaX + 0.5)*TILE_LENGTH;
         currentPos = odometer.getXYT();
-        destination = new double[] {currentPos[0] + Xdistance*TILE_LENGTH, currentPos[1], currentPos[2] };
+        destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
         movementController.travelTo(destination[0], destination[1]);
         
 //        movementController.driveDistance(Xdistance);
@@ -71,21 +71,43 @@ public class SearchNavigator implements TimerListener {
             // perform a quick angle correction
             angleCorrector.quickThetaCorrection();
             
-            double[] currentPos = odometer.getXYT();
-            
-            
-            
-            // start traveling
+         // start traveling
             Ydistance = (n + 1) * TILE_LENGTH;
             
-            movementController.driveDistance(Ydistance, true);
+            if(movementController.roundAngle()==0) {
+	            double[] currentPos = odometer.getXYT();
+	            destination[0] = currentPos[0];
+	            destination[1] = currentPos[1]+Ydistance;
+	            destination[2] = currentPos[2];
+            }
+            else if(movementController.roundAngle() == 180) {
+            	double[] currentPos = odometer.getXYT();
+	            destination[0] = currentPos[0];
+	            destination[1] = currentPos[1]-Ydistance;
+	            destination[2] = currentPos[2];
+            }
+            
+            movementController.travelTo(destination[0], destination[1]);
             // TODO check for cans
             
             // TODO move to next navigation after reaching destination
             
             movementController.rotateAngle(90, false);
             Xdistance = (m + 1) * TILE_LENGTH;
-            movementController.driveDistance(Xdistance, true);
+            
+            if(movementController.roundAngle() == 90) {
+            	double [] currentPos = odometer.getXYT();
+            	destination[0]=currentPos[0] + Xdistance;
+            	destination[1]=currentPos[1];
+            	destination[2]= currentPos[2];
+           }
+            else if (movementController.roundAngle() == 270) {
+            	double [] currentPos = odometer.getXYT();
+            	destination[0]=currentPos[0] - Xdistance;
+            	destination[1]=currentPos[1];
+            	destination[2]= currentPos[2];
+            }
+            movementController.travelTo(destination[0], destination[1]);
             // TODO check for cans
         }
 
