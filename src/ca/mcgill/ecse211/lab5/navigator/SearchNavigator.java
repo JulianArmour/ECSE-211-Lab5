@@ -62,11 +62,11 @@ public class SearchNavigator implements TimerListener {
         movementController.turnTo(90);
         // hardcoded part on x axis
 
-        // TODO use movementController.travelTo(x,y) instead
+        // 
         Xdistance = (deltaX + 0.5)*TILE_LENGTH;
         currentPos = odometer.getXYT();
         destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
-        movementController.travelTo(destination[0], destination[1]);
+        movementController.travelTo(destination[0], destination[1],true);
         
 //        movementController.driveDistance(Xdistance);
         // TODO check for cans while driving
@@ -95,7 +95,7 @@ public class SearchNavigator implements TimerListener {
 	            destination[2] = currentPos[2];
             }
             
-            movementController.travelTo(destination[0], destination[1]);
+            movementController.travelTo(destination[0], destination[1],true);
             // TODO check for cans
             
             while (distanceToDestination() > DESTINATION_THRESHOLD) {
@@ -149,8 +149,7 @@ public class SearchNavigator implements TimerListener {
 
             canDetected = true; // maybe use this to influence the for loop to interrupt
             
-            // where the robot is before wall following. TODO probably not needed, this is done in WallFollower
-            referencePos = odometer.getXYT();
+            
             // goes into wallfollowing mode and collects colour data
             wallF.wallFollow();
             // Note: at this point the robot is back to where it was before wall-following
@@ -163,7 +162,7 @@ public class SearchNavigator implements TimerListener {
             if (movementController.roundAngle() == 90 || movementController.roundAngle() == 270) {
                 distanceLeft = (Xdistance) - odometer.getXYT()[0]; 
                 /*
-                 *  TODO this probably won't work, I think we need a destination variable instead
+                 *  
                  *  of a distance remaining. distance = pos_destination - pos_current
                  */
             }
