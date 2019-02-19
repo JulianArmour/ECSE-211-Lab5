@@ -180,21 +180,25 @@ public class SearchNavigator implements TimerListener {
 
 		// if US sensor detects a can
 		if (canDist < 10) {
+
 			movementController.stopMotors();
-			
+
+			canDetected = true; // maybe use this to influence the for loop to interrupt
+
+
 			// goes into wallfollowing mode and collects colour data
 			wallF.wallFollow();
 			// Note: at this point the robot is back to where it was before wall-following
 
-			// TODO perform colour calculations
-			
 			// angle correction
 			angleCorrector.quickThetaCorrection();
 			// TODO NEED TO DO CALCULATIONS HERE!!!!!!!
 
-
 			// keep moving remaining distance/is this the right destination?
 			movementController.travelTo(destination[0], destination[1],true);
+			
 		}
+	
+
 	}
 }
