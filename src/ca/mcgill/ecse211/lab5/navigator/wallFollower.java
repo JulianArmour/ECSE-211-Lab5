@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.LinkedList;
 
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
+import ca.mcgill.ecse211.lab5.sensors.detectors.ColourDetector;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
+import lejos.hardware.Sound;
+import lejos.robotics.ColorDetector;
 
 public class wallFollower {
 
@@ -16,24 +19,28 @@ public class wallFollower {
     private MovementController movementControler;
     private Odometer odo;
     private ColourLightSensor colorsensor;
+  
     private double[] odoBeforeWallFollow;
     private double error;
     private static int MOTOR_SPEED = 100;
     private MedianDistanceSensor USdata;
     private double distance;
+    private int TARGET_COLOR;
     
     private List<float[]> LTdata;
 	private float[][] colourdata;
 
     // constructor for wallFollower class
     public wallFollower(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
-    		ColourLightSensor colorsensor) {
+    		ColourLightSensor colorsensor, int TARGET_COLOR) {
 
         this.movementControler = movementCtr;
         this.odo = odometer;
         this.USdata = USfilter;
         this.colorsensor = colorsensor;
+        
         this.LTdata = new LinkedList<float[]>();
+        this.TARGET_COLOR = TARGET_COLOR;
         		
     }
 
@@ -55,6 +62,7 @@ public class wallFollower {
             
         	// polls the ColorSensor and puts it in an array
         	float [] colorData = colorsensor.fetchColorSamples();
+        	
         	
         	LTdata.add(colorData);
         	
@@ -100,6 +108,14 @@ public class wallFollower {
         movementControler.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
         movementControler.turnTo(odoBeforeWallFollow[2]);
        colourdata =  (float[][]) LTdata.toArray();
+       if(ColourDetector.verifyCan(colourdata, TARGET_COLOR)) {
+    	   //beep once
+    	   Sound.beep();
+       }
+       else {
+    	   //beep twice
+    	   Sound.twoBeeps();
+       }
     }
 
 }
