@@ -30,7 +30,7 @@ public class DifferentialLightSensor extends Thread {
         colorProvider.fetchSample(sampleLSData, 0);
 
         // calculate the difference between current and past light intensity
-        int deltaL = (int) (100 * sampleLSData[0] - pastSample);
+        int deltaL = (int) (100 * sampleLSData[0] - pastSample);//TODO make it 1000 * ...
 
         // store the last data in past Data
         pastSample = (int) (100 * sampleLSData[0]);

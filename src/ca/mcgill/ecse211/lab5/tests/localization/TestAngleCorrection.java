@@ -123,6 +123,8 @@ public class TestAngleCorrection {
             movementController.rotateAngle(20, true);
             angleCorrection.quickThetaCorrection();
             System.out.println(odometer.getXYT()[2]);
+            Button.waitForAnyPress();
+            movementController.driveDistance(TILE_SIZE * 13);
         }
 
         while (Button.waitForAnyPress() != Button.ID_ESCAPE);
