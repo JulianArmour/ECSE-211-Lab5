@@ -10,9 +10,7 @@ public class angleCorrection {
 	private DifferentialLightSensor dLTleft;
 	private MovementController movCon;
 	private Odometer odo;
-	private static boolean RLineDetected=false;
-	private static boolean LLineDetected=false;
-	private static int TIME_OUT = 20;
+	private static int POLLING_PERIOD = 20;
 	private static int DIFFERENTIAL_THRESHOLD = 6;
 	
 
@@ -26,8 +24,10 @@ public class angleCorrection {
 	}
 
 	public void quickThetaCorrection() {
+	    boolean RLineDetected=false;
+	    boolean LLineDetected=false;
 		
-		movCon.driveForward();
+		movCon.driveForward(80);
 		while (!RLineDetected || !LLineDetected) {
 			//poll right sensor
 			int deltaR = dLTright.getDeltaL();
@@ -45,7 +45,7 @@ public class angleCorrection {
 			}
 			
 			try {
-                Thread.sleep(TIME_OUT);
+                Thread.sleep(POLLING_PERIOD);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

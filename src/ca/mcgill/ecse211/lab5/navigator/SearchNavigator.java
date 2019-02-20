@@ -193,6 +193,9 @@ public class SearchNavigator implements TimerListener {
 			// angle correction
 			angleCorrector.quickThetaCorrection();
 			
+			/* TODO: At this point the robot is probably beside the can again, so we should 
+			 * move it forward like half a tile.
+			 */
 
 			// keep moving remaining distance/is this the right destination?
 			movementController.travelTo(destination[0], destination[1],true);

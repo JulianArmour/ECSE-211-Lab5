@@ -141,6 +141,18 @@ public class MovementController {
     }
     
     /**
+     * Causes the robot to drive forward a certain speed until {@link #stopMotors()} is called.
+     * @param speed value in deg/sec
+     */
+    public void driveForward(int speed) {
+        leftMotor.setSpeed(speed);
+        rightMotor.setSpeed(speed);
+        
+        leftMotor.forward();
+        rightMotor.forward();
+    }
+    
+    /**
      * Causes the robot to stop.
      */
     public void stopMotors() {

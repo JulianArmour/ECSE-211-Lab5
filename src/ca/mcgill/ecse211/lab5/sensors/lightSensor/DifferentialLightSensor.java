@@ -3,26 +3,37 @@ package ca.mcgill.ecse211.lab5.sensors.lightSensor;
 import lejos.robotics.SampleProvider;
 
 public class DifferentialLightSensor extends Thread {
-    private int pastData;
-    private int deltaL;
+    private int pastSample;
     private SampleProvider colorProvider;
     private float[] sampleLSData;
 
     public DifferentialLightSensor(SampleProvider LSprovider, float[] sampleLS) {
-        this.pastData = 100;
+        this.pastSample = 0;
         this.colorProvider = LSprovider;
         this.sampleLSData = sampleLS;
-        this.deltaL = 0;
+        getDeltaL(); // get an initial intensity
+    }
+    
+    /**
+     * Fetches new samples to get rid of old ones.
+     */
+    public void flush() {
+        getDeltaL();
     }
 
+    /**
+     * 
+     * @return the difference between two sequential light sensor sample polls.
+     */
     public int getDeltaL() {
+        
         colorProvider.fetchSample(sampleLSData, 0);
 
         // calculate the difference between current and past light intensity
-        deltaL = (int) (100 * sampleLSData[0] - pastData);
+        int deltaL = (int) (100 * sampleLSData[0] - pastSample);
 
         // store the last data in past Data
-        pastData = (int) (100 * sampleLSData[0]);
+        pastSample = (int) (100 * sampleLSData[0]);
 
         return deltaL;
     }

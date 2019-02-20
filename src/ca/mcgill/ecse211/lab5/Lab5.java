@@ -33,9 +33,6 @@ public class Lab5 {
     private static double PURx;
     private static double PURy;
 
-	/** Initialize variables for radius of the wheel and track, assign ports for left and rightMotor 
-	 * Define boolean "wall" to simply lightLocalizer method of assigning fallingEdge or risingEdge constructors. 
-	 */
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
@@ -118,27 +115,16 @@ public class Lab5 {
                                               movementController, odometer);
 
 		do {
-			/**
-			 * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?
-			 * On the left is RisingEdge method is needed, or on the right if FallingEdge method is required.
-			 */
 			lcd.clear();
-
-			lcd.drawString("Press CENTER to start", 0, 0);
-
+			lcd.drawString("Press ^UP^ to start", 0, 0);
 			buttonChoice = Button.waitForAnyPress();
-			if (buttonChoice == Button.ID_ESCAPE) { //Gives the user the option to opt out of the menu before executing a function
-				System.exit(0);
-			}
-		} while (buttonChoice != Button.ID_ENTER);
+		} while (buttonChoice != Button.ID_UP);
 		
-		/** If left button is pressed, run ultrasonicLocalizer taking into account that we're not facing the wall,
-		 * hence executing the risingEdge method. Once the risingEdge method is executed, run the LightLocalizer
-		 * However, if the right button is pressed, we run the ultrasonicLocalizer while assigning to the boolean "wall" the 
-		 * value "true", basically telling ultrasonicLocalizer to run the method fallingEdge. Then proceed by running LightLocalizer
-		 */
-		if (buttonChoice == Button.ID_ENTER) { 
+		
+		if (buttonChoice == Button.ID_UP) {
+		    movementController.rotateAngle(20, true);
 		    angleCorrection.quickThetaCorrection();
+		    System.out.println(odometer.getXYT()[2]);
 		}
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
