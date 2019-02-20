@@ -1,7 +1,8 @@
-package ca.mcgill.ecse211.lab5;
+package ca.mcgill.ecse211.lab5.tests;
 
 import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
+import ca.mcgill.ecse211.lab5.localization.USLocalisation;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
@@ -18,7 +19,8 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class Lab5 {
+public class TestQuickAngleCorrection {
+	//
     // Global Parameters
     private static final int LLx = 3;
     private static final int LLy = 3;
@@ -67,6 +69,7 @@ public class Lab5 {
     
 
     private static Odometer odometer;
+    private static USLocalisation usLocalizer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
     private static LightLocalizer lightLocalizer;
@@ -94,7 +97,7 @@ public class Lab5 {
         backLeftLSSample = new float[backLeftLSProvider.sampleSize()];
         
         // set up back-right light sensor
-        backRightLSPort = LocalEV3.get().getPort("S3");
+        backRightLSPort = LocalEV3.get().getPort("S4");
         backRightLS = new EV3ColorSensor(backRightLSPort);
         backRightLSProvider = backRightLS.getMode("Red");
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
@@ -108,15 +111,16 @@ public class Lab5 {
         
         odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
+        usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
         rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
         
         lightLocalizer = new LightLocalizer(rightDifferentialLightSensor, movementController, odometer);
-        
-        angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
-                                              movementController, odometer);
 
+        angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
+        
+        Display odometryDisplay = new Display(lcd);
 		do {
 			/**
 			 * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?
@@ -124,21 +128,20 @@ public class Lab5 {
 			 */
 			lcd.clear();
 
-			lcd.drawString("Press CENTER to start", 0, 0);
-
+			lcd.drawString("Right > Run test", 0, 0);
+			
 			buttonChoice = Button.waitForAnyPress();
-			if (buttonChoice == Button.ID_ESCAPE) { //Gives the user the option to opt out of the menu before executing a function
-				System.exit(0);
-			}
-		} while (buttonChoice != Button.ID_ENTER);
+		}
+		while (buttonChoice != Button.ID_RIGHT);
 		
 		/** If left button is pressed, run ultrasonicLocalizer taking into account that we're not facing the wall,
 		 * hence executing the risingEdge method. Once the risingEdge method is executed, run the LightLocalizer
 		 * However, if the right button is pressed, we run the ultrasonicLocalizer while assigning to the boolean "wall" the 
 		 * value "true", basically telling ultrasonicLocalizer to run the method fallingEdge. Then proceed by running LightLocalizer
 		 */
-		if (buttonChoice == Button.ID_ENTER) { 
-		    angleCorrection.quickThetaCorrection();
+		if (buttonChoice == Button.ID_RIGHT) {
+			angleCorrection.quickThetaCorrection();
+			System.out.println(odometer.getXYT()[2]);
 		}
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
