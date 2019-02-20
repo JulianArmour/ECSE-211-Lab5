@@ -20,6 +20,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 
 public class TestQuickAngleCorrection {
+	//
     // Global Parameters
     private static final int LLx = 3;
     private static final int LLy = 3;
