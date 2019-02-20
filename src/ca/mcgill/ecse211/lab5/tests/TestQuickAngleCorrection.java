@@ -1,8 +1,9 @@
-package ca.mcgill.ecse211.lab5;
+package ca.mcgill.ecse211.lab5.tests;
 
 import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USLocalisation;
+import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.navigator.URnavigator;
@@ -18,7 +19,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class Lab5 {
+public class TestQuickAngleCorrection {
     // Global Parameters
     private static final int LLx = 3;
     private static final int LLy = 3;
@@ -71,6 +72,7 @@ public class Lab5 {
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
     private static LightLocalizer lightLocalizer;
+    private static angleCorrection angleCorrection;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
@@ -94,7 +96,7 @@ public class Lab5 {
         backLeftLSSample = new float[backLeftLSProvider.sampleSize()];
         
         // set up back-right light sensor
-        backRightLSPort = LocalEV3.get().getPort("S3");
+        backRightLSPort = LocalEV3.get().getPort("S4");
         backRightLS = new EV3ColorSensor(backRightLSPort);
         backRightLSProvider = backRightLS.getMode("Red");
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
@@ -115,6 +117,8 @@ public class Lab5 {
         
         lightLocalizer = new LightLocalizer(rightDifferentialLightSensor, movementController, odometer);
 
+        angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
+        
         Display odometryDisplay = new Display(lcd);
 		do {
 			/**
@@ -123,59 +127,23 @@ public class Lab5 {
 			 */
 			lcd.clear();
 
-			lcd.drawString("< Left |  Right >", 0, 0);
-			lcd.drawString("       |         ", 0, 1);
-			lcd.drawString("Rising |  Falling", 0, 2);
-			lcd.drawString("edge   |  edge   ", 0, 3);
-			lcd.drawString("       | 		 ", 0, 4);
-
+			lcd.drawString("Right > Run test", 0, 0);
+			
 			buttonChoice = Button.waitForAnyPress();
-			if (buttonChoice == Button.ID_ESCAPE) { //Gives the user the option to opt out of the menu before executing a function
-				System.exit(0);
-			}
-		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
+		}
+		while (buttonChoice != Button.ID_RIGHT);
 		
 		/** If left button is pressed, run ultrasonicLocalizer taking into account that we're not facing the wall,
 		 * hence executing the risingEdge method. Once the risingEdge method is executed, run the LightLocalizer
 		 * However, if the right button is pressed, we run the ultrasonicLocalizer while assigning to the boolean "wall" the 
 		 * value "true", basically telling ultrasonicLocalizer to run the method fallingEdge. Then proceed by running LightLocalizer
 		 */
-		if (buttonChoice == Button.ID_LEFT) { 
-			wall = false;
-			Thread odoThread = new Thread(odometer);
-			odoThread.start();
-			Thread odoDisplayThread = new Thread(odometryDisplay);
-			odoDisplayThread.start();
-			
-			usLocalizer.run(); 
-			buttonChoice = Button.waitForAnyPress();
-			if (buttonChoice == Button.ID_ESCAPE) {
-				System.exit(0);
-			}
-			else if (buttonChoice == Button.ID_ENTER) {
-				lightLocalizer.run();
-			}
-
-		} else if (buttonChoice == Button.ID_RIGHT){
-			wall = true;
-			Thread odoThread = new Thread(odometer);
-			odoThread.start();
-			Thread odoDisplayThread = new Thread(odometryDisplay);
-			odoDisplayThread.start();
-
-			usLocalizer.run();
-			buttonChoice = Button.waitForAnyPress();
-			if (buttonChoice == Button.ID_ESCAPE) {
-				System.exit(0);
-			}
-			else if (buttonChoice == Button.ID_ENTER) {
-				lightLocalizer.run();
-			}
-
+		if (buttonChoice == Button.ID_RIGHT) {
+			angleCorrection.quickThetaCorrection();
+			System.out.println(odometer.getXYT()[2]);
 		}
 
-		while (Button.waitForAnyPress() != Button.ID_ESCAPE)
-			;
+		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
 	}
 
