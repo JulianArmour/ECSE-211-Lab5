@@ -109,14 +109,10 @@ public class SearchAlgoTest {
         backRightLSProvider = backRightLS.getMode("Red");
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
         
-        // set up side light sensor
-        sideLSPort = LocalEV3.get().getPort("S4");
-        sideLS= new EV3ColorSensor(sideLSPort);
-        sideLSProvider = sideLS.getMode("RGB");
-        sideLSSample = new float[sideLSProvider.sampleSize()];
-        
-        
+      
         odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        Thread odoThread= new Thread(odometer);
+        odoThread.start();
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         usLocalizer = new USAngleCorrector(movementController, odometer, medianDistanceSensor);
         
@@ -126,15 +122,16 @@ public class SearchAlgoTest {
       
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
         
+
+        colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
+        medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
+        wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
+     
         searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, wallFollower,  angleCorrection);
        
-        wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
         
-        medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
-      
-        colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
         
-        Display odometryDisplay = new Display(lcd);	
+        
 		do {
 			/**
 			 * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?
@@ -154,6 +151,7 @@ public class SearchAlgoTest {
 		 * value "true", basically telling ultrasonicLocalizer to run the method fallingEdge. Then proceed by running LightLocalizer
 		 */
 		if (buttonChoice == Button.ID_RIGHT) {
+//			odometer.setXYT(PLLx, PLLy, 0);
 			searchNavigator.searchPath();
 			
 		}
