@@ -69,6 +69,8 @@ public class SearchNavigator implements TimerListener {
 		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
+		System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+		System.out.println("X: " +destination[0] + "Y: " + destination[1]);
 		movementController.travelTo(destination[0], destination[1],true);
 
 		// check for cans while driving
@@ -179,8 +181,8 @@ public class SearchNavigator implements TimerListener {
 		double canDist = USdata.getFilteredDistance();
 
 		// if US sensor detects a can
-		if (canDist < 10) {
-
+		if (canDist < 10.0) {
+			//System.out.println(canDist);
 			movementController.stopMotors();
 
 			canDetected = true; // maybe use this to influence the for loop to interrupt

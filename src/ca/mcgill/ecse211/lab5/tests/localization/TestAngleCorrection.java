@@ -100,6 +100,7 @@ public class TestAngleCorrection {
         
         
         odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
