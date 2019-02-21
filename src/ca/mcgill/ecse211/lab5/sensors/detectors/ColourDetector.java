@@ -3,6 +3,11 @@ package ca.mcgill.ecse211.lab5.sensors.detectors;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Class for color recognition of cans
+ * @author Cedric
+ *
+ */
 public class ColourDetector {
 
 	private static final float RCAN_RMEAN = 0.8920f;
