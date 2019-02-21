@@ -11,7 +11,7 @@ public class angleCorrection {
 	private MovementController movCon;
 	private Odometer odo;
 	private static int POLLING_PERIOD = 20;
-	private static int DIFFERENTIAL_THRESHOLD = 5;
+	private static int DIFFERENCE_THRESHOLD = 2;
 	
 
 	//constructor
@@ -24,39 +24,43 @@ public class angleCorrection {
 	}
 
 	public void quickThetaCorrection() {
-	    boolean RLineDetected=false;
-	    boolean LLineDetected=false;
-	    
-	    // get rid of old light sensor data
-	    dLTright.flush();
-	    dLTleft.flush();
-		
-		movCon.driveForward(70);
-		while (!RLineDetected || !LLineDetected) {
-			//poll right sensor
-			int deltaR = dLTright.getDeltaL();
-			//poll left sensor
-			int deltaL = dLTleft.getDeltaL();
+	    for (int i = 0; i < 2; i++) {
+	        boolean RLineDetected=false;
+	        boolean LLineDetected=false;
+	        
+            // get rid of old light sensor data
+            dLTright.flush();
+            dLTleft.flush();
+            movCon.driveForward(80);
+            while (!RLineDetected || !LLineDetected) {
+                //poll right sensor
+                int deltaR = dLTright.getDeltaL();
+                //poll left sensor
+                int deltaL = dLTleft.getDeltaL();
 
-			if (Math.abs(deltaR) > DIFFERENTIAL_THRESHOLD) {
-				RLineDetected = true;
-				movCon.stopMotor(true);
-				System.out.println(deltaR);
-			}
+                if (Math.abs(deltaR) > DIFFERENCE_THRESHOLD) {
+                    RLineDetected = true;
+                    movCon.stopMotor(true);
+                    System.out.println(deltaR);
+                }
 
-			if (Math.abs(deltaL) > DIFFERENTIAL_THRESHOLD) {
-				LLineDetected = true;
-				movCon.stopMotor(false);
-				System.out.println(deltaL);
-			}
-			
-			try {
-                Thread.sleep(POLLING_PERIOD);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (Math.abs(deltaL) > DIFFERENCE_THRESHOLD) {
+                    LLineDetected = true;
+                    movCon.stopMotor(false);
+                    System.out.println(deltaL);
+                }
+
+                try {
+                    Thread.sleep(POLLING_PERIOD);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
-		
-		}
-		odo.setTheta(movCon.roundAngle());
+            if (i == 0) {
+                movCon.driveDistance(-3);
+            }
+        }
+        odo.setTheta(movCon.roundAngle());
 	}
 }
