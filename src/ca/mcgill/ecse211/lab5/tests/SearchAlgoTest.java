@@ -76,7 +76,7 @@ public class SearchAlgoTest {
     private static USAngleCorrector usLocalizer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
-   private static angleCorrection angleCorrection;
+    private static angleCorrection angleCorrection;
     private static SearchNavigator searchNavigator;
     private static wallFollower wallFollower;
     private static MedianDistanceSensor medianDistanceSensor;
@@ -110,7 +110,7 @@ public class SearchAlgoTest {
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
         
       
-        odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+//        odometer = new Odometer
         Thread odoThread= new Thread(odometer);
         odoThread.start();
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);

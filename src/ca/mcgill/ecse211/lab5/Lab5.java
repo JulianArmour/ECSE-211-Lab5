@@ -102,6 +102,9 @@ public class Lab5 {
         
         
         odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        Thread odoThread = new Thread(odometer);
+        odoThread.start();
+        
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
