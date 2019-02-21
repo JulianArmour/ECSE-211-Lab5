@@ -1,6 +1,5 @@
 package ca.mcgill.ecse211.lab5.tests.localization;
 
-import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
@@ -64,7 +63,6 @@ public class TestAngleCorrection {
     private static Odometer odometer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
-    private static LightLocalizer lightLocalizer;
     private static angleCorrection angleCorrection;
 
     public static void main(String[] args) throws OdometerExceptions {
@@ -106,8 +104,6 @@ public class TestAngleCorrection {
         
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
         rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
-        
-        lightLocalizer = new LightLocalizer(rightDifferentialLightSensor, movementController, odometer);
         
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
                                               movementController, odometer);
