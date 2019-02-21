@@ -99,7 +99,7 @@ public class TestAngleCorrection {
 //        sideLSSample = new float[sideLSProvider.sampleSize()];
         
         
-        odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
