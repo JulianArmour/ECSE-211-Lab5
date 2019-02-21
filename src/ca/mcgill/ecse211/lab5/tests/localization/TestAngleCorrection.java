@@ -38,7 +38,7 @@ public class TestAngleCorrection {
     /** The tile's length. */
     public static final double TILE_SIZE = 30.48;
     public static final double WHEEL_RAD = 2.2;
-    public static final double TRACK = 11.75;
+    public static final double TRACK = 11.3;
     public static boolean wall;
     
     private static MovementController movementController;
