@@ -43,6 +43,8 @@ public class IntersectionLocalizer {
      * sensor intersects with the tile borders when the robot rotates 360-degrees.
      */
 	public void getIntersections() {
+	    
+	    movCon.rotateAngle(60, false);
 	
 		boolean lineDetected=false;
 
@@ -92,7 +94,7 @@ public class IntersectionLocalizer {
 	public void correctAngle() {
 		
 		double Yangle = intersections[2]- intersections[0];   
-		double headingCorrection = (Yangle/2)-intersections[2]-90; 
+		double headingCorrection = (Yangle/2)-intersections[2]-120;
 		
 		odo.setTheta(odo.getXYT()[2] + headingCorrection); //corrects odometer's angle
 		double[] currentPos = odo.getXYT();
