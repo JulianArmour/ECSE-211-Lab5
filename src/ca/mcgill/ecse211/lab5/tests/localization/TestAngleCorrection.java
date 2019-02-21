@@ -1,10 +1,8 @@
-package ca.mcgill.ecse211.lab5;
+package ca.mcgill.ecse211.lab5.tests.localization;
 
-import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
-import ca.mcgill.ecse211.lab5.navigator.URnavigator;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
@@ -17,7 +15,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class Lab5 {
+public class TestAngleCorrection {
     // Global Parameters
     private static final int LLx = 3;
     private static final int LLy = 3;
@@ -32,16 +30,16 @@ public class Lab5 {
     private static double PURx;
     private static double PURy;
 
-	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
-	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
-	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
+    private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+    private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+    private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 
-	/** The tile's length. */
+    /** The tile's length. */
     public static final double TILE_SIZE = 30.48;
-	public static final double WHEEL_RAD = 2.2;
-	public static final double TRACK = 11.75;
-	public static boolean wall;
-	
+    public static final double WHEEL_RAD = 2.2;
+    public static final double TRACK = 11.3;
+    public static boolean wall;
+    
     private static MovementController movementController;
     private static LLnavigator llNavigator;
     private static Port sideUSPort;
@@ -67,16 +65,16 @@ public class Lab5 {
     private static DifferentialLightSensor rightDifferentialLightSensor;
     private static angleCorrection angleCorrection;
 
-	public static void main(String[] args) throws OdometerExceptions {
-		int buttonChoice;
-		
-		// coordinate conversion
-		PLLx = TILE_SIZE * (double) LLx;
-		PLLy = TILE_SIZE * (double) LLy;
-		PURx = TILE_SIZE * (double) URx;
-		PURy = TILE_SIZE * (double) URy;
-		
-		// set up side ultrasonic sensor
+    public static void main(String[] args) throws OdometerExceptions {
+        int buttonChoice;
+        
+        // coordinate conversion
+        PLLx = TILE_SIZE * (double) LLx;
+        PLLy = TILE_SIZE * (double) LLy;
+        PURx = TILE_SIZE * (double) URx;
+        PURy = TILE_SIZE * (double) URy;
+        
+        // set up side ultrasonic sensor
         sideUSPort = LocalEV3.get().getPort("S1");
         sideUltrasonicSensor = new EV3UltrasonicSensor(sideUSPort);
         sideDistanceProvider = sideUltrasonicSensor.getMode("Distance");
@@ -94,41 +92,40 @@ public class Lab5 {
         backRightLSProvider = backRightLS.getMode("Red");
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
         
-        // set up side light sensor
-        sideLSPort = LocalEV3.get().getPort("S4");
-        sideLS= new EV3ColorSensor(sideLSPort);
-        sideLSProvider = sideLS.getMode("RGB");
-        sideLSSample = new float[sideLSProvider.sampleSize()];
+//        // set up side light sensor
+//        sideLSPort = LocalEV3.get().getPort("S4");
+//        sideLS= new EV3ColorSensor(sideLSPort);
+//        sideLSProvider = sideLS.getMode("RGB");
+//        sideLSSample = new float[sideLSProvider.sampleSize()];
         
         
         odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-        Thread odoThread= new Thread(odometer);
-        odoThread.start();
         
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
         rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
         
-        
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
                                               movementController, odometer);
 
-		do {
-			lcd.clear();
-			lcd.drawString("Press ^UP^ to start", 0, 0);
-			buttonChoice = Button.waitForAnyPress();
-		} while (buttonChoice != Button.ID_UP);
-		
-		
-		if (buttonChoice == Button.ID_UP) {
-		    movementController.rotateAngle(20, true);
-		    angleCorrection.quickThetaCorrection();
-		    System.out.println(odometer.getXYT()[2]);
-		}
+        do {
+            lcd.clear();
+            lcd.drawString("Press ^UP^ to start", 0, 0);
+            buttonChoice = Button.waitForAnyPress();
+        } while (buttonChoice != Button.ID_UP);
+        
+        
+        if (buttonChoice == Button.ID_UP) {
+            while (buttonChoice != Button.ID_ESCAPE) {
+                angleCorrection.quickThetaCorrection();
+                System.out.println(odometer.getXYT()[2]);
+                buttonChoice = Button.waitForAnyPress();
+            }
+        }
 
-		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
-		System.exit(0);
-	}
+        while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+        System.exit(0);
+    }
 
 }

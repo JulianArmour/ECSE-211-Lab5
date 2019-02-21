@@ -5,7 +5,7 @@ import ca.mcgill.ecse211.lab5.odometer.Odometer;
 
 //navigateToUr() is called after the right-colored can is found
 public class URnavigator {
-
+	//
 	private MovementController movCon;
 	private Odometer odo;
 
@@ -27,20 +27,20 @@ public class URnavigator {
 
 		if(movCon.roundAngle() == 0) {
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(urX, urY);
+			movCon.travelTo(urX, urY, false);
 		}
 
 		if(movCon.roundAngle() == 90) {
 			movCon.driveDistance(5); //just to be in the middle of tile
 			movCon.rotateAngle(90, false);
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(urX, urY);
+			movCon.travelTo(urX, urY, false);
 		}
 		if(movCon.roundAngle() == 180) {
 
 			movCon.rotateAngle(180, false);
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(urX, urY);
+			movCon.travelTo(urX, urY,false);
 
 		}
 
@@ -48,7 +48,7 @@ public class URnavigator {
 			movCon.driveDistance(5); //just to be in the middle of tile
 			movCon.rotateAngle(90, true);
 			movCon.driveDistance(urX-currentPos[1]+TILE_LENGTH/2);
-			movCon.travelTo(urX, urY);
+			movCon.travelTo(urX, urY,false);
 
 		}
 

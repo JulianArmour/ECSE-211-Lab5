@@ -9,6 +9,8 @@ public class AxesLocalizer {
 	private MovementController movCon;
 	private Odometer odo;
 	private DifferentialLightSensor diffLightSensor;
+    private DifferentialLightSensor rDiffLightSensor;
+    private DifferentialLightSensor lDiffLightSensor;
 	private static int DIFFERENTIAL_THRESHOLD = 6;
 	private static double LTSENSOR_TO_WHEELBASE = 11.9;
 	private static int TIME_OUT = 20;
@@ -16,25 +18,30 @@ public class AxesLocalizer {
 	
 	//constructor
 	public AxesLocalizer(MovementController movementController, Odometer odometer, 
-			DifferentialLightSensor diffLightSensor) {
-		
+	        DifferentialLightSensor lDifferentialLightSensor, DifferentialLightSensor rDifferentialLightSensor) {
 		this.movCon=movementController;
 		this.odo=odometer;
-		this.diffLightSensor=diffLightSensor;
-		
-		
+		this.lDiffLightSensor = lDifferentialLightSensor;
+		this.rDiffLightSensor = rDifferentialLightSensor;
 	}
 
 	public void estimatePosition() {
 
-
+	    rDiffLightSensor.getDeltaL();
+	    rDiffLightSensor.getDeltaL(); // TODO
 		// go forward until light sensor detects the x-axis
 		movCon.driveForward();
 		boolean lineDetected = false;
+		
+		try {
+            Thread.sleep(500);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
 
 		// keep checking for a black line
 		while (!lineDetected) {
-			int deltaL = diffLightSensor.getDeltaL();
+			int deltaL = lDiffLightSensor.getDeltaL();
 		//	System.out.println(deltaL);
 			
 			try {
@@ -45,7 +52,7 @@ public class AxesLocalizer {
 			
 			if (Math.abs(deltaL) > DIFFERENTIAL_THRESHOLD) {
 				lineDetected = true;
-				
+				System.out.println("Line Difference: "+deltaL);
 			}
 		}
 		
@@ -59,11 +66,11 @@ public class AxesLocalizer {
 		
 		lineDetected = false;
 		movCon.driveForward();
-		diffLightSensor.getDeltaL();
+		rDiffLightSensor.getDeltaL();
 		
 		// check for the next line
 		while (!lineDetected) {
-			int deltaL = diffLightSensor.getDeltaL();
+			int deltaL = rDiffLightSensor.getDeltaL();
 //           System.out.println(deltaL);
 			
 			try {
@@ -74,7 +81,7 @@ public class AxesLocalizer {
 			
 			if (Math.abs(deltaL) > DIFFERENTIAL_THRESHOLD) {
 				lineDetected = true;
-				
+				System.out.println("Line difference: "+deltaL);
 				
 			}
 		}
@@ -86,8 +93,29 @@ public class AxesLocalizer {
 //		double[] currentPos = odo.getXYT();
 //		System.out.println("CURRENT POS: X: "+currentPos[0]+", Y: "+currentPos[1]);
 		
-		movCon.travelCloseToOrigin(odo);
+		travelCloseToOrigin();
 		movCon.turnTo(180);
-		//approximately at (-5,-5) and at a 180 degree angle at this point
 	}
+	
+	/**
+     * Causes the robot to move to approximately (-5,-5)
+     */
+    public void travelCloseToOrigin() {
+
+        //double[] odoData = odo.getXYT();
+        double angleToTurn = movCon.calculateAngle(odo.getXYT()[0], odo.getXYT()[1], -1.0, -1.0);
+//        System.out.println("ANGLE TO TURN: "+angleToTurn);
+        movCon.turnTo(angleToTurn);
+
+        // give the robot some time to stop
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        movCon.driveDistance(movCon.calculateDistance(odo.getXYT()[0], odo.getXYT()[1], -1.0, -1.0));
+       
+        //odoData[i] is changed to odo.getXYT()[i] in TravelToOrigin method
+    }
 }

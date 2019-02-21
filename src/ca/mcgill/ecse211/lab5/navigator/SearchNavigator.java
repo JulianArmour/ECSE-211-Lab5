@@ -69,6 +69,8 @@ public class SearchNavigator implements TimerListener {
 		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
+		System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+		System.out.println("X: " +destination[0] + "Y: " + destination[1]);
 		movementController.travelTo(destination[0], destination[1],true);
 
 		// check for cans while driving
@@ -86,6 +88,7 @@ public class SearchNavigator implements TimerListener {
 		timer.stop();
 		// robot is now within DESTINATION_THRESHOLD, move remaining distance
 		movementController.travelTo(destination[0], destination[1], false);
+		movementController.turnTo(0);
 
 
 		// for loop of remaining path
@@ -126,7 +129,9 @@ public class SearchNavigator implements TimerListener {
 			// stop looking for cans
 			timer.stop();
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
+			double currentAngle = odometer.getXYT()[2];
 			movementController.travelTo(destination[0], destination[1], false);
+			movementController.turnTo(currentAngle);
 
 			// move in y direction after reaching destination
 
@@ -161,7 +166,9 @@ public class SearchNavigator implements TimerListener {
 			// stop looking for cans
 			timer.stop();
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
+			currentAngle = odometer.getXYT()[2];
 			movementController.travelTo(destination[0], destination[1], false);
+			movementController.turnTo(currentAngle);
 		}
 		//
 	}
@@ -179,8 +186,8 @@ public class SearchNavigator implements TimerListener {
 		double canDist = USdata.getFilteredDistance();
 
 		// if US sensor detects a can
-		if (canDist < 10) {
-
+		if (canDist < 10.0) {
+			//System.out.println(canDist);
 			movementController.stopMotors();
 
 			canDetected = true; // maybe use this to influence the for loop to interrupt
@@ -192,31 +199,16 @@ public class SearchNavigator implements TimerListener {
 
 			// angle correction
 			angleCorrector.quickThetaCorrection();
+			
+			/* TODO: At this point the robot is probably beside the can again, so we should 
+			 * move it forward like half a tile.
+			 */
 
-			//TODO keep moving remaining distance
-			// if robot is moving in x-axis
-			if (movementController.roundAngle() == 90 || movementController.roundAngle() == 270) {
-				distanceLeft = (Xdistance) - odometer.getXYT()[0]; 
-				/*
-				 *  
-				 *  of a distance remaining. distance = pos_destination - pos_current
-				 */
-			}
-			// if robot is moving in y-axis
-			else if (movementController.roundAngle() == 0 || movementController.roundAngle() == 180) {
-				distanceLeft = (Ydistance) - odometer.getXYT()[1];
-			}
+			// keep moving remaining distance/is this the right destination?
+			movementController.travelTo(destination[0], destination[1],true);
+			
 		}
-		// TODO NEED TO DO CALCULATIONS HERE!!!!!!!
-
-		// after it breaks from wallfollowing
-		// movementController.driveDistance(-TILE_LENGTH/2); might not need it because
-		// sensor in the back
-		//        movementController.driveDistance(2 * TILE_LENGTH, true); // why drive 2 tiles?
-		angleCorrector.quickThetaCorrection();
-
-		// movementController.travelTo(odometer, referencePos[0], referencePos[1]);
-		movementController.driveDistance(distanceLeft);
+	
 
 	}
 }
