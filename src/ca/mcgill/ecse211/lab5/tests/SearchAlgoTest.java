@@ -1,8 +1,9 @@
 package ca.mcgill.ecse211.lab5.tests;
 
 import ca.mcgill.ecse211.lab5.display.Display;
-import ca.mcgill.ecse211.lab5.localization.LightLocalizer;
-import ca.mcgill.ecse211.lab5.localization.USLocalisation;
+
+import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
+
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
@@ -72,11 +73,10 @@ public class SearchAlgoTest {
     
 
     private static Odometer odometer;
-    private static USLocalisation usLocalizer;
+    private static USAngleCorrector usLocalizer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
-    private static LightLocalizer lightLocalizer;
-    private static angleCorrection angleCorrection;
+   private static angleCorrection angleCorrection;
     private static SearchNavigator searchNavigator;
     private static wallFollower wallFollower;
     private static MedianDistanceSensor medianDistanceSensor;
@@ -118,13 +118,12 @@ public class SearchAlgoTest {
         
         odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
-        usLocalizer = new USLocalisation(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        usLocalizer = new USAngleCorrector(movementController, odometer, medianDistanceSensor);
         
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
         rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
         
-        lightLocalizer = new LightLocalizer(rightDifferentialLightSensor, movementController, odometer);
-
+      
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
         
         searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, wallFollower,  angleCorrection);
