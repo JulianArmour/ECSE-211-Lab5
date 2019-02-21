@@ -110,7 +110,7 @@ public class SearchAlgoTest {
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
         
       
-//        odometer = new Odometer
+        odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         Thread odoThread= new Thread(odometer);
         odoThread.start();
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);

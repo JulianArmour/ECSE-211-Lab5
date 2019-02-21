@@ -101,8 +101,8 @@ public class Lab5 {
 //        sideLSSample = new float[sideLSProvider.sampleSize()];
         
         
-        odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-        Thread odoThread = new Thread(odometer);
+        odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        Thread odoThread= new Thread(odometer);
         odoThread.start();
         
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
