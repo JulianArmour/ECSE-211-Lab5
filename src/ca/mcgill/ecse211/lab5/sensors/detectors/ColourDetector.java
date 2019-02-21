@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ColourDetector {
+
 	private static final float RCAN_RMEAN = 0.8920f;
 	private static final float RCAN_GMEAN = 0.3672f;
 	private static final float RCAN_BMEAN = 0.2668f;
@@ -20,10 +21,12 @@ public class ColourDetector {
 	private static final float GCAN_GMEAN = 0.6749f; 
 	private static final float GCAN_BMEAN = 0.4989f;
 	
+	
 	public static boolean verifyCan(float[][] data, int canColor) {
 		float RMean = 0.0f;
 		float GMean = 0.0f;
 		float BMean = 0.0f;
+		float NRMean, NGMean, NBMean;
 		
 		for(int i = 0; i < data.length; i++) {
 			RMean += data[i][0];
@@ -38,15 +41,15 @@ public class ColourDetector {
 		}
 		BMean /= data.length;
 		
-		RMean /= Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2));
-		GMean /= Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2));
-		BMean /= Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2));
+		NRMean = (float) (RMean / Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2)));
+		NGMean = (float) (GMean / Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2)));
+		NBMean = (float) (BMean / Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2)));
 		
-		System.out.println("R: " + RMean);
-		System.out.println("G: " + GMean);
-		System.out.println("B: " + BMean);
+		System.out.println("NR: " + NRMean);
+		System.out.println("NG: " + NGMean);
+		System.out.println("NB: " + NBMean);
 		
-		if(colorMatch(RMean, GMean, BMean) == canColor) return true;
+		if(colorMatch(NRMean, NGMean, NBMean) == canColor) return true;
 		return false;
 	}
 	
@@ -61,12 +64,19 @@ public class ColourDetector {
 		dYCan = (float) Math.sqrt(Math.pow((RMean - YCAN_RMEAN), 2) + Math.pow((GMean - YCAN_GMEAN), 2) + Math.pow((BMean - YCAN_BMEAN), 2));
 		dGCan = (float) Math.sqrt(Math.pow((RMean - GCAN_RMEAN), 2) + Math.pow((GMean - GCAN_GMEAN), 2) + Math.pow((BMean - GCAN_BMEAN), 2));
 		
+		System.out.println("drcan: " + dRCan);
+		System.out.println("dbcan: " + dBCan);
+		System.out.println("dycan: " + dYCan);
+		System.out.println("dgcan: " + dGCan);
+		
 		dArray.add(dRCan);
 		dArray.add(dBCan);
 		dArray.add(dYCan);
 		dArray.add(dGCan);
 		
 		min = Collections.min(dArray);
+		
+		System.out.println("min: " + min);
 		
 		if(min == dRCan) dataCanColor = 4;
 		else if(min == dYCan) dataCanColor = 3;
@@ -78,6 +88,5 @@ public class ColourDetector {
 		
 		
 	}
-	
 	
 }
