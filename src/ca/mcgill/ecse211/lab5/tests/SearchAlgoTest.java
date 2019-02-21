@@ -48,8 +48,8 @@ public class SearchAlgoTest {
 
 	/** The tile's length. */
     public static final double TILE_SIZE = 30.48;
-	public static final double WHEEL_RAD = 2.2;
-	public static final double TRACK = 11.75;
+	public static final double WHEEL_RAD = 2.1;
+	public static final double TRACK = 11.9;
 	public static boolean wall;
 	
     private static MovementController movementController;
@@ -103,14 +103,21 @@ public class SearchAlgoTest {
         backLeftLSProvider = backLeftLS.getMode("Red");
         backLeftLSSample = new float[backLeftLSProvider.sampleSize()];
         
+        // set up side light sensor
+        sideLSPort = LocalEV3.get().getPort("S4");
+        sideLS= new EV3ColorSensor(sideLSPort);
+        sideLSProvider = sideLS.getMode("RGB");
+        sideLSSample = new float[sideLSProvider.sampleSize()];
+        
+        
         // set up back-right light sensor
-        backRightLSPort = LocalEV3.get().getPort("S4");
+        backRightLSPort = LocalEV3.get().getPort("S3");
         backRightLS = new EV3ColorSensor(backRightLSPort);
         backRightLSProvider = backRightLS.getMode("Red");
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
         
       
-//        odometer = new Odometer
+        odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         Thread odoThread= new Thread(odometer);
         odoThread.start();
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
@@ -151,7 +158,7 @@ public class SearchAlgoTest {
 		 * value "true", basically telling ultrasonicLocalizer to run the method fallingEdge. Then proceed by running LightLocalizer
 		 */
 		if (buttonChoice == Button.ID_RIGHT) {
-//			odometer.setXYT(PLLx, PLLy, 0);
+			odometer.setXYT(PLLx, PLLy, 0);
 			searchNavigator.searchPath();
 			
 		}

@@ -94,11 +94,11 @@ public class Lab5 {
         backRightLSProvider = backRightLS.getMode("Red");
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
         
-//        // set up side light sensor
-//        sideLSPort = LocalEV3.get().getPort("S4");
-//        sideLS= new EV3ColorSensor(sideLSPort);
-//        sideLSProvider = sideLS.getMode("RGB");
-//        sideLSSample = new float[sideLSProvider.sampleSize()];
+        // set up side light sensor
+        sideLSPort = LocalEV3.get().getPort("S4");
+        sideLS= new EV3ColorSensor(sideLSPort);
+        sideLSProvider = sideLS.getMode("RGB");
+        sideLSSample = new float[sideLSProvider.sampleSize()];
         
         
         odometer = new Odometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
