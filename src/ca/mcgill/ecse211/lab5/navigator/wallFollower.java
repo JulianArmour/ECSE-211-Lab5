@@ -107,15 +107,15 @@ public class wallFollower {
         // make the robot go back to it's original position and orientation
         movementControler.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
         movementControler.turnTo(odoBeforeWallFollow[2]);
-       colourdata =  (float[][]) LTdata.toArray();
-       if(ColourDetector.verifyCan(colourdata, TARGET_COLOR)) {
-    	   //beep once
-    	   Sound.beep();
-       }
-       else {
-    	   //beep twice
-    	   Sound.twoBeeps();
-       }
+        colourdata =  (float[][]) LTdata.toArray();
+        if(ColourDetector.verifyCan(colourdata, TARGET_COLOR)) {
+            //beep once
+            Sound.beep();
+        }
+        else {
+            //beep twice
+            Sound.twoBeeps();
+        }
     }
 
 }
