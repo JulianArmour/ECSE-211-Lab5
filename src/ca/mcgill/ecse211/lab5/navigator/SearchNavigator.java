@@ -82,7 +82,7 @@ public class SearchNavigator implements TimerListener {
 		//pause until robot reaches destination
 		while (distanceToDestination() > DESTINATION_THRESHOLD) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(300);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -133,7 +133,7 @@ public class SearchNavigator implements TimerListener {
 			// pause until destination is reached
 			while (distanceToDestination() > DESTINATION_THRESHOLD) {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(300);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
