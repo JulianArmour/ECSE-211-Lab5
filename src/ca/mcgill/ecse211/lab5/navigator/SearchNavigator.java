@@ -113,7 +113,7 @@ public class SearchNavigator implements TimerListener {
 				destination[0] = currentPos[0];
 				destination[1] = currentPos[1]+Ydistance;
 				destination[2] = currentPos[2];
-				System.out.println("X: " +destination[0] + "Y: " + destination[1]);
+				System.out.println("next Y dest is X: " +destination[0] + "Y: " + destination[1]);
 			}
 			else if(movementController.roundAngle() == 180) {
 				System.out.println("Angle 180 detected, going down");
@@ -121,12 +121,12 @@ public class SearchNavigator implements TimerListener {
 				destination[0] = currentPos[0];
 				destination[1] = currentPos[1]-Ydistance;
 				destination[2] = currentPos[2];
-				System.out.println("X: " + destination[0] + "Y: " + destination[1]);
+				System.out.println("next Y dest is X: " + destination[0] + "Y: " + destination[1]);
 			}
-			movementController.driveDistance(2,false);
+			
 			movementController.travelTo(destination[0], destination[1],true);
 			System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
-			System.out.println("arrived at next destination");
+			System.out.println("arrived at next Ydestination");
 			// check for cans
 			timer.start();
 
@@ -144,12 +144,15 @@ public class SearchNavigator implements TimerListener {
 			double currentAngle = odometer.getXYT()[2];
 			movementController.travelTo(destination[0], destination[1], false);
 			movementController.turnTo(currentAngle);
-
+			System.out.println("will now travel at theta:" + currentAngle);
 			// move in y direction after reaching destination
 
 			movementController.rotateAngle(90, false);
 			angleCorrector.quickThetaCorrection();
 
+			
+			
+			//starts moving parallel to the x-axis
 			Xdistance = (m + 1) * TILE_LENGTH;
 
 			if(movementController.roundAngle() == 90) {
@@ -157,13 +160,17 @@ public class SearchNavigator implements TimerListener {
 				destination[0]=currentPos[0] + Xdistance;
 				destination[1]=currentPos[1];
 				destination[2]= currentPos[2];
+				System.out.println("next X dest is X: " +destination[0] + "Y: " + destination[1]);
 			}
 			else if (movementController.roundAngle() == 270) {
 				double [] currentPos = odometer.getXYT();
 				destination[0]=currentPos[0] - Xdistance;
 				destination[1]=currentPos[1];
 				destination[2]= currentPos[2];
+				System.out.println("next X dest is X: " +destination[0] + "Y: " + destination[1]);
 			}
+			
+			
 			movementController.travelTo(destination[0], destination[1],true);
 			timer.start();
 
@@ -180,6 +187,7 @@ public class SearchNavigator implements TimerListener {
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
 			currentAngle = odometer.getXYT()[2];
 			movementController.travelTo(destination[0], destination[1], false);
+			System.out.println("arrived at next Xdestination");
 			movementController.turnTo(currentAngle);
 		}
 		//
