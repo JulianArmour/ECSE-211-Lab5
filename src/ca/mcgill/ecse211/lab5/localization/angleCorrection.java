@@ -46,21 +46,21 @@ public class angleCorrection {
 
                 if (Math.abs(deltaR) > DIFFERENCE_THRESHOLD) {
                     RLineDetected = true;
-                    System.out.println("right sensor detected line");
+//                    System.out.println("right sensor detected line");
                 
-                    System.out.println(RLineDetected);
-                    System.out.println(LLineDetected);
+//                    System.out.println(RLineDetected);
+//                    System.out.println(LLineDetected);
                     
-                    movCon.stopMotor(true, true);
+                    movCon.stopMotor(true, false);
                     System.out.println(deltaR);
                 }
 
                 if (Math.abs(deltaL) > DIFFERENCE_THRESHOLD) {
                     LLineDetected = true;
-                    System.out.println("left sensor detected line");
-                    System.out.println(RLineDetected);
-                    System.out.println(LLineDetected);
-                    movCon.stopMotor(false, true);
+//                    System.out.println("left sensor detected line");
+//                    System.out.println(RLineDetected);
+//                    System.out.println(LLineDetected);
+                    movCon.stopMotor(false, false);
                     System.out.println(deltaL);
                 }
 
@@ -71,13 +71,13 @@ public class angleCorrection {
                 }
 
             }
-//            if (i == 0) {
-//                movCon.driveDistance(-2.0);
+//            if (i < 2) {
+//                movCon.driveDistance(-3.0);
 //            }
         }
 	    
 	    
         odo.setTheta(movCon.roundAngle());
-        System.out.println(odo.getXYT()[2]);
+//        System.out.println(odo.getXYT()[2]);
 	}
 }
