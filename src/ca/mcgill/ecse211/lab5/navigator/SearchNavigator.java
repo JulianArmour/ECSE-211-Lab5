@@ -60,6 +60,9 @@ public class SearchNavigator implements TimerListener {
 
 		movementController.driveDistance(-TILE_LENGTH / 2);
 		movementController.turnTo(90);
+		
+		angleCorrector.quickThetaCorrection();
+		
 		// hardcoded part on x axis
 
 		// create the timer

@@ -45,7 +45,7 @@ public class angleCorrection {
                     System.out.println(RLineDetected);
                     System.out.println(LLineDetected);
                     
-                    movCon.stopMotor(true);
+                    movCon.stopMotor(true, true);
                     System.out.println(deltaR);
                 }
 
@@ -54,7 +54,7 @@ public class angleCorrection {
                     System.out.println("left sensor detected line");
                     System.out.println(RLineDetected);
                     System.out.println(LLineDetected);
-                    movCon.stopMotor(false);
+                    movCon.stopMotor(false, true);
                     System.out.println(deltaL);
                 }
 
