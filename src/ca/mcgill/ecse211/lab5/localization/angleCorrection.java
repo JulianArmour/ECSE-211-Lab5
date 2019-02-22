@@ -11,7 +11,7 @@ public class angleCorrection {
 	private MovementController movCon;
 	private Odometer odo;
 	private static int POLLING_PERIOD = 20;
-	private static int DIFFERENCE_THRESHOLD = 2;
+	private static int DIFFERENCE_THRESHOLD = 250;
 	
 
 	//constructor
@@ -24,19 +24,25 @@ public class angleCorrection {
 	}
 
 	public void quickThetaCorrection() {
-	    for (int i = 0; i < 2; i++) {
+	    for (int i = 0; i < 1; i++) {
 	        boolean RLineDetected=false;
 	        boolean LLineDetected=false;
 	        
             // get rid of old light sensor data
             dLTright.flush();
             dLTleft.flush();
-            movCon.driveForward(80);
+            if (i == 0) {
+                movCon.driveForward(80);
+            }
+            else {
+                movCon.driveForward(60);
+            }
+            
             while (!RLineDetected || !LLineDetected) {
                 //poll right sensor
-                int deltaR = dLTright.getDeltaL();
+                int deltaR = (int) (dLTright.getDeltaL() * 100);
                 //poll left sensor
-                int deltaL = dLTleft.getDeltaL();
+                int deltaL = (int) (dLTleft.getDeltaL() * 100);
 
                 if (Math.abs(deltaR) > DIFFERENCE_THRESHOLD) {
                     RLineDetected = true;
@@ -65,9 +71,9 @@ public class angleCorrection {
                 }
 
             }
-            if (i == 0) {
-                movCon.driveDistance(-3);
-            }
+//            if (i == 0) {
+//                movCon.driveDistance(-2.0);
+//            }
         }
 	    
 	    

@@ -41,7 +41,7 @@ public class AxesLocalizer {
 
 		// keep checking for a black line
 		while (!lineDetected) {
-			int deltaL = lDiffLightSensor.getDeltaL();
+			int deltaL = (int) lDiffLightSensor.getDeltaL();
 		//	System.out.println(deltaL);
 			
 			try {
@@ -70,7 +70,7 @@ public class AxesLocalizer {
 		
 		// check for the next line
 		while (!lineDetected) {
-			int deltaL = rDiffLightSensor.getDeltaL();
+			int deltaL = (int) rDiffLightSensor.getDeltaL();
 //           System.out.println(deltaL);
 			
 			try {
