@@ -40,12 +40,20 @@ public class angleCorrection {
 
                 if (Math.abs(deltaR) > DIFFERENCE_THRESHOLD) {
                     RLineDetected = true;
+                    System.out.println("right sensor detected line");
+                
+                    System.out.println(RLineDetected);
+                    System.out.println(LLineDetected);
+                    
                     movCon.stopMotor(true);
                     System.out.println(deltaR);
                 }
 
                 if (Math.abs(deltaL) > DIFFERENCE_THRESHOLD) {
                     LLineDetected = true;
+                    System.out.println("left sensor detected line");
+                    System.out.println(RLineDetected);
+                    System.out.println(LLineDetected);
                     movCon.stopMotor(false);
                     System.out.println(deltaL);
                 }
@@ -61,6 +69,9 @@ public class angleCorrection {
                 movCon.driveDistance(-3);
             }
         }
+	    
+	    
         odo.setTheta(movCon.roundAngle());
+        System.out.println(odo.getXYT()[2]);
 	}
 }

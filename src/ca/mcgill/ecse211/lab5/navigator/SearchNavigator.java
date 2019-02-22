@@ -87,8 +87,11 @@ public class SearchNavigator implements TimerListener {
 		// stop looking for cans
 		timer.stop();
 		// robot is now within DESTINATION_THRESHOLD, move remaining distance
+		System.out.println("arriving in 1 sec");
 		movementController.travelTo(destination[0], destination[1], false);
-		movementController.turnTo(0);
+		System.out.println("arrived at destination");
+		movementController.turnTo(90);
+		
 
 
 		// for loop of remaining path
@@ -102,19 +105,25 @@ public class SearchNavigator implements TimerListener {
 			Ydistance = (n + 1) * TILE_LENGTH;
 
 			if(movementController.roundAngle()==0) {
+				System.out.println("Angle 0 detected, going up");
 				double[] currentPos = odometer.getXYT();
 				destination[0] = currentPos[0];
 				destination[1] = currentPos[1]+Ydistance;
 				destination[2] = currentPos[2];
+				System.out.println("X: " +destination[0] + "Y: " + destination[1]);
 			}
 			else if(movementController.roundAngle() == 180) {
+				System.out.println("Angle 180 detected, going down");
 				double[] currentPos = odometer.getXYT();
 				destination[0] = currentPos[0];
 				destination[1] = currentPos[1]-Ydistance;
 				destination[2] = currentPos[2];
+				System.out.println("X: " + destination[0] + "Y: " + destination[1]);
 			}
-
+			movementController.driveDistance(2,false);
 			movementController.travelTo(destination[0], destination[1],true);
+			System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+			System.out.println("arrived at next destination");
 			// check for cans
 			timer.start();
 

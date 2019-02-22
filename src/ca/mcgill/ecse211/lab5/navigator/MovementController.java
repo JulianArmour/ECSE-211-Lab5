@@ -12,7 +12,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  */
 public class MovementController {
     private static final int ROTATE_SPEED = 45;
-    private static final int FORWARD_SPEED = 150;
+    private static final int FORWARD_SPEED = 250;
     private EV3LargeRegulatedMotor leftMotor;
     private EV3LargeRegulatedMotor rightMotor;
     private Odometer odometer;
@@ -208,9 +208,10 @@ public class MovementController {
     public double calculateDistance(double Xi, double Yi, double Xf, double Yf) {
     	 double dx = Xf - Xi;
          double dy = Yf - Yf;
-  
+         
     	 double distanceToWaypoint = Math.sqrt(dx * dx + dy * dy);
     	 return distanceToWaypoint;
+         
     	 //
     }
     
@@ -308,8 +309,8 @@ public class MovementController {
 	 * 
 	 * @return the angle of the odometer, roundest to the nearest 0,90,180,270 angle
 	 */
-	public double roundAngle() {
-		double roundedTheta = (Math.round(odometer.getXYT()[2]/90.0)*90)%360; //Kazour method
+	public int roundAngle() {
+		int roundedTheta = (int) ((Math.round(odometer.getXYT()[2]/90.0)*90)%360); //Kazour method
 		return roundedTheta;
 	}
 }
