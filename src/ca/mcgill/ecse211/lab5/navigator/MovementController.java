@@ -207,13 +207,9 @@ public class MovementController {
      */
     public double calculateDistance(double Xi, double Yi, double Xf, double Yf) {
     	 double dx = Xf - Xi;
-<<<<<<< HEAD
-         double dy = Yf - Yf;
-         
-=======
+
          double dy = Yf - Yi;
-  
->>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
+
     	 double distanceToWaypoint = Math.sqrt(dx * dx + dy * dy);
     	 return distanceToWaypoint;
          
