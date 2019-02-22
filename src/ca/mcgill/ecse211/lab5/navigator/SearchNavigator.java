@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
+import java.awt.image.TileObserver;
+
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
@@ -11,8 +13,8 @@ import lejos.utility.TimerListener;
 public class SearchNavigator implements TimerListener {
 
 
-
-	private static final double DESTINATION_THRESHOLD = 2.0;
+	private double TILE_LENGTH = Lab5.TILE_SIZE;
+	private static final double DESTINATION_THRESHOLD = Lab5.TILE_SIZE/3;
 	private static final int CAN_SCAN_PERIOD = 100;
 	private Odometer odometer;
 	private MovementController movementController;
@@ -23,7 +25,7 @@ public class SearchNavigator implements TimerListener {
 	private int llY;
 	private int urX;
 	private int urY;
-	private double TILE_LENGTH = Lab5.TILE_SIZE;
+	
 	private int deltaY;
 	private int deltaX;
 	private double distanceLeft;
@@ -125,8 +127,7 @@ public class SearchNavigator implements TimerListener {
 			}
 			
 			movementController.travelTo(destination[0], destination[1],true);
-			System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
-			System.out.println("arrived at next Ydestination");
+			
 			// check for cans
 			timer.start();
 
@@ -141,8 +142,9 @@ public class SearchNavigator implements TimerListener {
 			// stop looking for cans
 			timer.stop();
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
-			double currentAngle = odometer.getXYT()[2];
-			movementController.travelTo(destination[0], destination[1], false);
+			double currentAngle = movementController.roundAngle();
+			System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+			System.out.println("arrived at next Ydestination");
 			movementController.turnTo(currentAngle);
 			System.out.println("will now travel at theta:" + currentAngle);
 			// move in y direction after reaching destination
