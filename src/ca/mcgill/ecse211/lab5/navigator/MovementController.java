@@ -35,6 +35,8 @@ public class MovementController {
         this.odometer = odometer;
         this.wheelRadius = wheelRadius;
         this.track = track;
+        leftMotor.setAcceleration(1000);
+        rightMotor.setAcceleration(1000);
     }
 
     /**

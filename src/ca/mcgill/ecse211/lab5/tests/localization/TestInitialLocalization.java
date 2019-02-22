@@ -131,7 +131,13 @@ public class TestInitialLocalization {
         if (buttonChoice == Button.ID_UP) {
             while (buttonChoice != Button.ID_ESCAPE) {
                 usAngleCorrector.fallingEdge();
-                
+                axesLocalizer.estimatePosition();
+                axesLocalizer.travelCloseToOrigin();
+                intersectionLocalizer.getIntersections();
+                intersectionLocalizer.correctAngle();
+                intersectionLocalizer.correctPosition();
+                movementController.travelTo(0, 0, false);
+                movementController.turnTo(0);
                 
                 buttonChoice = Button.waitForAnyPress();
             }

@@ -25,12 +25,12 @@ public class DifferentialLightSensor extends Thread {
      * 
      * @return the difference between two sequential light sensor sample polls.
      */
-    public int getDeltaL() {
+    public float getDeltaL() {
         
         colorProvider.fetchSample(sampleLSData, 0);
 
         // calculate the difference between current and past light intensity
-        int deltaL = (int) (100 * sampleLSData[0] - pastSample);//TODO make it 1000 * ...
+        float deltaL = (100 * sampleLSData[0] - pastSample);//TODO make it 1000 * ...
 
         // store the last data in past Data
         pastSample = (int) (100 * sampleLSData[0]);

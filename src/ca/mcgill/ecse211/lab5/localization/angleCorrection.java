@@ -31,12 +31,18 @@ public class angleCorrection {
             // get rid of old light sensor data
             dLTright.flush();
             dLTleft.flush();
-            movCon.driveForward(80);
+            if (i == 0) {
+                movCon.driveForward(80);
+            }
+            else {
+                movCon.driveForward(60);
+            }
+            
             while (!RLineDetected || !LLineDetected) {
                 //poll right sensor
-                int deltaR = dLTright.getDeltaL();
+                int deltaR = (int) (dLTright.getDeltaL() * 100);
                 //poll left sensor
-                int deltaL = dLTleft.getDeltaL();
+                int deltaL = (int) (dLTleft.getDeltaL() * 100);
 
                 if (Math.abs(deltaR) > DIFFERENCE_THRESHOLD) {
                     RLineDetected = true;
@@ -66,7 +72,7 @@ public class angleCorrection {
 
             }
             if (i == 0) {
-                movCon.driveDistance(-3);
+                movCon.driveDistance(-2.0);
             }
         }
 	    
