@@ -11,7 +11,7 @@ public class angleCorrection {
 	private MovementController movCon;
 	private Odometer odo;
 	private static int POLLING_PERIOD = 20;
-	private static int DIFFERENCE_THRESHOLD = 250;
+	private static int DIFFERENCE_THRESHOLD = 290;
 	
 
 	//constructor
