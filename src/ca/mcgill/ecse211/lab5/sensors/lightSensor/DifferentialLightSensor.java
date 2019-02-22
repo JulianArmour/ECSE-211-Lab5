@@ -3,7 +3,7 @@ package ca.mcgill.ecse211.lab5.sensors.lightSensor;
 import lejos.robotics.SampleProvider;
 
 public class DifferentialLightSensor extends Thread {
-    private int pastSample;
+    private float pastSample;
     private SampleProvider colorProvider;
     private float[] sampleLSData;
 
@@ -33,7 +33,7 @@ public class DifferentialLightSensor extends Thread {
         float deltaL = (100 * sampleLSData[0] - pastSample);//TODO make it 1000 * ...
 
         // store the last data in past Data
-        pastSample = (int) (100 * sampleLSData[0]);
+        pastSample = 100 * sampleLSData[0];
 
         return deltaL;
     }
