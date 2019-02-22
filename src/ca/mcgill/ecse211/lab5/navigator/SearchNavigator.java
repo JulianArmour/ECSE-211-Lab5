@@ -60,6 +60,9 @@ public class SearchNavigator implements TimerListener {
 
 		movementController.driveDistance(-TILE_LENGTH / 2);
 		movementController.turnTo(90);
+		
+		angleCorrector.quickThetaCorrection();
+		
 		// hardcoded part on x axis
 
 		// create the timer
@@ -88,7 +91,7 @@ public class SearchNavigator implements TimerListener {
 		timer.stop();
 		// robot is now within DESTINATION_THRESHOLD, move remaining distance
 		movementController.travelTo(destination[0], destination[1], false);
-		movementController.turnTo(0);
+		movementController.turnTo(destination[2]);
 
 
 		// for loop of remaining path
@@ -129,9 +132,8 @@ public class SearchNavigator implements TimerListener {
 			// stop looking for cans
 			timer.stop();
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
-			double currentAngle = odometer.getXYT()[2];
 			movementController.travelTo(destination[0], destination[1], false);
-			movementController.turnTo(currentAngle);
+			movementController.turnTo(destination[2]);
 
 			// move in y direction after reaching destination
 
@@ -166,9 +168,8 @@ public class SearchNavigator implements TimerListener {
 			// stop looking for cans
 			timer.stop();
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
-			currentAngle = odometer.getXYT()[2];
 			movementController.travelTo(destination[0], destination[1], false);
-			movementController.turnTo(currentAngle);
+			movementController.turnTo(destination[2]);
 		}
 		//
 	}
