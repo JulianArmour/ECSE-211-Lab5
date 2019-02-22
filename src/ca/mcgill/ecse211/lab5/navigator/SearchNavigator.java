@@ -171,7 +171,6 @@ public class SearchNavigator implements TimerListener {
 			movementController.travelTo(destination[0], destination[1], false);
 			movementController.turnTo(destination[2]);
 		}
-		//
 	}
 
 	private double distanceToDestination() {
