@@ -40,13 +40,13 @@ public class angleCorrection {
 
                 if (Math.abs(deltaR) > DIFFERENCE_THRESHOLD) {
                     RLineDetected = true;
-                    movCon.stopMotor(true);
+                    movCon.stopMotor(true, true);
                     System.out.println(deltaR);
                 }
 
                 if (Math.abs(deltaL) > DIFFERENCE_THRESHOLD) {
                     LLineDetected = true;
-                    movCon.stopMotor(false);
+                    movCon.stopMotor(false, true);
                     System.out.println(deltaL);
                 }
 
