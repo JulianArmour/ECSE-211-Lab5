@@ -64,10 +64,11 @@ public class wallFollower {
         while (Math.abs(odo.getXYT()[2] - breakOutAngle) > 20) {
             
         	// polls the ColorSensor and puts it in an array
-        	float [] colorData = colorsensor.fetchColorSamples();
+        	float[] colorData = colorsensor.fetchColorSamples();
         	
-        	
-        	LTdata.add(colorData);
+        	if (colorData[0] > 0.001 || colorData[1] > 0.001 || colorData[2] > 0.001) {
+                LTdata.add(colorData);
+        	}
         	
         	//polls the ultrasonic distance
             distance = USdata.getFilteredDistance();
@@ -100,7 +101,7 @@ public class wallFollower {
             }
 
             try {
-                Thread.sleep(30);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
 
