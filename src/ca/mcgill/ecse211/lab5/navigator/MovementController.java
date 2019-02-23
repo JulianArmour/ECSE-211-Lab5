@@ -11,7 +11,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * @version 1.2
  */
 public class MovementController {
-    private static final int ROTATE_SPEED = 80;
+    private static final int ROTATE_SPEED = 45;
     private static final int FORWARD_SPEED = 200;
     private EV3LargeRegulatedMotor leftMotor;
     private EV3LargeRegulatedMotor rightMotor;
@@ -150,8 +150,7 @@ public class MovementController {
         leftMotor.setSpeed(speed);
         rightMotor.setSpeed(speed);
         
-        leftMotor.forward();
-        rightMotor.forward();
+       driveDistance(15, true);
     }
     
     /**
@@ -316,4 +315,15 @@ public class MovementController {
 		int roundedTheta = (int) ((Math.round(odometer.getXYT()[2]/90.0)*90)%360); //Kazour method
 		return roundedTheta;
 	}
+	
+	public void goInCircularPath() {
+		leftMotor.setSpeed(ROTATE_SPEED);
+        rightMotor.setSpeed((int)(ROTATE_SPEED*2.0));
+        
+        
+        leftMotor.forward();
+        rightMotor.forward();
+		
+	}
+	
 }

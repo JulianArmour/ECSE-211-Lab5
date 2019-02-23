@@ -16,8 +16,8 @@ public class wallFollower {
     private static int BAND_CENTER = 2; // (in cm)
     private static int BAND_WIDTH = 1; // (in cm)
     private static int MAX_DELTA = 150;
-    private static double pFactor = 6.5;
-    private static int MOTOR_SPEED = 150;
+    private static double pFactor = 2;
+    private static int MOTOR_SPEED = 120;
     
     private MovementController movementControler;
     private Odometer odo;

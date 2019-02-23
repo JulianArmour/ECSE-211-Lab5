@@ -7,6 +7,7 @@ import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
 
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.navigator.CircleFollow;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.navigator.SearchNavigator;
@@ -34,7 +35,7 @@ public class WallfollowerTest {
     private static final int URx = 5;
     private static final int URy = 5;
     private static final int SC = 0;
-    private static final int TR = 1;
+    private static final int TR = 3;
     
     // physical values for LLx, LLy, URx, URy
     private static double PLLx;
@@ -84,6 +85,7 @@ public class WallfollowerTest {
     private static wallFollower wallFollower;
     private static MedianDistanceSensor medianDistanceSensor;
     private static ColourLightSensor colourLightSensor;
+    private static CircleFollow circleFollower;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
@@ -139,7 +141,7 @@ public class WallfollowerTest {
      
         searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, wallFollower,  angleCorrection);
        
-        
+        circleFollower = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
         
         
 		do {
@@ -170,6 +172,8 @@ public class WallfollowerTest {
 		} else if (buttonChoice == Button.ID_LEFT) {
 			
 			//if lest button pushed
+			circleFollower.followCircularPath();
+			
 		}
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
