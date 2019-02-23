@@ -1,4 +1,5 @@
-package ca.mcgill.ecse211.lab5.tests;
+package ca.mcgill.ecse211.lab5.tests.navigation;
+
 
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.display.Display;
@@ -24,7 +25,8 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class SearchAlgoTest {
+public class WallfollowerTest {
+
 	//
     // Global Parameters
     private static final int LLx = 3;
@@ -159,11 +161,15 @@ public class SearchAlgoTest {
 		 * value "true", basically telling ultrasonicLocalizer to run the method fallingEdge. Then proceed by running LightLocalizer
 		 */
 		if (buttonChoice == Button.ID_RIGHT) {
-			odometer.setXYT(PLLx, PLLy, 0);
+			//if right button pushed
+			//needs to be positioned at the right distance before starting the test
 			searchNavigator.searchPath();
 			
+			
+			
 		} else if (buttonChoice == Button.ID_LEFT) {
-			movementController.driveDistance(4*Lab5.TILE_SIZE);
+			
+			//if lest button pushed
 		}
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
