@@ -1,4 +1,6 @@
-package ca.mcgill.ecse211.lab5.tests;
+package ca.mcgill.ecse211.lab5.tests.navigation;
+
+
 
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.display.Display;
@@ -24,7 +26,8 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class SearchAlgoTest {
+public class SearchPathTest {
+
 	//
     // Global Parameters
     private static final int LLx = 3;

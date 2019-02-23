@@ -164,7 +164,7 @@ public class WallfollowerTest {
 			//if right button pushed
 			//needs to be positioned at the right distance before starting the test
 			searchNavigator.searchPath();
-			movementController.d
+			
 			
 			
 		} else if (buttonChoice == Button.ID_LEFT) {
