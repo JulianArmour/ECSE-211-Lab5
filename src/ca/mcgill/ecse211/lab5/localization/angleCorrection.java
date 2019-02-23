@@ -71,7 +71,7 @@ public class angleCorrection {
                 }
 
             }
-            if (i < 2) {
+            if (i < 1) {
                 movCon.driveDistance(-3.0);
             }
         }

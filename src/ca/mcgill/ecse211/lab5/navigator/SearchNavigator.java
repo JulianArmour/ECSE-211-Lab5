@@ -56,7 +56,7 @@ public class SearchNavigator implements TimerListener {
 	public void searchPath() {
 		
 		// start an angle correction thread
-		System.out.println("Beggining -> x`Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+		System.out.println("Beggining -> Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
 		deltaY =  (urY - llY);
 		deltaX =  (urX - llX);
 
@@ -72,7 +72,7 @@ public class SearchNavigator implements TimerListener {
 		
 
 
-		Xdistance = (deltaX + 0.7)*TILE_LENGTH;
+		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
 
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
