@@ -224,7 +224,7 @@ public class SearchNavigator implements TimerListener {
 		double canDist = USdata.getFilteredDistance();
 
 		// if US sensor detects a can
-		if (canDist < 10.0) {
+		if (canDist < TILE_LENGTH) {
 			//System.out.println(canDist);
 			movementController.stopMotors();
 
