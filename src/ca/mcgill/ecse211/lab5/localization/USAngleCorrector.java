@@ -14,10 +14,10 @@ import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
  */
 public class USAngleCorrector {
     // a difference past this value consitues a falling or rising edge
-    private static final double EDGE_THRESHOLD = 100.0;
+    private static final double EDGE_THRESHOLD = 150.0;
 //    private static final double EDGE_LIMIT = 250.0;
     // period between distance samples
-    private static final long US_POLL_PERIOD = 500;
+    private static final long US_POLL_PERIOD = 300;
     private static final int MAX_DIST = 255;
     private MovementController movementController;
     private MedianDistanceSensor med;
@@ -76,50 +76,28 @@ public class USAngleCorrector {
         // then start moving clockwise
         movementController.rotateAngle(720, true, true);
         
-        // check for first falling edge
-        while (fallingEdge == 404) {
-            int dist = Math.min(med.getFilteredDistance(), MAX_DIST);
-            double[] angleAndDist = new double[] {odometer.getXYT()[2], (double) dist};
-            
-            // a big drop has occurred -> this is the first falling edge
-            if (angleAndDist[1] < EDGE_THRESHOLD) {
-                fallingEdge = angleAndDist[0];
-                
-                System.out.println("Found first falling edge");
-                System.out.println(dist);
-                
-                // determine if this falling edge is on the back or left wall
-                if (rotatingClockwise) {
-                    firstFallingEdgeOnBackWall = true;
-                }
-                break;
-            }
-            // let some time pass between each sample
+        int dist;
+        while ((dist = Math.min(med.getFilteredDistance(), MAX_DIST)) > EDGE_THRESHOLD) {
+         // let some time pass between each sample
             try {
                 Thread.sleep(US_POLL_PERIOD);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        fallingEdge = odometer.getXYT()[2];
+        System.out.println("Found falling edge, dist =  "+dist);
         
-        // same logic as while loop above, but this time it looks for a rising edge
-        while (risingEdge == 404) {
-            int dist = Math.min(med.getFilteredDistance(), MAX_DIST);
-            double[] angleAndDist = new double[] {odometer.getXYT()[2], (double) dist};
-            if (angleAndDist[1] > EDGE_THRESHOLD) {
-                risingEdge = angleAndDist[0];
-                System.out.println("Found second falling edge");
-                System.out.println(risingEdge);
-                System.out.println(dist);
-                movementController.stopMotors();
-                break;
-            }
-            try {
-                Thread.sleep(US_POLL_PERIOD);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        while ((dist = Math.min(med.getFilteredDistance(), MAX_DIST)) < EDGE_THRESHOLD) {
+            // let some time pass between each sample
+               try {
+                   Thread.sleep(US_POLL_PERIOD);
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+           risingEdge = odometer.getXYT()[2];
+           System.out.println("Found rising edge, dist =  "+dist);
         
         System.out.println("first falling edge: "+fallingEdge);
         System.out.println("second falling edge: "+risingEdge);
@@ -135,7 +113,7 @@ public class USAngleCorrector {
             dTheta = 340 - (alpha + beta) / 2;
             System.out.println("alpha <= beta");
         } else {
-            dTheta = 160 - (alpha + beta) / 2;
+            dTheta = 165 - (alpha + beta) / 2;
             System.out.println("alpha > beta");
         }
         

@@ -108,6 +108,7 @@ public class TestInitialLocalization {
         
         
         odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        (new Thread(odometer)).start();
         
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
@@ -131,13 +132,13 @@ public class TestInitialLocalization {
         if (buttonChoice == Button.ID_UP) {
             while (buttonChoice != Button.ID_ESCAPE) {
                 usAngleCorrector.fallingEdge();
-                axesLocalizer.estimatePosition();
-                axesLocalizer.travelCloseToOrigin();
-                intersectionLocalizer.getIntersections();
-                intersectionLocalizer.correctAngle();
-                intersectionLocalizer.correctPosition();
-                movementController.travelTo(0, 0, false);
-                movementController.turnTo(0);
+//                axesLocalizer.estimatePosition();
+//                axesLocalizer.travelCloseToOrigin();
+//                intersectionLocalizer.getIntersections();
+//                intersectionLocalizer.correctAngle();
+//                intersectionLocalizer.correctPosition();
+//                movementController.travelTo(0, 0, false);
+//                movementController.turnTo(0);
                 
                 buttonChoice = Button.waitForAnyPress();
             }

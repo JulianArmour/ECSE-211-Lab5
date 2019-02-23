@@ -11,7 +11,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * @version 1.2
  */
 public class MovementController {
-    private static final int ROTATE_SPEED = 80;
+    private static final int ROTATE_SPEED = 45;
     private static final int FORWARD_SPEED = 200;
     private EV3LargeRegulatedMotor leftMotor;
     private EV3LargeRegulatedMotor rightMotor;
