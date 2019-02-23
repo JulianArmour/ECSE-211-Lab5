@@ -13,17 +13,19 @@ import lejos.robotics.ColorDetector;
 
 public class wallFollower {
 
-    private static int BAND_CENTER = 3; // (in cm)
+    private static int BAND_CENTER = 2; // (in cm)
     private static int BAND_WIDTH = 1; // (in cm)
     private static int MAX_DELTA = 150;
     private static double pFactor = 6.5;
+    private static int MOTOR_SPEED = 150;
+    
     private MovementController movementControler;
     private Odometer odo;
     private ColourLightSensor colorsensor;
   
     private double[] odoBeforeWallFollow;
     private double error;
-    private static int MOTOR_SPEED = 100;
+    
     private MedianDistanceSensor USdata;
     private double distance;
     private int TARGET_COLOR;

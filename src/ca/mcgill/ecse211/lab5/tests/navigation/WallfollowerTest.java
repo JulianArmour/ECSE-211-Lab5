@@ -34,7 +34,7 @@ public class WallfollowerTest {
     private static final int URx = 5;
     private static final int URy = 5;
     private static final int SC = 0;
-    private static final int TR = 0;
+    private static final int TR = 1;
     
     // physical values for LLx, LLy, URx, URy
     private static double PLLx;
