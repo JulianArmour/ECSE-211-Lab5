@@ -67,7 +67,7 @@ public class LLnavigator {
 			//move to 0
 			movCon.rotateAngle(90, false);
 			movCon.driveDistance(Lab5.TILE_SIZE/2);
-			movCon.travelTo(Lab5.TILE_SIZE-5,Lab5.TILE_SIZE-5);
+			movCon.travelTo(Lab5.TILE_SIZE-5,Lab5.TILE_SIZE-5,false);
 			
 			//ITS IN CORNER 0
 			interLocalizer.getIntersections();	//finds the 4 axes
@@ -76,7 +76,7 @@ public class LLnavigator {
 			
 			odo.setXYT(Lab5.TILE_SIZE, Lab5.TILE_SIZE, 0);
 			
-			movCon.travelTo(PLLX, PLLY);
+			movCon.travelTo(PLLX, PLLY,false);
 			
 			
 
@@ -84,7 +84,7 @@ public class LLnavigator {
 
 		else if(StartC == 2) {
 			//us localize
-			usLocalizer.run();
+			usLocalizer.fallingEdge();
 			//light localize (2 steps)
 			//NEED TO SET X AND Y AXES
 			axesLocalizer.estimatePosition(); //sets the X and Y approx.
@@ -97,8 +97,8 @@ public class LLnavigator {
 			
 			movCon.rotateAngle(90, false);
 			movCon.driveDistance(Lab5.TILE_SIZE/2);
-			movCon.travelTo(Lab5.TILE_SIZE/2,Lab5.TILE_SIZE/2);
-			movCon.travelTo(Lab5.TILE_SIZE-5,Lab5.TILE_SIZE-5);
+			movCon.travelTo(Lab5.TILE_SIZE/2,Lab5.TILE_SIZE/2, false);
+			movCon.travelTo(Lab5.TILE_SIZE-5,Lab5.TILE_SIZE-5,false);
 			
 			//ITS IN CORNER 0
 			interLocalizer.getIntersections();	//finds the 4 axes
@@ -107,7 +107,7 @@ public class LLnavigator {
 			
 			odo.setXYT(Lab5.TILE_SIZE, Lab5.TILE_SIZE, 0);
 			
-			movCon.travelTo(PLLX, PLLY);
+			movCon.travelTo(PLLX, PLLY,false);
 			
 			
 
@@ -115,7 +115,7 @@ public class LLnavigator {
 		}
 		else if (StartC == 3) {
 			//us localize
-			usLocalizer.run();
+			usLocalizer.fallingEdge();
 			//light localize (2 steps)
 			//NEED TO SET X AND Y AXES
 			axesLocalizer.estimatePosition(); //sets the X and Y approx.
@@ -129,7 +129,7 @@ public class LLnavigator {
 			//move to 0
 			movCon.rotateAngle(90, true);
 			movCon.driveDistance(Lab5.TILE_SIZE/2);
-			movCon.travelTo(Lab5.TILE_SIZE-5,Lab5.TILE_SIZE-5);
+			movCon.travelTo(Lab5.TILE_SIZE-5,Lab5.TILE_SIZE-5,false);
 			
 			//ITS IN CORNER 0
 			interLocalizer.getIntersections();	//finds the 4 axes
@@ -138,7 +138,7 @@ public class LLnavigator {
 			
 			odo.setXYT(Lab5.TILE_SIZE, Lab5.TILE_SIZE, 0);
 			
-			movCon.travelTo(PLLX, PLLY);
+			movCon.travelTo(PLLX, PLLY,false);
 			
 		}
 
