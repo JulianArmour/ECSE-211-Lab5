@@ -29,8 +29,8 @@ public class SearchAlgoTest {
     // Global Parameters
     private static final int LLx = 3;
     private static final int LLy = 3;
-    private static final int URx = 7;
-    private static final int URy = 7;
+    private static final int URx = 5;
+    private static final int URy = 5;
     private static final int SC = 0;
     private static final int TR = 0;
     

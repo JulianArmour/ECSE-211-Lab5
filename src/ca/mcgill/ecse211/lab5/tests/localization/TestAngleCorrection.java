@@ -100,6 +100,7 @@ public class TestAngleCorrection {
         
         
         odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
+        (new Thread(odometer)).run();
         
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
