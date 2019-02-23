@@ -54,11 +54,11 @@ public class SearchNavigator implements TimerListener {
 	}
 
 	public void searchPath() {
-
+		
 		// start an angle correction thread
-
-		deltaY = (int) (urY - llY);
-		deltaX = (int) (urX - llX);
+		System.out.println("Beggining -> x`Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+		deltaY =  (urY - llY);
+		deltaX =  (urX - llX);
 
 		movementController.driveDistance(-TILE_LENGTH / 2);
 		movementController.turnTo(90);
@@ -71,7 +71,7 @@ public class SearchNavigator implements TimerListener {
 		timer = new Timer(CAN_SCAN_PERIOD, this);
 		
 
-		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
+		Xdistance = ((double)deltaX + 0.5)*TILE_LENGTH;
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
 		System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
@@ -93,6 +93,7 @@ public class SearchNavigator implements TimerListener {
 		timer.stop();
 		// robot is now within DESTINATION_THRESHOLD, move remaining distance
 		System.out.println("arriving in 1 sec");
+		System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
 		movementController.travelTo(destination[0], destination[1], false);
 		System.out.println("arrived at destination");
 		movementController.turnTo(90);
@@ -107,7 +108,7 @@ public class SearchNavigator implements TimerListener {
 			angleCorrector.quickThetaCorrection();
 
 			// start traveling
-			Ydistance = (n + 1) * TILE_LENGTH;
+			Ydistance = ((double)n + 1.5) * TILE_LENGTH;
 
 			if(movementController.roundAngle()==0) {
 				System.out.println("Angle 0 detected, going up");
@@ -155,7 +156,7 @@ public class SearchNavigator implements TimerListener {
 			
 			
 			//starts moving parallel to the x-axis
-			Xdistance = (m + 1) * TILE_LENGTH;
+			Xdistance = ((double)m + 1.5) * TILE_LENGTH;
 
 			if(movementController.roundAngle() == 90) {
 				double [] currentPos = odometer.getXYT();
