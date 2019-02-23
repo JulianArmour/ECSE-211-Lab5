@@ -58,7 +58,9 @@ public class wallFollower {
         
         
         // do 7/8th of a circle around the can
-        while (odoBeforeWallFollow[2] + 40 <= odo.getXYT()[2] && odo.getXYT()[2] < odoBeforeWallFollow[2] + 45) {
+        //((theta - heading + 360) % 360)
+        double breakOutAngle = odoBeforeWallFollow[2] + 40.0;
+        while (Math.abs(odo.getXYT()[2] - breakOutAngle) > 20) {
             
         	// polls the ColorSensor and puts it in an array
         	float [] colorData = colorsensor.fetchColorSamples();
