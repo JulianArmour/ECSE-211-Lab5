@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.lab5.tests;
 
+import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.display.Display;
 
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
@@ -150,7 +151,7 @@ public class SearchAlgoTest {
 			
 			buttonChoice = Button.waitForAnyPress();
 		}
-		while (buttonChoice != Button.ID_RIGHT);
+		while (buttonChoice != Button.ID_RIGHT && buttonChoice != Button.ID_LEFT);
 		
 		/** If left button is pressed, run ultrasonicLocalizer taking into account that we're not facing the wall,
 		 * hence executing the risingEdge method. Once the risingEdge method is executed, run the LightLocalizer
@@ -161,6 +162,8 @@ public class SearchAlgoTest {
 			odometer.setXYT(PLLx, PLLy, 0);
 			searchNavigator.searchPath();
 			
+		} else if (buttonChoice == Button.ID_LEFT) {
+			movementController.driveDistance(4*Lab5.TILE_SIZE);
 		}
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
