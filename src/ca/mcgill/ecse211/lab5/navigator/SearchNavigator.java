@@ -114,11 +114,9 @@ public class SearchNavigator implements TimerListener {
 			
 
 			// start traveling
-<<<<<<< HEAD
-			Ydistance = ((double)n + 1.5) * TILE_LENGTH;
-=======
-			Ydistance = (n + 1.2) * TILE_LENGTH;
->>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
+
+			Ydistance = ((double)n + 1.2) * TILE_LENGTH;
+
 
 			if(movementController.roundAngle()==0) {
 				System.out.println("Angle 0 detected, going up");
@@ -171,11 +169,8 @@ public class SearchNavigator implements TimerListener {
 			
 			
 			//starts moving parallel to the x-axis
-<<<<<<< HEAD
-			Xdistance = ((double)m + 1.5) * TILE_LENGTH;
-=======
-			Xdistance = (m + 1.2) * TILE_LENGTH;
->>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
+			Xdistance = ((double)m + 1.2) * TILE_LENGTH;
+
 
 			if(movementController.roundAngle() == 90) {
 				double [] currentPos = odometer.getXYT();
