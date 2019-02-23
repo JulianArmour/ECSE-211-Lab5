@@ -57,7 +57,6 @@ public class ColourDetector {
 		if(colorMatch(NRMean, NGMean, NBMean) == canColor) return true;
 		return false;
 	}
-	//Method
 	private static int colorMatch(float RMean, float GMean, float BMean) {
 		Float dRCan, dBCan, dYCan, dGCan;
 		float min;
