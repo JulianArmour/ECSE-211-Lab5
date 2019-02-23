@@ -28,8 +28,8 @@ public class SearchAlgoTest {
     // Global Parameters
     private static final int LLx = 3;
     private static final int LLy = 3;
-    private static final int URx = 7;
-    private static final int URy = 7;
+    private static final int URx = 5;
+    private static final int URy = 5;
     private static final int SC = 0;
     private static final int TR = 0;
     
@@ -49,7 +49,7 @@ public class SearchAlgoTest {
 	/** The tile's length. */
     public static final double TILE_SIZE = 30.48;
 	public static final double WHEEL_RAD = 2.1;
-	public static final double TRACK = 11.9;
+	public static final double TRACK = 11.8;
 	public static boolean wall;
 	
     private static MovementController movementController;

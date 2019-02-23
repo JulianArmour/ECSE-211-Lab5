@@ -56,7 +56,7 @@ public class IntersectionLocalizer {
 			diffLightSensor.getDeltaL();
 			
 			while(!lineDetected) {
-				int deltaL = diffLightSensor.getDeltaL();
+				int deltaL = (int) diffLightSensor.getDeltaL();
 //				System.out.println(deltaL);
 				
 				if (Math.abs(deltaL) >= DIFFERENTIAL_THRESHOLD) {

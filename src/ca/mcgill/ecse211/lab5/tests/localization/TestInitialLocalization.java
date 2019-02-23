@@ -1,11 +1,15 @@
 package ca.mcgill.ecse211.lab5.tests.localization;
 
+import ca.mcgill.ecse211.lab5.localization.AxesLocalizer;
+import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
+import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
+import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -15,7 +19,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class TestAngleCorrection {
+public class TestInitialLocalization {
     // Global Parameters
     private static final int LLx = 3;
     private static final int LLy = 3;
@@ -64,6 +68,10 @@ public class TestAngleCorrection {
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
     private static angleCorrection angleCorrection;
+    private static MedianDistanceSensor medSensor;
+    private static USAngleCorrector usAngleCorrector;
+    private static AxesLocalizer axesLocalizer;
+    private static IntersectionLocalizer intersectionLocalizer;
 
     public static void main(String[] args) throws OdometerExceptions {
         int buttonChoice;
@@ -100,7 +108,6 @@ public class TestAngleCorrection {
         
         
         odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-        (new Thread(odometer)).run();
         
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
@@ -109,7 +116,11 @@ public class TestAngleCorrection {
         
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
                                               movementController, odometer);
-
+        medSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
+        usAngleCorrector = new USAngleCorrector(movementController, odometer, medSensor);
+        axesLocalizer = new AxesLocalizer(movementController, odometer, leftDifferentialLightSensor, rightDifferentialLightSensor);
+        intersectionLocalizer = new IntersectionLocalizer(leftDifferentialLightSensor, movementController, odometer);
+        
         do {
             lcd.clear();
             lcd.drawString("Press ^UP^ to start", 0, 0);
@@ -119,8 +130,15 @@ public class TestAngleCorrection {
         
         if (buttonChoice == Button.ID_UP) {
             while (buttonChoice != Button.ID_ESCAPE) {
-                angleCorrection.quickThetaCorrection();
-                System.out.println(odometer.getXYT()[2]);
+                usAngleCorrector.fallingEdge();
+                axesLocalizer.estimatePosition();
+                axesLocalizer.travelCloseToOrigin();
+                intersectionLocalizer.getIntersections();
+                intersectionLocalizer.correctAngle();
+                intersectionLocalizer.correctPosition();
+                movementController.travelTo(0, 0, false);
+                movementController.turnTo(0);
+                
                 buttonChoice = Button.waitForAnyPress();
             }
         }

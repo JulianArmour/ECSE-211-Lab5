@@ -3,7 +3,7 @@ package ca.mcgill.ecse211.lab5.navigator;
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.AxesLocalizer;
 import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
-import ca.mcgill.ecse211.lab5.localization.USLocalisation;
+import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 
 public class LLnavigator {
@@ -11,14 +11,14 @@ public class LLnavigator {
 	private static int StartC;
 	private static double PLLX;
 	private static double PLLY;
-	private USLocalisation usLocalizer;
+	private USAngleCorrector usLocalizer;
 	private IntersectionLocalizer interLocalizer;
 	private AxesLocalizer axesLocalizer;
 	private MovementController movCon;
 	private Odometer odo;
 	
 
-	public LLnavigator(int SC, double PPLLX, double PPLLY, USLocalisation usLocalizer,
+	public LLnavigator(int SC, double PPLLX, double PPLLY, USAngleCorrector usLocalizer,
 			IntersectionLocalizer interLocalizer, AxesLocalizer axesLocalizer, 
 			MovementController movCon,Odometer odo) {
 
@@ -37,7 +37,7 @@ public class LLnavigator {
 
 		if (StartC == 0) {
 			//us localize
-			usLocalizer.run();
+			usLocalizer.fallingEdge();
 			
 			
 			//light localize (2 steps)
@@ -47,13 +47,13 @@ public class LLnavigator {
 			interLocalizer.correctAngle();		//corrects theta
 			interLocalizer.correctPosition();	//corrects X and Y pos.
 			
-			//navigate to PLLX,PLLY
-			movCon.travelTo(PLLX, PLLY);
+			//navigate to PLLX,PLLY WUT
+		//	movCon.travelTo(PLLX, PLLY);
 		}
 
 		else if (StartC == 1) {
 			//us localize
-			usLocalizer.run();
+			usLocalizer.fallingEdge();
 			//light localize (2 steps)
 			//NEED TO SET X AND Y AXES
 			axesLocalizer.estimatePosition(); //sets the X and Y approx.

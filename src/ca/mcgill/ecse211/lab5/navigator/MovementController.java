@@ -11,8 +11,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * @version 1.2
  */
 public class MovementController {
-    private static final int ROTATE_SPEED = 45;
-    private static final int FORWARD_SPEED = 150;
+    private static final int ROTATE_SPEED = 80;
+    private static final int FORWARD_SPEED = 200;
     private EV3LargeRegulatedMotor leftMotor;
     private EV3LargeRegulatedMotor rightMotor;
     private Odometer odometer;
@@ -35,6 +35,8 @@ public class MovementController {
         this.odometer = odometer;
         this.wheelRadius = wheelRadius;
         this.track = track;
+        leftMotor.setAcceleration(1000);
+        rightMotor.setAcceleration(1000);
     }
 
     /**
@@ -160,10 +162,10 @@ public class MovementController {
         rightMotor.stop(false);
     }
     
-    public void stopMotor(boolean right) {
+    public void stopMotor(boolean right, boolean immediateReturn) {
     	
-    	if(right) rightMotor.stop(true);
-    	else leftMotor.stop(true);
+    	if(right) rightMotor.stop(immediateReturn);
+    	else leftMotor.stop(immediateReturn);
     	
     }
     
@@ -207,10 +209,12 @@ public class MovementController {
      */
     public double calculateDistance(double Xi, double Yi, double Xf, double Yf) {
     	 double dx = Xf - Xi;
-         double dy = Yf - Yf;
-  
+
+         double dy = Yf - Yi;
+
     	 double distanceToWaypoint = Math.sqrt(dx * dx + dy * dy);
     	 return distanceToWaypoint;
+         
     	 //
     }
     
@@ -308,8 +312,8 @@ public class MovementController {
 	 * 
 	 * @return the angle of the odometer, roundest to the nearest 0,90,180,270 angle
 	 */
-	public double roundAngle() {
-		double roundedTheta = (Math.round(odometer.getXYT()[2]/90.0)*90)%360; //Kazour method
+	public int roundAngle() {
+		int roundedTheta = (int) ((Math.round(odometer.getXYT()[2]/90.0)*90)%360); //Kazour method
 		return roundedTheta;
 	}
 }

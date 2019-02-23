@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
+import java.awt.image.TileObserver;
+
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
@@ -11,8 +13,8 @@ import lejos.utility.TimerListener;
 public class SearchNavigator implements TimerListener {
 
 
-
-	private static final double DESTINATION_THRESHOLD = 2.0;
+	private double TILE_LENGTH = Lab5.TILE_SIZE;
+	private static final double DESTINATION_THRESHOLD = Lab5.TILE_SIZE/3;
 	private static final int CAN_SCAN_PERIOD = 100;
 	private Odometer odometer;
 	private MovementController movementController;
@@ -23,7 +25,7 @@ public class SearchNavigator implements TimerListener {
 	private int llY;
 	private int urX;
 	private int urY;
-	private double TILE_LENGTH = Lab5.TILE_SIZE;
+	
 	private int deltaY;
 	private int deltaX;
 	private double distanceLeft;
@@ -58,19 +60,25 @@ public class SearchNavigator implements TimerListener {
 		deltaY = (int) (urY - llY);
 		deltaX = (int) (urX - llX);
 
-		movementController.driveDistance(-TILE_LENGTH / 2);
+		movementController.driveDistance(-TILE_LENGTH*0.7);
 		movementController.turnTo(90);
+		
+		
+		
 		// hardcoded part on x axis
 
 		// create the timer
 		timer = new Timer(CAN_SCAN_PERIOD, this);
 		
 
-		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
+		Xdistance = (deltaX + 0.7)*TILE_LENGTH;
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
 		System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
-		System.out.println("X: " +destination[0] + "Y: " + destination[1]);
+		System.out.println("destX: " +destination[0] + "destY: " + destination[1]);
+		
+		angleCorrector.quickThetaCorrection();
+		
 		movementController.travelTo(destination[0], destination[1],true);
 
 		// check for cans while driving
@@ -79,7 +87,7 @@ public class SearchNavigator implements TimerListener {
 		//pause until robot reaches destination
 		while (distanceToDestination() > DESTINATION_THRESHOLD) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(300);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -87,41 +95,55 @@ public class SearchNavigator implements TimerListener {
 		// stop looking for cans
 		timer.stop();
 		// robot is now within DESTINATION_THRESHOLD, move remaining distance
+		System.out.println("arriving in 1 sec");
+		System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
 		movementController.travelTo(destination[0], destination[1], false);
-		movementController.turnTo(0);
+		System.out.println("arrived at destination");
+		System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+		movementController.turnTo(90);
+		
 
 
 		// for loop of remaining path
 		for (int n = deltaX, m = deltaY, i = 0; n > 0 & m > 0 & i < 10; n--, m--, i++) {
 
 			movementController.rotateAngle(90, false);
-			// perform a quick angle correction
-			angleCorrector.quickThetaCorrection();
+			movementController.driveDistance(5, false);
+			
 
 			// start traveling
-			Ydistance = (n + 1) * TILE_LENGTH;
+			Ydistance = (n + 1.2) * TILE_LENGTH;
 
 			if(movementController.roundAngle()==0) {
+				System.out.println("Angle 0 detected, going up");
 				double[] currentPos = odometer.getXYT();
 				destination[0] = currentPos[0];
 				destination[1] = currentPos[1]+Ydistance;
 				destination[2] = currentPos[2];
+				System.out.println("next Y dest is X: " +destination[0] + "Y: " + destination[1]);
 			}
 			else if(movementController.roundAngle() == 180) {
+				System.out.println("Angle 180 detected, going down");
 				double[] currentPos = odometer.getXYT();
 				destination[0] = currentPos[0];
 				destination[1] = currentPos[1]-Ydistance;
 				destination[2] = currentPos[2];
+				System.out.println("next Y dest is X: " + destination[0] + "Y: " + destination[1]);
 			}
-
+			
+			// perform a quick angle correction
+            
+			angleCorrector.quickThetaCorrection();
+			
 			movementController.travelTo(destination[0], destination[1],true);
+			
 			// check for cans
 			timer.start();
 
 			// pause until destination is reached
 			while (distanceToDestination() > DESTINATION_THRESHOLD) {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(300);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -129,29 +151,39 @@ public class SearchNavigator implements TimerListener {
 			// stop looking for cans
 			timer.stop();
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
-			double currentAngle = odometer.getXYT()[2];
-			movementController.travelTo(destination[0], destination[1], false);
+			double currentAngle = movementController.roundAngle();
+			System.out.println("Xodo: " +odometer.getXYT()[0] + "Yodo: " + odometer.getXYT()[1]);
+			System.out.println("arrived at next Ydestination");
 			movementController.turnTo(currentAngle);
-
+			System.out.println("will now travel at theta:" + currentAngle);
 			// move in y direction after reaching destination
 
 			movementController.rotateAngle(90, false);
-			angleCorrector.quickThetaCorrection();
+			movementController.driveDistance(5, false);
+		
 
-			Xdistance = (m + 1) * TILE_LENGTH;
+			
+			
+			//starts moving parallel to the x-axis
+			Xdistance = (m + 1.2) * TILE_LENGTH;
 
 			if(movementController.roundAngle() == 90) {
 				double [] currentPos = odometer.getXYT();
 				destination[0]=currentPos[0] + Xdistance;
 				destination[1]=currentPos[1];
 				destination[2]= currentPos[2];
+				System.out.println("next X dest is X: " +destination[0] + "Y: " + destination[1]);
 			}
 			else if (movementController.roundAngle() == 270) {
 				double [] currentPos = odometer.getXYT();
 				destination[0]=currentPos[0] - Xdistance;
 				destination[1]=currentPos[1];
 				destination[2]= currentPos[2];
+				System.out.println("next X dest is X: " +destination[0] + "Y: " + destination[1]);
 			}
+			
+			angleCorrector.quickThetaCorrection();
+			 
 			movementController.travelTo(destination[0], destination[1],true);
 			timer.start();
 
@@ -168,6 +200,7 @@ public class SearchNavigator implements TimerListener {
 			// robot is now within DESTINATION_THRESHOLD, move remaining distance
 			currentAngle = odometer.getXYT()[2];
 			movementController.travelTo(destination[0], destination[1], false);
+			System.out.println("arrived at next Xdestination");
 			movementController.turnTo(currentAngle);
 		}
 		//
