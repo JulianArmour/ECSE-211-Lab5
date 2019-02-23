@@ -53,6 +53,10 @@ public class CircleFollow {
          	movementController.rotateAngle(90, false);
          	movementController.driveDistance((distance-5), false);
          	movementController.rotateAngle(90, true);
+         } else {
+             movementController.rotateAngle(90, true);
+             movementController.driveDistance((distance+5), false);
+             movementController.rotateAngle(90, true);
          }
          
          movementController.goInCircularPath();

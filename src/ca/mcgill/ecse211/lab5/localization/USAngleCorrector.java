@@ -113,7 +113,7 @@ public class USAngleCorrector {
             dTheta = 340 - (alpha + beta) / 2;
             System.out.println("alpha <= beta");
         } else {
-            dTheta = 165 - (alpha + beta) / 2;
+            dTheta = 162 - (alpha + beta) / 2;
             System.out.println("alpha > beta");
         }
         
