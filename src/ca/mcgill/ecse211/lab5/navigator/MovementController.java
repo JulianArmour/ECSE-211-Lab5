@@ -256,7 +256,7 @@ public class MovementController {
     }
     
     public void turnLeft(int MOTOR_SPEED, int delta) {
-		leftMotor.setSpeed(MOTOR_SPEED - delta);
+		leftMotor.setSpeed(MOTOR_SPEED);
 		rightMotor.setSpeed(MOTOR_SPEED + delta);
 		leftMotor.forward();
 		rightMotor.forward();
@@ -265,7 +265,7 @@ public class MovementController {
 	
 	public void turnRight(int MOTOR_SPEED, int delta) {
 		leftMotor.setSpeed(MOTOR_SPEED + delta);
-		rightMotor.setSpeed(MOTOR_SPEED - delta);
+		rightMotor.setSpeed(MOTOR_SPEED);
 		leftMotor.forward();
 		rightMotor.forward();
 	}
