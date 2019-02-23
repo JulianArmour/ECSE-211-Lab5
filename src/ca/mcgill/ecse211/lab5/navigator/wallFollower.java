@@ -13,10 +13,10 @@ import lejos.robotics.ColorDetector;
 
 public class wallFollower {
 
-    private static int BAND_CENTER = 5; // (in cm)
+    private static int BAND_CENTER = 3; // (in cm)
     private static int BAND_WIDTH = 1; // (in cm)
-    private static int MAX_DELTA = 50;
-    private static double pFactor = 1.5;
+    private static int MAX_DELTA = 150;
+    private static double pFactor = 3.5;
     private MovementController movementControler;
     private Odometer odo;
     private ColourLightSensor colorsensor;
@@ -89,7 +89,7 @@ public class wallFollower {
 
                 // too close to the wall
                 if (error >= 0) {
-                    movementControler.turnRight(MOTOR_SPEED, scaledDelta + 10);
+                    movementControler.turnRight(MOTOR_SPEED, scaledDelta);
                 }
                 // too far away from the wall
                 else {
