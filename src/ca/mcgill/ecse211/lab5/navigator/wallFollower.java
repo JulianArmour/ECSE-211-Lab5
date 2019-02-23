@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
 import java.util.List;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
@@ -109,7 +110,14 @@ public class wallFollower {
         // make the robot go back to it's original position and orientation
         movementControler.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
         movementControler.turnTo(odoBeforeWallFollow[2]);
-        colourdata =  (float[][]) LTdata.toArray();
+//        colourdata =  (float[][]) LTdata.toArray();
+        colourdata = new float[LTdata.size()][3];
+        int i = 0;
+        for (Iterator<float[]> iterator = LTdata.iterator(); iterator.hasNext();) {
+            colourdata[i] = (float[]) iterator.next();
+            i++;
+        }
+        
         if(ColourDetector.verifyCan(colourdata, TARGET_COLOR)) {
             //beep once
             Sound.beep();
