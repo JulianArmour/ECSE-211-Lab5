@@ -255,17 +255,17 @@ public class MovementController {
     	return angleToHead;
     }
     
-    public void turnLeft(int MOTOR_SPEED, int delta) {
-		leftMotor.setSpeed(MOTOR_SPEED);
-		rightMotor.setSpeed(MOTOR_SPEED + delta);
+    public void turnLeft(int motorSpeed, int delta) {
+		leftMotor.setSpeed(motorSpeed - delta);
+		rightMotor.setSpeed(motorSpeed + delta);
 		leftMotor.forward();
 		rightMotor.forward();
 	}
 
 	
-	public void turnRight(int MOTOR_SPEED, int delta) {
-		leftMotor.setSpeed(MOTOR_SPEED + delta);
-		rightMotor.setSpeed(MOTOR_SPEED);
+	public void turnRight(int motorSpeed, int delta) {
+		leftMotor.setSpeed(motorSpeed + delta);
+		rightMotor.setSpeed(motorSpeed - delta);
 		leftMotor.forward();
 		rightMotor.forward();
 	}

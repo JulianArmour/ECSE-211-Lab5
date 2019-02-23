@@ -24,7 +24,7 @@ public class angleCorrection {
 	}
 
 	public void quickThetaCorrection() {
-	    for (int i = 0; i < 1; i++) {
+	    for (int i = 0; i < 2; i++) {
 	        boolean RLineDetected=false;
 	        boolean LLineDetected=false;
 	        
@@ -32,10 +32,10 @@ public class angleCorrection {
             dLTright.flush();
             dLTleft.flush();
             if (i == 0) {
-                movCon.driveForward(80);
+                movCon.driveForward(100);
             }
             else {
-                movCon.driveForward(60);
+                movCon.driveForward(40);
             }
             
             while (!RLineDetected || !LLineDetected) {
@@ -71,9 +71,9 @@ public class angleCorrection {
                 }
 
             }
-//            if (i < 2) {
-//                movCon.driveDistance(-3.0);
-//            }
+            if (i < 2) {
+                movCon.driveDistance(-3.0);
+            }
         }
 	    
 	    
