@@ -4,4 +4,8 @@
 /TestAngleCorrection.jar
 /SearchAlgoTest.jar
 /WallfollowerTest.jar
+<<<<<<< HEAD
+=======
+/StartAndEndPointsTest.jar
+>>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
 /TestInitialLocalization.jar

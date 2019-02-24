@@ -19,7 +19,7 @@ public class SearchNavigator implements TimerListener {
 	private Odometer odometer;
 	private MovementController movementController;
 	private MedianDistanceSensor USdata;
-	private wallFollower wallF;
+	private CircleFollow circleFollower;
 	private angleCorrection angleCorrector;
 	private int llX;
 	private int llY;
@@ -39,7 +39,7 @@ public class SearchNavigator implements TimerListener {
 	Timer timer;
 
 	public SearchNavigator(Odometer odometer, MovementController movementController, int llX, int llY, int urX, int urY,
-			MedianDistanceSensor USdata, wallFollower wallFollower, angleCorrection angleCorrector) {
+			MedianDistanceSensor USdata, CircleFollow circleFollow, angleCorrection angleCorrector) {
 
 		this.odometer = odometer;
 		this.movementController = movementController;
@@ -49,7 +49,7 @@ public class SearchNavigator implements TimerListener {
 		this.llY = llY;
 		this.urX = urX;
 		this.urY = urY;
-		this.wallF = wallFollower;
+		this.circleFollower = circleFollow;
 		this.currentPos = new double[3];
 	}
 
@@ -232,7 +232,7 @@ public class SearchNavigator implements TimerListener {
 
 
 			// goes into wallfollowing mode and collects colour data
-			wallF.wallFollow();
+			circleFollower.followCircularPath();
 			// Note: at this point the robot is back to where it was before wall-following
 
 			// angle correction

@@ -6,6 +6,7 @@ import ca.mcgill.ecse211.lab5.localization.AxesLocalizer;
 import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.navigator.CircleFollow;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.navigator.SearchNavigator;
@@ -82,7 +83,7 @@ public class StartAndEndPointsTest {
     private static DifferentialLightSensor rightDifferentialLightSensor;
     private static angleCorrection angleCorrection;
     private static SearchNavigator searchNavigator;
-    private static wallFollower wallFollower;
+    private static CircleFollow circleFollower;
     private static MedianDistanceSensor medianDistanceSensor;
     private static ColourLightSensor colourLightSensor;
     private static LLnavigator lLnavigator;
@@ -129,7 +130,9 @@ public class StartAndEndPointsTest {
         odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
         Thread odoThread= new Thread(odometer);
         odoThread.start();
+        
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
+        medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
         usLocalizer = new USAngleCorrector(movementController, odometer, medianDistanceSensor);
         
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
@@ -140,10 +143,9 @@ public class StartAndEndPointsTest {
         
 
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
-        medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
-        wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
-     
-        searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, wallFollower,  angleCorrection);
+      
+       circleFollower = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
+        searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, circleFollower, angleCorrection);
        
         intersectionLocalizer = new IntersectionLocalizer(leftDifferentialLightSensor, movementController, odometer);
         
