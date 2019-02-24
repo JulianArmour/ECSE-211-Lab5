@@ -16,6 +16,7 @@ public class LLnavigator {
 	private AxesLocalizer axesLocalizer;
 	private MovementController movCon;
 	private Odometer odo;
+	private double TILE_LENGTH = Lab5.TILE_SIZE;
 	
 
 	public LLnavigator(int SC, double PPLLX, double PPLLY, USAngleCorrector usLocalizer,
@@ -47,8 +48,17 @@ public class LLnavigator {
 			interLocalizer.correctAngle();		//corrects theta
 			interLocalizer.correctPosition();	//corrects X and Y pos.
 			
-			//navigate to PLLX,PLLY WUT
-		//	movCon.travelTo(PLLX, PLLY);
+			movCon.travelTo(0, 0, false);
+			movCon.turnTo(0);
+			
+			
+			
+			odo.setXYT(Lab5.TILE_SIZE, Lab5.TILE_SIZE, 0);
+			
+			
+			
+			//navigate to PLLX,PLLY 
+			movCon.travelTo(PLLX, PLLY,false);
 		}
 
 		else if (StartC == 1) {
