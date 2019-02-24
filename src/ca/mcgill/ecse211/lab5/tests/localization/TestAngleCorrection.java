@@ -92,7 +92,7 @@ public class TestAngleCorrection {
         backRightLSProvider = backRightLS.getMode("Red");
         backRightLSSample = new float[backRightLSProvider.sampleSize()];
         
-//        // set up side light sensor
+        // set up side light sensor
 //        sideLSPort = LocalEV3.get().getPort("S4");
 //        sideLS= new EV3ColorSensor(sideLSPort);
 //        sideLSProvider = sideLS.getMode("RGB");
@@ -100,7 +100,8 @@ public class TestAngleCorrection {
         
         
         odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
-        (new Thread(odometer)).run();
+        (new Thread(odometer)).start();
+        
         
         movementController = new MovementController(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
         
@@ -109,6 +110,7 @@ public class TestAngleCorrection {
         
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
                                               movementController, odometer);
+        
 
         do {
             lcd.clear();
@@ -120,7 +122,8 @@ public class TestAngleCorrection {
         if (buttonChoice == Button.ID_UP) {
             while (buttonChoice != Button.ID_ESCAPE) {
                 angleCorrection.quickThetaCorrection();
-                System.out.println(odometer.getXYT()[2]);
+//                System.out.println(odometer.getXYT()[2]);
+                movementController.driveDistance(TILE_SIZE);
                 buttonChoice = Button.waitForAnyPress();
             }
         }
