@@ -6,6 +6,7 @@ import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
+import lejos.hardware.lcd.LCD;
 import lejos.utility.Timer;
 import lejos.utility.TimerListener;
 
@@ -80,7 +81,6 @@ public class SearchNavigator implements TimerListener {
 		System.out.println("destX: " +destination[0] + "destY: " + destination[1]);
 		
 		angleCorrector.quickThetaCorrection();
-		
 		movementController.travelTo(destination[0], destination[1],true);
 
 		// check for cans while driving
@@ -138,7 +138,6 @@ public class SearchNavigator implements TimerListener {
 			// perform a quick angle correction
             
 			angleCorrector.quickThetaCorrection();
-			
 			movementController.travelTo(destination[0], destination[1],true);
 			
 			// check for cans

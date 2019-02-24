@@ -8,6 +8,7 @@ import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
 
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.navigator.CircleFollow;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.navigator.SearchNavigator;
@@ -85,6 +86,7 @@ public class SearchPathTest {
     private static wallFollower wallFollower;
     private static MedianDistanceSensor medianDistanceSensor;
     private static ColourLightSensor colourLightSensor;
+    private static CircleFollow circleFollow;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
@@ -136,12 +138,18 @@ public class SearchPathTest {
 
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
         medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
-        wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
+        //wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
+        circleFollow = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, 0);
      
-        searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, wallFollower,  angleCorrection);
+        searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, circleFollow,  angleCorrection);
        
         
-        
+        (new Thread() {
+        	public void run() {
+        		while (Button.waitForAnyPress() != Button.ID_ESCAPE); // Terminate when escape is pressed
+	    	    System.exit(0);
+        	}
+        }).start();
         
 		do {
 			/**

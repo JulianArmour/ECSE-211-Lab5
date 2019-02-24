@@ -138,11 +138,9 @@ public class WallfollowerTest {
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
         medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
         wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
-     
-        searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, wallFollower,  angleCorrection);
        
         circleFollower = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
-        
+        searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, circleFollower,  angleCorrection);
         
 		do {
 			/**

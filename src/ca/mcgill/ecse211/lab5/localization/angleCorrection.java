@@ -3,6 +3,7 @@ package ca.mcgill.ecse211.lab5.localization;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
+import lejos.hardware.lcd.LCD;
 
 public class angleCorrection {
 
@@ -37,7 +38,6 @@ public class angleCorrection {
             else {
                 movCon.driveForward(40);
             }
-            
             while (!RLineDetected || !LLineDetected) {
                 //poll right sensor
                 int deltaR = (int) (dLTright.getDeltaL() * 100);
@@ -49,6 +49,7 @@ public class angleCorrection {
 //                    System.out.println("right sensor detected line");
                 
 //                    System.out.println(RLineDetected);
+                    
 //                    System.out.println(LLineDetected);
                     
                     movCon.stopMotor(true, false);

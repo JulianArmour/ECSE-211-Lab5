@@ -22,10 +22,10 @@ public class CircleFollow {
 	private static double Wheel_RADIUS = 2.1;
 	private static int TARGET_COLOR;
     private double distance;
-    private float[][] colourData;
+    private float[] colourData;
 	
 	 private double[] odoBeforeWallFollow;
-	 private List<float[]> LTdata;
+	 private float[][] LTdata = new float[100][3];
 	
 	
 	public CircleFollow(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
@@ -35,7 +35,7 @@ public class CircleFollow {
 		this.medianDistanceSensor = USfilter;
 		this.colourLightSensor = colorsensor;
 		this.TARGET_COLOR = TARGET_COLOR;
-		this.LTdata = new LinkedList<float[]>();
+		//this.LTdata = new LinkedList<float[]>();
 		
 	}
 	
@@ -47,7 +47,7 @@ public class CircleFollow {
 		 
 		 
 		 distance = medianDistanceSensor.getFilteredDistance();
-         
+         /** 
          if (distance > 5) {
          	
          	movementController.rotateAngle(90, false);
@@ -58,41 +58,43 @@ public class CircleFollow {
              movementController.driveDistance((distance+5), false);
              movementController.rotateAngle(90, true);
          }
-         
+         **/
          movementController.goInCircularPath();
 		 
 	     while (Math.abs(odometer.getXYT()[2] - breakOutAngle) > 20) {
-	        	
+	        	int i = 0;
+	    	 if(i <100) {
 	        	// polls the ColorSensor and puts it in an array
 	        	float[] colorData = colourLightSensor.fetchColorSamples();
 	        	
 	        	if (colorData[0] > 0.001 || colorData[1] > 0.001 || colorData[2] > 0.001) {
-	                LTdata.add(colorData);
+	                LTdata[i] = colorData;
+	                i++;
 	        	}
 	        	
 	        	
 	            try {
-	                Thread.sleep(100);
+	                Thread.sleep(750);
 	            } catch (InterruptedException e) {
 	                e.printStackTrace();
 
 	            }
-	            
+	    	 }
 	        	
 	        }
-	     movementController.stopMotor(true, true);
-	     movementController.stopMotor(false, false);
-	     movementController.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
+	     	movementController.stopMotor(true, true);
+	     	movementController.stopMotor(false, false);
+	     	movementController.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
 	        movementController.turnTo(odoBeforeWallFollow[2]);
-	        colourData =  (float[][]) LTdata.toArray();
-	        colourData = new float[LTdata.size()][3];
+	        /**colourData = new float[LTdata.size()];
+	        colourData = (float[]) LTdata.toArray();
 	        int i = 0;
 	        for (Iterator<float[]> iterator = LTdata.iterator(); iterator.hasNext();) {
 	            colourData[i] = (float[]) iterator.next();
 	            i++;
 	        }
-	        
-	        if(ColourDetector.verifyCan(colourData, TARGET_COLOR)) {
+	        **/
+	        if(ColourDetector.verifyCan(LTdata, TARGET_COLOR)) {
 	            //beep once
 	            Sound.beep();
 	        }

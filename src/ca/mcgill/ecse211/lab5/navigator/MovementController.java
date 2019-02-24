@@ -150,7 +150,9 @@ public class MovementController {
         leftMotor.setSpeed(speed);
         rightMotor.setSpeed(speed);
         
-       driveDistance(15, true);
+        leftMotor.forward();
+        rightMotor.forward();
+       //driveDistance(15, true);
     }
     
     /**
@@ -317,8 +319,8 @@ public class MovementController {
 	}
 	
 	public void goInCircularPath() {
-		leftMotor.setSpeed(ROTATE_SPEED);
-        rightMotor.setSpeed((int)(ROTATE_SPEED*2.0));
+		leftMotor.setSpeed(ROTATE_SPEED + 50);
+        rightMotor.setSpeed((int)(ROTATE_SPEED*4) + 50);
         
         
         leftMotor.forward();
