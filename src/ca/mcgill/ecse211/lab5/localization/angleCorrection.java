@@ -12,8 +12,8 @@ public class angleCorrection {
 	private MovementController movCon;
 	private Odometer odo;
 	private static int POLLING_PERIOD = 20;
-	private static int FIRST_DIFFERENCE_THRESHOLD = 280;
-	private static int SECOND_DIFFERENCE_THRESHOLD = 250;
+	private static float FIRST_DIFFERENCE_THRESHOLD = 4.0f;
+	private static float SECOND_DIFFERENCE_THRESHOLD = 1.5f;
 	
 
 	//constructor
@@ -30,7 +30,7 @@ public class angleCorrection {
 	        boolean RLineDetected=false;
 	        boolean LLineDetected=false;
 	        
-	        int threshold;
+	        float threshold;
 	        if (i == 0) {
 	            threshold = FIRST_DIFFERENCE_THRESHOLD;
 	        } else {
@@ -48,16 +48,16 @@ public class angleCorrection {
             }
             
             // outside of while for testing purposes, TODO put back in while loop
-            int deltaR = 0;
-            int deltaL = 0;
+            float deltaR = 0f;
+            float deltaL = 0f;
             while (!RLineDetected || !LLineDetected) {
                 //poll right sensor
                 if (!RLineDetected) {
-                    deltaR = (int) (dLTright.getDeltaL() * 100);
+                    deltaR = (dLTright.getDeltaL());
                 }
                 //poll left sensor
                 if (!LLineDetected) {
-                    deltaL = (int) (dLTleft.getDeltaL() * 100);
+                    deltaL = (dLTleft.getDeltaL());
                 }
 
                 if (Math.abs(deltaR) > threshold) {
@@ -65,7 +65,7 @@ public class angleCorrection {
 //                    System.out.println("right sensor detected line");
 //                    System.out.println(RLineDetected);
 //                    System.out.println(LLineDetected);
-                    movCon.stopMotor(true, false);
+                    movCon.stopMotor(true, true);
 //                    System.out.println(deltaR);
                 }
 
@@ -74,7 +74,7 @@ public class angleCorrection {
 //                    System.out.println("left sensor detected line");
 //                    System.out.println(RLineDetected);
 //                    System.out.println(LLineDetected);
-                    movCon.stopMotor(false, false);
+                    movCon.stopMotor(false, true);
 //                    System.out.println(deltaL);
                 }
 
@@ -91,7 +91,7 @@ public class angleCorrection {
             }
         }
 	    
-	    
+	    movCon.resetMotorSpeeds();
         odo.setTheta(movCon.roundAngle());
 //        System.out.println(odo.getXYT()[2]);
 	}

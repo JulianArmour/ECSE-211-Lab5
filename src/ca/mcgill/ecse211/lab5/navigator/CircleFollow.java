@@ -40,28 +40,27 @@ public class CircleFollow {
 	}
 	
 	public void followCircularPath() {
-		medianDistanceSensor.flush();
+//		medianDistanceSensor.flush();
 		odoBeforeWallFollow = odometer.getXYT(); 
 		
-		 double breakOutAngle = odoBeforeWallFollow[2] + 40.0;
+		 double breakOutAngle = odoBeforeWallFollow[2] + 20.0;
 		 
 		 
 		 distance = medianDistanceSensor.getFilteredDistance();
-         /** 
          if (distance > 5) {
          	
          	movementController.rotateAngle(90, false);
          	movementController.driveDistance((distance-5), false);
          	movementController.rotateAngle(90, true);
          } else {
-             movementController.rotateAngle(90, true);
-             movementController.driveDistance((distance+5), false);
+             movementController.rotateAngle(90, false);
+             movementController.driveDistance(-(5-distance), false);//move backwards
              movementController.rotateAngle(90, true);
          }
-         **/
+         
          movementController.goInCircularPath();
 		 
-	     while (Math.abs(odometer.getXYT()[2] - breakOutAngle) > 20) {
+	     while (Math.abs(odometer.getXYT()[2] - breakOutAngle) > 5) {
 	         // polls the ColorSensor and puts it in an array
              float[] colorData = colourLightSensor.fetchColorSamples();
              

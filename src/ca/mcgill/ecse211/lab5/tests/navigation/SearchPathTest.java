@@ -2,6 +2,10 @@ package ca.mcgill.ecse211.lab5.tests.navigation;
 
 
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.display.Display;
 
@@ -36,7 +40,7 @@ public class SearchPathTest {
     private static final int URx = 5;
     private static final int URy = 5;
     private static final int SC = 0;
-    private static final int TR = 0;
+    private static final int TR = 2;
     
     // physical values for LLx, LLy, URx, URy
     private static double PLLx;
@@ -54,7 +58,7 @@ public class SearchPathTest {
 	/** The tile's length. */
     public static final double TILE_SIZE = 30.48;
 	public static final double WHEEL_RAD = 2.1;
-	public static final double TRACK = 11.8;
+	public static final double TRACK = 11.2;
 	public static boolean wall;
 	
     private static MovementController movementController;
@@ -162,7 +166,8 @@ public class SearchPathTest {
 			
 			buttonChoice = Button.waitForAnyPress();
 		}
-		while (buttonChoice != Button.ID_RIGHT && buttonChoice != Button.ID_LEFT);
+		while (buttonChoice != Button.ID_RIGHT && buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_DOWN
+		        && buttonChoice != Button.ID_UP);
 		
 		/** If left button is pressed, run ultrasonicLocalizer taking into account that we're not facing the wall,
 		 * hence executing the risingEdge method. Once the risingEdge method is executed, run the LightLocalizer
@@ -174,13 +179,72 @@ public class SearchPathTest {
 			searchNavigator.searchPath();
 			
 		} else if (buttonChoice == Button.ID_LEFT) {
-			movementController.driveDistance(4*Lab5.TILE_SIZE);
-		}
+//			movementController.driveDistance(4*Lab5.TILE_SIZE);
+		    movementController.rotateAngle(360, true);
+		} else if (buttonChoice == Button.ID_DOWN) {
+            testLightSensor(leftDifferentialLightSensor);
+        } else if (buttonChoice == Button.ID_UP) {
+            characterizeCanDetector(medianDistanceSensor);
+        }
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
 		
 	}
 
-
+	/**
+     * A sensor characterization test for the differential light sensor
+     * 
+     * @param differentialLightSensor A differential Light Sensor that provides the difference between 2
+     *                                subsequent light intensity polls.
+     */
+    private static void testLightSensor(DifferentialLightSensor differentialLightSensor) {
+        List<Float> data = new LinkedList<Float>();
+        
+        Thread movementTest = new Thread() {
+            public void run() {
+                movementController.setMotorSpeeds(30, 30);
+                movementController.driveDistance(5);
+            }
+        };
+        movementTest.start();
+        
+        while (movementTest.isAlive()) {
+            data.add(differentialLightSensor.getDeltaL());
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        Iterator<Float> iterator = data.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+    private static void characterizeCanDetector(MedianDistanceSensor med) {
+        med.flush();
+        List<Integer> data = new LinkedList<Integer>();
+        Thread movementTest = new Thread() {
+            public void run() {
+                movementController.driveDistance(40);
+            }
+        };
+        movementTest.start();
+        
+        while (movementTest.isAlive()) {
+            data.add(med.getFilteredDistance());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        Iterator<Integer> iterator = data.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
 }

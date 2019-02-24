@@ -12,7 +12,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  */
 public class MovementController {
     private static final int ROTATE_SPEED = 45;
-    private static final int FORWARD_SPEED = 200;
+    private static final int FORWARD_SPEED = 150;
     private EV3LargeRegulatedMotor leftMotor;
     private EV3LargeRegulatedMotor rightMotor;
     private Odometer odometer;
@@ -35,8 +35,10 @@ public class MovementController {
         this.odometer = odometer;
         this.wheelRadius = wheelRadius;
         this.track = track;
-        leftMotor.setAcceleration(1000);
-        rightMotor.setAcceleration(1000);
+        this.leftMotor.setAcceleration(1000);
+        this.rightMotor.setAcceleration(1000);
+        this.leftMotor.setSpeed(FORWARD_SPEED);
+        this.rightMotor.setSpeed(FORWARD_SPEED);
     }
 
     /**
@@ -111,7 +113,6 @@ public class MovementController {
     public void driveDistance(double distance) {
         leftMotor.setSpeed(FORWARD_SPEED);
         rightMotor.setSpeed(FORWARD_SPEED);
-
         leftMotor.rotate(convertDistance(wheelRadius, distance), true);
         rightMotor.rotate(convertDistance(wheelRadius, distance), false);
     }
@@ -126,7 +127,6 @@ public class MovementController {
     public void driveDistance(double distance, boolean immediateReturn) {
         leftMotor.setSpeed(FORWARD_SPEED);
         rightMotor.setSpeed(FORWARD_SPEED);
-
         leftMotor.rotate(convertDistance(wheelRadius, distance), true);
         rightMotor.rotate(convertDistance(wheelRadius, distance), immediateReturn);
     }
@@ -319,13 +319,23 @@ public class MovementController {
 	}
 	
 	public void goInCircularPath() {
-		leftMotor.setSpeed(ROTATE_SPEED + 50);
-        rightMotor.setSpeed((int)(ROTATE_SPEED*4) + 50);
+		leftMotor.setSpeed(ROTATE_SPEED + 60);
+        rightMotor.setSpeed((int)(ROTATE_SPEED*2.8) + 50);// 4-tooMuch, 
         
         
         leftMotor.forward();
         rightMotor.forward();
 		
+	}
+	
+	public void setMotorSpeeds(int leftSpeed, int rightSpeed) {
+	    leftMotor.setSpeed(leftSpeed);
+	    rightMotor.setSpeed(rightSpeed);
+	}
+	
+	public void resetMotorSpeeds() {
+	    leftMotor.setSpeed(FORWARD_SPEED);
+	    rightMotor.setSpeed(FORWARD_SPEED);
 	}
 	
 }

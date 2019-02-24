@@ -123,7 +123,7 @@ public class TestAngleCorrection {
             while (buttonChoice != Button.ID_ESCAPE) {
                 angleCorrection.quickThetaCorrection();
 //                System.out.println(odometer.getXYT()[2]);
-                movementController.driveDistance(TILE_SIZE);
+                movementController.driveDistance(TILE_SIZE*5);
                 buttonChoice = Button.waitForAnyPress();
             }
         }
