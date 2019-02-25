@@ -96,16 +96,38 @@ public class CircleFollow {
                 colourData[i] = (float[]) iterator.next();
                 i++;
             }
-	        if(ColorDetector.verifyCan(colourData, TARGET_COLOR)) {
+            
+            int canColor = ColourDetector.verifyCan(colourData);
+	        if(TARGET_COLOR == canColor) {
 	            //beep once if it is the colour we're looking for
 	            Sound.beep();
+	            displayColor(canColor);
+
 	            urNavigator.navigateToUr();
 	        }
 	        else {
 	            //beep twice if it is not the colour we're looking for
 	            Sound.twoBeeps();
+	            displayColor(canColor);
 	        }
 		
+	}
+	private void displayColor(int canColor) {
+		switch (canColor) {
+        case 4:
+        	System.out.println("Can color: Red");
+        	break;
+        case 3:
+        	System.out.println("Can color: Yellow");
+        	break;
+        case 2:
+        	System.out.println("Can color: Green");
+        	break;
+        case 1: 
+        	System.out.println("Can color: Blue");
+        	default:
+        	System.out.println("Can color: N/A");
+		}
 	}
 
 }
