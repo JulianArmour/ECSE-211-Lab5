@@ -143,15 +143,16 @@ public class StartAndEndPointsTest {
         
 
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
-      
-       circleFollower = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
+        
+        urnavigator = new URnavigator(PURy, PURx, movementController, odometer);
+        circleFollower = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, TR, urnavigator);
         searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, circleFollower, angleCorrection);
        
         intersectionLocalizer = new IntersectionLocalizer(leftDifferentialLightSensor, movementController, odometer);
         
         axesLocalizer = new AxesLocalizer(movementController, odometer, leftDifferentialLightSensor, rightDifferentialLightSensor);
         llNavigator = new LLnavigator(SC, PLLx, PLLy, usLocalizer, intersectionLocalizer, axesLocalizer, movementController, odometer);
-        urnavigator = new URnavigator(PURy, PURx, movementController, odometer);
+        
         
         
 		do {

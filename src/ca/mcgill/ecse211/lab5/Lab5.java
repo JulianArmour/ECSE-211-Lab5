@@ -131,7 +131,7 @@ public class Lab5 {
                 movementController, odometer);
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
         medSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
-        urNavigator = new URnavigator(URy, URx, movementController, odometer);
+        urNavigator = new URnavigator(PURy, PURx, movementController, odometer);
         circleFollow = new CircleFollow(movementController, odometer, medSensor, colourLightSensor, TR, urNavigator);
         usAngleCorrector = new USAngleCorrector(movementController, odometer, medSensor);
         axesLocalizer = new AxesLocalizer(movementController, odometer, leftDifferentialLightSensor,
