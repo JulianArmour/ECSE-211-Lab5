@@ -15,8 +15,8 @@ public class SearchNavigator implements TimerListener {
 
 
 	private double TILE_LENGTH = Lab5.TILE_SIZE;
-	private static final double DESTINATION_THRESHOLD = Lab5.TILE_SIZE/3;
-	private static final int CAN_SCAN_PERIOD = 100;
+	private static final double DESTINATION_THRESHOLD = 4.0;
+	private static final int CAN_SCAN_PERIOD = 50;
 	private Odometer odometer;
 	private MovementController movementController;
 	private MedianDistanceSensor USdata;
@@ -89,7 +89,7 @@ public class SearchNavigator implements TimerListener {
 		//pause until robot reaches destination
 		while (distanceToDestination() > DESTINATION_THRESHOLD) {
 			try {
-				Thread.sleep(300);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -144,7 +144,7 @@ public class SearchNavigator implements TimerListener {
 			// pause until destination is reached
 			while (distanceToDestination() > DESTINATION_THRESHOLD) {
 				try {
-					Thread.sleep(300);
+					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -219,14 +219,11 @@ public class SearchNavigator implements TimerListener {
 	@Override
 	public void timedOut() {
 
-		double canDist = USdata.getFilteredDistance();
-
 		// if US sensor detects a can
-		if (canDist < TILE_LENGTH*2) {
+		if (USdata.getFilteredDistance() < 20) {
 			//System.out.println(canDist);
 			movementController.stopMotors();
 			currentPos = odometer.getXYT();
-			movementController.driveDistance(-2, false);
 
 			canDetected = true; // maybe use this to influence the for loop to interrupt
 

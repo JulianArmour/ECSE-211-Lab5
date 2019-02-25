@@ -184,7 +184,7 @@ public class SearchPathTest {
 		} else if (buttonChoice == Button.ID_DOWN) {
             testLightSensor(leftDifferentialLightSensor);
         } else if (buttonChoice == Button.ID_UP) {
-            characterizeCanDetector(medianDistanceSensor);
+            movementController.goInCircularPath();
         }
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

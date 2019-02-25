@@ -47,14 +47,15 @@ public class CircleFollow {
 		 
 		 
 		 distance = medianDistanceSensor.getFilteredDistance();
-         if (distance > 5) {
+		 movementController.driveDistance(-4, false);
+         if (distance > 4) {
          	
          	movementController.rotateAngle(90, false);
-         	movementController.driveDistance((distance-5), false);
+         	movementController.driveDistance((distance-4), false);
          	movementController.rotateAngle(90, true);
          } else {
              movementController.rotateAngle(90, false);
-             movementController.driveDistance(-(5-distance), false);//move backwards
+             movementController.driveDistance(-(4-distance), false);//move backwards
              movementController.rotateAngle(90, true);
          }
          

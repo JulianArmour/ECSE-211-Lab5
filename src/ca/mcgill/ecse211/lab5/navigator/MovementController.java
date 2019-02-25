@@ -319,8 +319,8 @@ public class MovementController {
 	}
 	
 	public void goInCircularPath() {
-		leftMotor.setSpeed(ROTATE_SPEED + 60);
-        rightMotor.setSpeed((int)(ROTATE_SPEED*2.8) + 50);// 4-tooMuch, 
+		leftMotor.setSpeed(ROTATE_SPEED + 70);
+        rightMotor.setSpeed((int)(ROTATE_SPEED*3.2) + 115);// 4-tooMuch, 
         
         
         leftMotor.forward();
