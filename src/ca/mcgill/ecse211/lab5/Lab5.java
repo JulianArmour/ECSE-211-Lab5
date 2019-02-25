@@ -1,13 +1,21 @@
 package ca.mcgill.ecse211.lab5;
 
 import ca.mcgill.ecse211.lab5.display.Display;
+import ca.mcgill.ecse211.lab5.localization.AxesLocalizer;
+import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
+import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.navigator.CircleFollow;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
+import ca.mcgill.ecse211.lab5.navigator.SearchNavigator;
 import ca.mcgill.ecse211.lab5.navigator.URnavigator;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
+import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
+import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
+import ca.mcgill.ecse211.lab5.tests.colordetection.ColorDetector;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -31,6 +39,8 @@ public class Lab5 {
     private static double PLLy;
     private static double PURx;
     private static double PURy;
+    
+    private static final int CAN_COLOR = 0;
 
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
@@ -60,12 +70,21 @@ public class Lab5 {
     private static EV3ColorSensor sideLS;
     private static SensorMode sideLSProvider;
     private static float[] sideLSSample;
+    private static float[][] arrayColor;
     
 
     private static Odometer odometer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
     private static angleCorrection angleCorrection;
+    private static MedianDistanceSensor medSensor;
+    private static USAngleCorrector usAngleCorrector;
+    private static AxesLocalizer axesLocalizer;
+    private static IntersectionLocalizer intersectionLocalizer;
+    private static SearchNavigator searchNavigator;
+    private static CircleFollow circleFollow;
+    private static ColourLightSensor colourLightSensor;
+    private static URnavigator urNavigator;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
@@ -113,18 +132,63 @@ public class Lab5 {
         
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
                                               movementController, odometer);
+        colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
+        medSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
+        circleFollow = new CircleFollow(movementController, odometer, medSensor, colourLightSensor, CAN_COLOR);
+        usAngleCorrector = new USAngleCorrector(movementController, odometer, medSensor);
+        axesLocalizer = new AxesLocalizer(movementController, odometer, leftDifferentialLightSensor, rightDifferentialLightSensor);
+        intersectionLocalizer = new IntersectionLocalizer(leftDifferentialLightSensor, movementController, odometer);
+        searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medSensor, circleFollow, angleCorrection);
+        urNavigator = new URnavigator(URy, URx, movementController, odometer);
 
+        
 		do {
 			lcd.clear();
-			lcd.drawString("Press ^UP^ to start", 0, 0);
+			lcd.drawString("Press up for routine", 0, 0);
+			lcd.drawString("Press down for color", 0, 1);
 			buttonChoice = Button.waitForAnyPress();
-		} while (buttonChoice != Button.ID_UP);
+		} while (buttonChoice != Button.ID_UP && buttonChoice != Button.ID_DOWN);
 		
 		
 		if (buttonChoice == Button.ID_UP) {
-		    movementController.rotateAngle(20, true);
-		    angleCorrection.quickThetaCorrection();
-		    System.out.println(odometer.getXYT()[2]);
+			lcd.clear();
+			 /**usAngleCorrector.fallingEdge();
+             axesLocalizer.estimatePosition();
+             axesLocalizer.travelCloseToOrigin();
+             intersectionLocalizer.getIntersections();
+             intersectionLocalizer.correctAngle();
+             intersectionLocalizer.correctPosition();
+             movementController.travelTo(0, 0, false);
+             movementController.turnTo(0);**/
+			
+             llNavigator.navigateToLL();
+             
+             searchNavigator.searchPath();
+             
+             urNavigator.navigateToUr();
+             
+		}else {
+			arrayColor = new float[100][3];
+			if(sideLSSample[0] >= (0.00098) && sideLSSample[1] >= (0.00098) && sideLSSample[2] >= (0.00098)) {
+				lcd.drawString("Object detected", 0, 1);
+				for(int i = 0; i < 100; i++) {
+
+					sideLSProvider.fetchSample(sideLSSample, 0);
+
+					if(sideLSSample[0] <= (0.00098) && sideLSSample[1] <= (0.00098) && sideLSSample[2] <= (0.00098)) {
+						i--;
+					}else {
+						arrayColor[i] = sideLSSample;
+					}
+					try {
+						Thread.sleep(75);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				System.out.println("Can: " + ColorDetector.verifyCan(arrayColor, 4));
+			}
 		}
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
