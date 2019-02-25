@@ -114,7 +114,6 @@ public class AxesLocalizer {
 		
 		travelCloseToOrigin();
 		movCon.turnTo(180);
-		Button.waitForAnyPress();
 	}
 	
 	/**

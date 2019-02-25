@@ -96,8 +96,8 @@ public class USAngleCorrector {
                    e.printStackTrace();
                }
            }
-           risingEdge = odometer.getXYT()[2];
-           System.out.println("Found rising edge, dist =  "+dist);
+        risingEdge = odometer.getXYT()[2];
+        System.out.println("Found rising edge, dist =  "+dist);
         
         System.out.println("first falling edge: "+fallingEdge);
         System.out.println("second falling edge: "+risingEdge);
@@ -113,7 +113,7 @@ public class USAngleCorrector {
             dTheta = 340 - (alpha + beta) / 2;
             System.out.println("alpha <= beta");
         } else {
-            dTheta = 145 - (alpha + beta) / 2; // increase in ccw direction
+            dTheta = 165 - (alpha + beta) / 2; // increase in ccw direction
             System.out.println("alpha > beta");
         }
         
