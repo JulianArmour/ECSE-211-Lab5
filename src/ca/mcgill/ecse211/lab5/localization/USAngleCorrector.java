@@ -8,7 +8,7 @@ import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
  * Provides methods for finding what angle the robot thinks it's facing
  * and correcting it to the actual angle it faces.
  * 
- * @author Julian Armour, Alice Kazarine
+ * @author Julian Armour
  * @since 11-02-2019
  * @version 1.03
  */

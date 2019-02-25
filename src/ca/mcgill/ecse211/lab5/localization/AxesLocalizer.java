@@ -4,6 +4,11 @@ import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
 
+/**
+ * Provides the methods for the beginning of the seconds phase of localization
+ * @author Alice Kazarine
+ * @since Feb 24, 2019
+ */
 public class AxesLocalizer {
 	
 	private MovementController movCon;
@@ -16,7 +21,13 @@ public class AxesLocalizer {
 	private static int TIME_OUT = 20;
 	
 	
-	//constructor
+	/**
+	 * 
+	 * @param movementController the {@link MovementController}
+	 * @param odometer the {@link Odometer}
+	 * @param lDifferentialLightSensor the left {@link DifferentialLightSensor}
+	 * @param rDifferentialLightSensor the right {@link DifferentialLightSensor}
+	 */
 	public AxesLocalizer(MovementController movementController, Odometer odometer, 
 	        DifferentialLightSensor lDifferentialLightSensor, DifferentialLightSensor rDifferentialLightSensor) {
 		this.movCon=movementController;
@@ -25,6 +36,11 @@ public class AxesLocalizer {
 		this.rDiffLightSensor = rDifferentialLightSensor;
 	}
 
+	/**
+	 * Moves the robot north until a black line is detected, which sets the y-position of the odometer.
+	 * Then moves the robot back, turns east, and moves east until a black line is detected, which sets the
+	 * x-position of the odometer.
+	 */
 	public void estimatePosition() {
 
 	    rDiffLightSensor.getDeltaL();
@@ -98,7 +114,7 @@ public class AxesLocalizer {
 	}
 	
 	/**
-     * Causes the robot to move to approximately (-5,-5)
+     * Causes the robot to move to near the origin for {@link IntersectionLocalizer#getIntersections()}
      */
     public void travelCloseToOrigin() {
 

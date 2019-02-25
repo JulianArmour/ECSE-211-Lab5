@@ -7,8 +7,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * Provides methods for controlling the robot's motions and navigation instructions.
  * 
  * @author Julian Armour, Alice Kazarine
- * @since 06-02-2018
- * @version 1.2
+ * @since Feb 25, 2019
+ * @version 5.1
  */
 public class MovementController {
     private static final int ROTATE_SPEED = 45;

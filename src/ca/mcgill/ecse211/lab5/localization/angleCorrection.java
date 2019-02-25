@@ -5,6 +5,11 @@ import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
 import lejos.hardware.lcd.LCD;
 
+/**
+ * Provides the subroutine for quickly correcting the heading of the robot
+ * @author Julian Armour, Alice Kazarine
+ * @since Feb 25, 2019
+ */
 public class angleCorrection {
 
 	private DifferentialLightSensor dLTright;
@@ -16,7 +21,13 @@ public class angleCorrection {
 	private static float SECOND_DIFFERENCE_THRESHOLD = 1.5f;
 	
 
-	//constructor
+	/**
+	 * 
+	 * @param diffLTright the {@link DifferentialLightSensor} at the back-right of the robot
+	 * @param diffLTleft the {@link DifferentialLightSensor} at the back-left of the robot
+	 * @param movCon the {@link MovementController}
+	 * @param odo the {@link Odometer}
+	 */
 	public angleCorrection(DifferentialLightSensor diffLTright, DifferentialLightSensor diffLTleft,
 			MovementController movCon,Odometer odo) {
 		this.dLTleft=diffLTleft;
@@ -25,6 +36,12 @@ public class angleCorrection {
 		this.odo=odo;
 	}
 
+	/**
+	 * Will make the robot perform a quick subroutine to correct the robot's heading.
+	 * The robot will move forward until the black lines are detected. It performs two passes,
+	 * the first one is fast to get a decent but imperfect correction. The second is much slower
+	 * and much more accurate.
+	 */
 	public void quickThetaCorrection() {
 	    for (int i = 0; i < 2; i++) {
 	        boolean RLineDetected=false;
@@ -41,13 +58,14 @@ public class angleCorrection {
             dLTright.flush();
             dLTleft.flush();
             if (i == 0) {
+                // first pass: move fast
                 movCon.driveForward(100);
             }
             else {
+                // second pass: move much slower
                 movCon.driveForward(30);
             }
             
-            // outside of while for testing purposes, TODO put back in while loop
             float deltaR = 0f;
             float deltaL = 0f;
             while (!RLineDetected || !LLineDetected) {
@@ -85,13 +103,13 @@ public class angleCorrection {
                 }
 
             }
-            System.out.println("left: "+deltaL+" right: "+deltaR);
+//            System.out.println("left: "+deltaL+" right: "+deltaR);
             if (i < 1) {
                 movCon.driveDistance(-3.0);
             }
         }
 	    
-	    movCon.resetMotorSpeeds();
+//	    movCon.resetMotorSpeeds();
         odo.setTheta(movCon.roundAngle());
 //        System.out.println(odo.getXYT()[2]);
 	}

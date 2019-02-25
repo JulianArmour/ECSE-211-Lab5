@@ -11,6 +11,11 @@ import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 import lejos.hardware.Sound;
 import lejos.robotics.chassis.Wheel;
 
+/**
+ * Provides the methodology for causing the robot to move in a circular path around a can.
+ * @author Alice Kazarine
+ * @since Feb 24, 2019
+ */
 public class CircleFollow {
 		
 	private static MovementController movementController;
@@ -40,8 +45,7 @@ public class CircleFollow {
 	}
 	
 	public void followCircularPath() {
-//		medianDistanceSensor.flush();
-		odoBeforeWallFollow = odometer.getXYT(); 
+		odoBeforeWallFollow = odometer.getXYT();
 		
 		 double breakOutAngle = odoBeforeWallFollow[2] + 20.0;
 		 
@@ -65,13 +69,13 @@ public class CircleFollow {
 	         // polls the ColorSensor and puts it in an array
              float[] colorData = colourLightSensor.fetchColorSamples();
              
-             if (colorData[0] > 0.001 || colorData[1] > 0.001 || colorData[2] > 0.001) {
+             if (colorData[0] > 0.001 && colorData[1] > 0.001 && colorData[2] > 0.001) {
                  LTdata.add(colorData);
              }
              
              
              try {
-                 Thread.sleep(200);
+                 Thread.sleep(100);
              } catch (InterruptedException e) {
                  e.printStackTrace();
 
@@ -83,7 +87,7 @@ public class CircleFollow {
 	     	movementController.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
 	        movementController.turnTo(odoBeforeWallFollow[2]);
 //	        /**colourData = new float[LTdata.size()];
-	       colourData = new float[LTdata.size()][3];
+	        colourData = new float[LTdata.size()][3];
             int i = 0;
             for (Iterator<float[]> iterator = LTdata.iterator(); iterator.hasNext();) {
                 colourData[i] = (float[]) iterator.next();

@@ -13,8 +13,8 @@ import lejos.hardware.Button;
  *  <li>moving the robot to the (0,0)-origin oriented at 0-degrees</li>
  * </ol>
  * 
- * @author Julian Armour, Alice Kazarine
- * @since 11-02-2018
+ * @author Alice Kazarine
+ * @since Feb 23, 2019
  */
 public class IntersectionLocalizer {
     // a difference past this threshold consitutes a black line
