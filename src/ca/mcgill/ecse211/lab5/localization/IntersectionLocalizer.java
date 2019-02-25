@@ -94,7 +94,7 @@ public class IntersectionLocalizer {
 	public void correctAngle() {
 		
 		double Yangle = intersections[2]- intersections[0];   
-		double headingCorrection = (Yangle/2)-intersections[2]-110;
+		double headingCorrection = (Yangle/2)-intersections[2]-90;
 		
 		odo.setTheta(odo.getXYT()[2] + headingCorrection); //corrects odometer's angle
 		double[] currentPos = odo.getXYT();

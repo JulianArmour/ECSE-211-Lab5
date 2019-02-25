@@ -41,7 +41,7 @@ public class TestInitialLocalization {
     /** The tile's length. */
     public static final double TILE_SIZE = 30.48;
     public static final double WHEEL_RAD = 2.1;
-    public static final double TRACK = 11.8;
+    public static final double TRACK = 11.2;
     public static boolean wall;
     
     private static MovementController movementController;
@@ -133,7 +133,6 @@ public class TestInitialLocalization {
             while (buttonChoice != Button.ID_ESCAPE) {
                 usAngleCorrector.fallingEdge();
                 axesLocalizer.estimatePosition();
-                axesLocalizer.travelCloseToOrigin();
                 intersectionLocalizer.getIntersections();
                 intersectionLocalizer.correctAngle();
                 intersectionLocalizer.correctPosition();

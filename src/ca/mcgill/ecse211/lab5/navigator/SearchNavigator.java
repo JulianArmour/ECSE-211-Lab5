@@ -38,6 +38,7 @@ public class SearchNavigator implements TimerListener {
 	private double[] destination;
 	double[] currentPos;
 	Timer canTimer;
+    private boolean canFollowing;
 
 	public SearchNavigator(Odometer odometer, MovementController movementController, int llX, int llY, int urX, int urY,
 			MedianDistanceSensor USdata, CircleFollow circleFollow, angleCorrection angleCorrector) {
@@ -52,6 +53,7 @@ public class SearchNavigator implements TimerListener {
 		this.urY = urY;
 		this.circleFollower = circleFollow;
 		this.currentPos = new double[3];
+		this.canFollowing = false;
 	}
 
 	public void searchPath() {
@@ -87,7 +89,7 @@ public class SearchNavigator implements TimerListener {
 		canTimer.start();
 		
 		//pause until robot reaches destination
-		while (distanceToDestination() > DESTINATION_THRESHOLD) {
+		while (distanceToDestination() > DESTINATION_THRESHOLD || canFollowing) {
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
@@ -142,7 +144,7 @@ public class SearchNavigator implements TimerListener {
 			canTimer.start();
 
 			// pause until destination is reached
-			while (distanceToDestination() > DESTINATION_THRESHOLD) {
+			while (distanceToDestination() > DESTINATION_THRESHOLD || canFollowing ) {
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
@@ -191,7 +193,7 @@ public class SearchNavigator implements TimerListener {
 			canTimer.start();
 
 			// pause until destination is reached
-			while (distanceToDestination() > DESTINATION_THRESHOLD) {
+			while (distanceToDestination() > DESTINATION_THRESHOLD || canFollowing) {
 				try {
 					Thread.sleep(300);
 				} catch (InterruptedException e) {
@@ -223,6 +225,7 @@ public class SearchNavigator implements TimerListener {
 		if (USdata.getFilteredDistance() < 20) {
 			//System.out.println(canDist);
 			movementController.stopMotors();
+			canFollowing = true;
 			currentPos = odometer.getXYT();
 
 			canDetected = true; // maybe use this to influence the for loop to interrupt
@@ -243,7 +246,7 @@ public class SearchNavigator implements TimerListener {
 			
 			// keep moving remaining distance/is this the right destination?
 			movementController.travelTo(destination[0], destination[1],true);
-			
+			canFollowing = false;
 		}
 	
 

@@ -14,7 +14,7 @@ import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
  */
 public class USAngleCorrector {
     // a difference past this value consitues a falling or rising edge
-    private static final double EDGE_THRESHOLD = 150.0;
+    private static final double EDGE_THRESHOLD = 80.0;
 //    private static final double EDGE_LIMIT = 250.0;
     // period between distance samples
     private static final long US_POLL_PERIOD = 300;
@@ -65,7 +65,7 @@ public class USAngleCorrector {
         // make the robot rotate counter-clockwise until it sees a large change in distance
         movementController.rotateAngle(720, false, true);
         // move out of valley
-        while (Math.min(med.getFilteredDistance(), MAX_DIST) < 250) {
+        while (Math.min(med.getFilteredDistance(), MAX_DIST) < 80) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -113,7 +113,7 @@ public class USAngleCorrector {
             dTheta = 340 - (alpha + beta) / 2;
             System.out.println("alpha <= beta");
         } else {
-            dTheta = 162 - (alpha + beta) / 2;
+            dTheta = 145 - (alpha + beta) / 2; // increase in ccw direction
             System.out.println("alpha > beta");
         }
         

@@ -3,6 +3,7 @@ package ca.mcgill.ecse211.lab5.localization;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
+import lejos.hardware.Button;
 
 /**
  * Provides the methods for the beginning of the seconds phase of localization
@@ -42,6 +43,8 @@ public class AxesLocalizer {
 	 * x-position of the odometer.
 	 */
 	public void estimatePosition() {
+	    
+	    movCon.driveDistance(5, false);
 
 	    rDiffLightSensor.getDeltaL();
 	    rDiffLightSensor.getDeltaL(); // TODO
@@ -111,27 +114,31 @@ public class AxesLocalizer {
 		
 		travelCloseToOrigin();
 		movCon.turnTo(180);
+		Button.waitForAnyPress();
 	}
 	
 	/**
      * Causes the robot to move to near the origin for {@link IntersectionLocalizer#getIntersections()}
      */
-    public void travelCloseToOrigin() {
+    private void travelCloseToOrigin() {
+        
+        movCon.travelTo(-1, -1, false);
+//        movCon.turnTo(180);
 
-        //double[] odoData = odo.getXYT();
-        double angleToTurn = movCon.calculateAngle(odo.getXYT()[0], odo.getXYT()[1], -1.0, -1.0);
-//        System.out.println("ANGLE TO TURN: "+angleToTurn);
-        movCon.turnTo(angleToTurn);
-
-        // give the robot some time to stop
-        try {
-            Thread.sleep(250);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        movCon.driveDistance(movCon.calculateDistance(odo.getXYT()[0], odo.getXYT()[1], -1.0, -1.0));
-       
-        //odoData[i] is changed to odo.getXYT()[i] in TravelToOrigin method
+//        //double[] odoData = odo.getXYT();
+//        double angleToTurn = movCon.calculateAngle(odo.getXYT()[0], odo.getXYT()[1], -1.0, -1.0);
+////        System.out.println("ANGLE TO TURN: "+angleToTurn);
+//        movCon.turnTo(angleToTurn);
+//
+//        // give the robot some time to stop
+//        try {
+//            Thread.sleep(250);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        movCon.driveDistance(movCon.calculateDistance(odo.getXYT()[0], odo.getXYT()[1], -1.0, -1.0));
+//       
+//        //odoData[i] is changed to odo.getXYT()[i] in TravelToOrigin method
     }
 }
