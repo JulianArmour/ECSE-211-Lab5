@@ -27,7 +27,7 @@ public class ColourDetector {
 	private static final float GCAN_BMEAN = 0.4489f;
 	
 	
-	public static boolean verifyCan(float[][] data, int canColor) {
+	public static int verifyCan(float[][] data) {
 		float RMean = 0.0f;
 		float GMean = 0.0f;
 		float BMean = 0.0f;
@@ -54,8 +54,7 @@ public class ColourDetector {
 		System.out.println("NG: " + NGMean);
 		System.out.println("NB: " + NBMean);
 		
-		if(colorMatch(NRMean, NGMean, NBMean) == canColor) return true;
-		return false;
+		return colorMatch(NRMean, NGMean, NBMean);
 	}
 	private static int colorMatch(float RMean, float GMean, float BMean) {
 		Float dRCan, dBCan, dYCan, dGCan;
@@ -67,11 +66,6 @@ public class ColourDetector {
 		dBCan = (float) Math.sqrt(Math.pow((RMean - BCAN_RMEAN), 2) + Math.pow((GMean - BCAN_GMEAN), 2) + Math.pow((BMean - BCAN_BMEAN), 2));
 		dYCan = (float) Math.sqrt(Math.pow((RMean - YCAN_RMEAN), 2) + Math.pow((GMean - YCAN_GMEAN), 2) + Math.pow((BMean - YCAN_BMEAN), 2));
 		dGCan = (float) Math.sqrt(Math.pow((RMean - GCAN_RMEAN), 2) + Math.pow((GMean - GCAN_GMEAN), 2) + Math.pow((BMean - GCAN_BMEAN), 2));
-		
-		System.out.println("drcan: " + dRCan);
-		System.out.println("dbcan: " + dBCan);
-		System.out.println("dycan: " + dYCan);
-		System.out.println("dgcan: " + dGCan);
 		
 		dArray.add(dRCan);
 		dArray.add(dBCan);

@@ -192,8 +192,7 @@ public class Lab5 {
         }
 
         System.out.println("Big wtf");
-        while (Button.waitForAnyPress() != Button.ID_ESCAPE)
-            ;
+        while (Button.waitForAnyPress() != Button.ID_ESCAPE);
         System.exit(0);
     }
 
