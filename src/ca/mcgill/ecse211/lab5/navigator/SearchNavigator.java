@@ -75,7 +75,7 @@ public class SearchNavigator implements TimerListener {
 		
 
 
-		Xdistance = (deltaX + 0.6)*TILE_LENGTH;
+		Xdistance = (deltaX + 1.1)*TILE_LENGTH;
 
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
@@ -114,7 +114,7 @@ public class SearchNavigator implements TimerListener {
 			movementController.rotateAngle(90, false);
 			movementController.driveDistance(adjustDist, false);
 			
-			Ydistance = (((double)n + 1.2) * TILE_LENGTH) - adjustDist; //TODO: tweak
+			Ydistance = (((double)n + 1.5) * TILE_LENGTH) - adjustDist; //TODO: tweak
 
 
 			if(movementController.roundAngle()==0) {
@@ -169,7 +169,7 @@ public class SearchNavigator implements TimerListener {
 			
 			
 			//starts moving parallel to the x-axis
-			Xdistance = (((double)m + 1.1) * TILE_LENGTH) - adjustDist;//TODO: tweak
+			Xdistance = (((double)m + 1) * TILE_LENGTH) - adjustDist;//TODO: tweak
 
 
 			if(movementController.roundAngle() == 90) {
@@ -234,8 +234,8 @@ public class SearchNavigator implements TimerListener {
 			// goes into wallfollowing mode and collects colour data
 			circleFollower.followCircularPath();
 			
-			movementController.travelTo(currentPos[0], currentPos[1], false);
-			movementController.turnTo(currentPos[2]);
+//			movementController.travelTo(currentPos[0], currentPos[1], false);
+//			movementController.turnTo(currentPos[2]);
 			// Note: at this point the robot is back to where it was before wall-following
 
 			// angle correction
