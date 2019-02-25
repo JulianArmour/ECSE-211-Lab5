@@ -27,9 +27,9 @@ import lejos.hardware.sensor.SensorMode;
 
 public class Lab5 {
     // Global Parameters
-    private static final int LLx = 2;
+    private static final int LLx = 1;
     private static final int LLy = 2;
-    private static final int URx = 4;
+    private static final int URx = 3;
     private static final int URy = 4;
     private static final int SC = 0;
     private static final int TR = 4;
@@ -49,7 +49,7 @@ public class Lab5 {
     /** The tile's length. */
     public static final double TILE_SIZE = 30.48;
     public static final double WHEEL_RAD = 2.2;
-    public static final double TRACK = 11.75;
+    public static final double TRACK = 11.2;
     public static boolean wall;
 
     private static MovementController movementController;
@@ -181,8 +181,7 @@ public class Lab5 {
         }
 
 //        System.out.println("Big wtf");
-        while (Button.waitForAnyPress() != Button.ID_ESCAPE)
-            ;
+        while (Button.waitForAnyPress() != Button.ID_ESCAPE);
         System.exit(0);
     }
 

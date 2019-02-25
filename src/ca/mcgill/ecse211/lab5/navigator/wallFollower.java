@@ -120,7 +120,7 @@ public class wallFollower {
             colourdata[i] = (float[]) iterator.next();
             i++;
         }
-        
+        /**
         if(ColourDetector.verifyCan(colourdata, TARGET_COLOR)) {
             //beep once
             Sound.beep();
@@ -128,7 +128,7 @@ public class wallFollower {
         else {
             //beep twice
             Sound.twoBeeps();
-        }
+        }**/
     }
 
 }

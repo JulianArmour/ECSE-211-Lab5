@@ -9,6 +9,7 @@ import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.detectors.ColourDetector;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
+import ca.mcgill.ecse211.lab5.tests.colordetection.ColorDetector;
 import lejos.hardware.Sound;
 import lejos.robotics.chassis.Wheel;
 
@@ -98,19 +99,46 @@ public class CircleFollow {
                 colourData[i] = (float[]) iterator.next();
                 i++;
             }
-	        if(ColourDetector.verifyCan(colourData, TARGET_COLOR)) {
+            
+            int canColor = ColourDetector.verifyCan(colourData);
+	        if(TARGET_COLOR == canColor) {
 	            //beep once if it is the colour we're looking for
+<<<<<<< HEAD
 	            Sound.beep();
 	            
 	            angleCorrector.quickThetaCorrection();
 				
 	            urNavigator.navigateToUr();
+=======
+	            Sound.beep();
+	            displayColor(canColor);
+
+	            urNavigator.navigateToUr();
+>>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
 	        }
 	        else {
 	            //beep twice if it is not the colour we're looking for
 	            Sound.twoBeeps();
+	            displayColor(canColor);
 	        }
 		
+	}
+	private void displayColor(int canColor) {
+		switch (canColor) {
+        case 4:
+        	System.out.println("Can color: Red");
+        	break;
+        case 3:
+        	System.out.println("Can color: Yellow");
+        	break;
+        case 2:
+        	System.out.println("Can color: Green");
+        	break;
+        case 1: 
+        	System.out.println("Can color: Blue");
+        	default:
+        	System.out.println("Can color: N/A");
+		}
 	}
 
 }
