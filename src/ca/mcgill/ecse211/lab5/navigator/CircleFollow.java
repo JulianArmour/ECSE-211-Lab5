@@ -8,6 +8,7 @@ import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.detectors.ColourDetector;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
+import ca.mcgill.ecse211.lab5.tests.colordetection.ColorDetector;
 import lejos.hardware.Sound;
 import lejos.robotics.chassis.Wheel;
 
@@ -95,7 +96,7 @@ public class CircleFollow {
                 colourData[i] = (float[]) iterator.next();
                 i++;
             }
-	        if(ColourDetector.verifyCan(colourData, TARGET_COLOR)) {
+	        if(ColorDetector.verifyCan(colourData, TARGET_COLOR)) {
 	            //beep once if it is the colour we're looking for
 	            Sound.beep();
 	            urNavigator.navigateToUr();
