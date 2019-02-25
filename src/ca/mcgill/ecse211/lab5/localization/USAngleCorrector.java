@@ -110,7 +110,7 @@ public class USAngleCorrector {
         double dTheta;
         
         if (alpha <= beta) {
-            dTheta = 340 - (alpha + beta) / 2;
+            dTheta = 345 - (alpha + beta) / 2;
             System.out.println("alpha <= beta");
         } else {
             dTheta = 155 - (alpha + beta) / 2; // increase in ccw direction

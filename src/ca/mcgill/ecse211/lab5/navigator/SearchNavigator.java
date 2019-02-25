@@ -75,7 +75,7 @@ public class SearchNavigator implements TimerListener {
 		
 
 
-		Xdistance = (deltaX + 1.1)*TILE_LENGTH;
+		Xdistance = (deltaX + 0.)*TILE_LENGTH;
 
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
@@ -114,7 +114,7 @@ public class SearchNavigator implements TimerListener {
 			movementController.rotateAngle(90, false);
 			movementController.driveDistance(adjustDist, false);
 			
-			Ydistance = (((double)n + 1.5) * TILE_LENGTH) - adjustDist; //TODO: tweak
+			Ydistance = (((double)n + 1.0) * TILE_LENGTH) - adjustDist; //TODO: tweak
 
 
 			if(movementController.roundAngle()==0) {

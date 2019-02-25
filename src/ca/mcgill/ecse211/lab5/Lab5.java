@@ -28,11 +28,11 @@ import lejos.hardware.sensor.SensorMode;
 public class Lab5 {
     // Global Parameters
     private static final int LLx = 1;
-    private static final int LLy = 2;
+    private static final int LLy = 3;
     private static final int URx = 3;
-    private static final int URy = 4;
+    private static final int URy = 5;
     private static final int SC = 0;
-    private static final int TR = 4;
+    private static final int TR = 2;
 
     // physical values for LLx, LLy, URx, URy
     private static double PLLx;
