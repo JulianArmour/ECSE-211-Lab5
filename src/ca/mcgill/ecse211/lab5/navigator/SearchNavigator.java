@@ -75,7 +75,7 @@ public class SearchNavigator implements TimerListener {
 		
 
 
-		Xdistance = (deltaX + 0.6)*TILE_LENGTH;
+		Xdistance = (deltaX + 1.1)*TILE_LENGTH;
 
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };

@@ -27,12 +27,12 @@ import lejos.hardware.sensor.SensorMode;
 
 public class Lab5 {
     // Global Parameters
-    private static final int LLx = 3;
-    private static final int LLy = 3;
-    private static final int URx = 7;
-    private static final int URy = 7;
+    private static final int LLx = 2;
+    private static final int LLy = 2;
+    private static final int URx = 4;
+    private static final int URy = 4;
     private static final int SC = 0;
-    private static final int TR = 0;
+    private static final int TR = 4;
 
     // physical values for LLx, LLy, URx, URy
     private static double PLLx;
@@ -131,26 +131,33 @@ public class Lab5 {
                 movementController, odometer);
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
         medSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
-        circleFollow = new CircleFollow(movementController, odometer, medSensor, colourLightSensor, CAN_COLOR);
+        urNavigator = new URnavigator(URy, URx, movementController, odometer);
+        circleFollow = new CircleFollow(movementController, odometer, medSensor, colourLightSensor, TR, urNavigator);
         usAngleCorrector = new USAngleCorrector(movementController, odometer, medSensor);
         axesLocalizer = new AxesLocalizer(movementController, odometer, leftDifferentialLightSensor,
                 rightDifferentialLightSensor);
         intersectionLocalizer = new IntersectionLocalizer(leftDifferentialLightSensor, movementController, odometer);
         searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medSensor, circleFollow,
                 angleCorrection);
-        urNavigator = new URnavigator(URy, URx, movementController, odometer);
+        llNavigator = new LLnavigator(SC, PLLx, PLLy, usAngleCorrector, intersectionLocalizer, axesLocalizer, movementController, odometer);
 
         do {
+            /**
+             * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?
+             * On the left is RisingEdge method is needed, or on the right if FallingEdge method is required.
+             */
             lcd.clear();
-            lcd.drawString("Press left for routine", 0, 0);
-            lcd.drawString("Press right for color", 0, 1);
+
+            lcd.drawString("left for routine", 0, 0);
+            lcd.drawString("right for colour", 0, 1);
+            
             buttonChoice = Button.waitForAnyPress();
-        } while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
-        
+        }
+        while (buttonChoice != Button.ID_RIGHT && buttonChoice != Button.ID_LEFT);
         System.out.println(buttonChoice);
 
         if (buttonChoice == Button.ID_LEFT) {
-            System.out.println("going up");
+//            System.out.println("going up");
             lcd.clear();
             /**
              * usAngleCorrector.fallingEdge(); axesLocalizer.estimatePosition();
@@ -167,31 +174,13 @@ public class Lab5 {
 
             urNavigator.navigateToUr();
 
-        } else if (buttonChoice == Button.ID_RIGHT) {
-            System.out.println("going down");
-            arrayColor = new float[100][3];
-            if (sideLSSample[0] >= (0.00098) && sideLSSample[1] >= (0.00098) && sideLSSample[2] >= (0.00098)) {
-                lcd.drawString("Object detected", 0, 1);
-                for (int i = 0; i < 100; i++) {
-
-                    sideLSProvider.fetchSample(sideLSSample, 0);
-
-                    if (sideLSSample[0] <= (0.00098) && sideLSSample[1] <= (0.00098) && sideLSSample[2] <= (0.00098)) {
-                        i--;
-                    } else {
-                        arrayColor[i] = sideLSSample;
-                    }
-                    try {
-                        Thread.sleep(75);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println("Can: " + ColorDetector.verifyCan(arrayColor, 4));
-            }
+        }
+        else if (buttonChoice == Button.ID_RIGHT) {
+            medSensor.flush();
+            searchNavigator.timedOut();
         }
 
-        System.out.println("Big wtf");
+//        System.out.println("Big wtf");
         while (Button.waitForAnyPress() != Button.ID_ESCAPE)
             ;
         System.exit(0);

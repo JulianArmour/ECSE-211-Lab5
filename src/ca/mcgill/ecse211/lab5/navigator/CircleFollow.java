@@ -31,17 +31,18 @@ public class CircleFollow {
 	
 	 private double[] odoBeforeWallFollow;
 	 private LinkedList<float[]> LTdata;
+    private URnavigator urNavigator;
 	
 	
 	public CircleFollow(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
-    		ColourLightSensor colorsensor, int TARGET_COLOR){
+    		ColourLightSensor colorsensor, int TARGET_COLOR, URnavigator uRnavigator){
 		this.movementController = movementCtr;
 		this.odometer = odometer;
 		this.medianDistanceSensor = USfilter;
 		this.colourLightSensor = colorsensor;
 		this.TARGET_COLOR = TARGET_COLOR;
 		this.LTdata = new LinkedList<float[]>();
-		
+		this.urNavigator = uRnavigator;
 	}
 	
 	public void followCircularPath() {
@@ -65,7 +66,8 @@ public class CircleFollow {
          
          movementController.goInCircularPath();
 		 
-	     while (Math.abs(odometer.getXYT()[2] - breakOutAngle) > 5) {
+         //((odometer.getXYT()[2] - breakOutAngle + 360) % 360);
+	     while (((odometer.getXYT()[2] - breakOutAngle + 360) % 360) > 20) {
 	         // polls the ColorSensor and puts it in an array
              float[] colorData = colourLightSensor.fetchColorSamples();
              
@@ -96,6 +98,7 @@ public class CircleFollow {
 	        if(ColourDetector.verifyCan(colourData, TARGET_COLOR)) {
 	            //beep once if it is the colour we're looking for
 	            Sound.beep();
+	            urNavigator.navigateToUr();
 	        }
 	        else {
 	            //beep twice if it is not the colour we're looking for
