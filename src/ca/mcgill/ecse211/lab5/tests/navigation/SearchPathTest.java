@@ -8,9 +8,7 @@ import java.util.List;
 
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.display.Display;
-
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
-
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.CircleFollow;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
@@ -92,7 +90,11 @@ public class SearchPathTest {
     private static MedianDistanceSensor medianDistanceSensor;
     private static ColourLightSensor colourLightSensor;
     private static CircleFollow circleFollow;
+<<<<<<< HEAD
+    private static URnavigator uRnavigator;
+=======
     private static URnavigator urNavigator;
+>>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
@@ -141,12 +143,16 @@ public class SearchPathTest {
       
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
         
-
+        uRnavigator = new URnavigator(PURy, PURx, movementController, odometer);
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
         medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
         //wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
+<<<<<<< HEAD
+        circleFollow = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, TR, uRnavigator, angleCorrection);
+=======
         urNavigator = new URnavigator(PURy, PURx, movementController, odometer);
         circleFollow = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, 0, urNavigator);
+>>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
      
         searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, circleFollow,  angleCorrection);
        
