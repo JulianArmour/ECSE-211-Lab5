@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.detectors.ColourDetector;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
@@ -32,15 +33,17 @@ public class CircleFollow {
 	 private double[] odoBeforeWallFollow;
 	 private LinkedList<float[]> LTdata;
     private URnavigator urNavigator;
+    private angleCorrection angleCorrector;
 	
 	
 	public CircleFollow(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
-    		ColourLightSensor colorsensor, int TARGET_COLOR, URnavigator uRnavigator){
+    		ColourLightSensor colorsensor, int TARGET_COLOR, URnavigator uRnavigator, angleCorrection angleCorrection){
 		this.movementController = movementCtr;
 		this.odometer = odometer;
 		this.medianDistanceSensor = USfilter;
 		this.colourLightSensor = colorsensor;
 		this.TARGET_COLOR = TARGET_COLOR;
+		this.angleCorrector = angleCorrection;
 		this.LTdata = new LinkedList<float[]>();
 		this.urNavigator = uRnavigator;
 	}
@@ -98,6 +101,9 @@ public class CircleFollow {
 	        if(ColourDetector.verifyCan(colourData, TARGET_COLOR)) {
 	            //beep once if it is the colour we're looking for
 	            Sound.beep();
+	            
+	            angleCorrector.quickThetaCorrection();
+				
 	            urNavigator.navigateToUr();
 	        }
 	        else {

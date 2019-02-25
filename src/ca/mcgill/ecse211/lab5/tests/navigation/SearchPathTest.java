@@ -8,14 +8,13 @@ import java.util.List;
 
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.display.Display;
-
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
-
 import ca.mcgill.ecse211.lab5.localization.angleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.CircleFollow;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.navigator.SearchNavigator;
+import ca.mcgill.ecse211.lab5.navigator.URnavigator;
 import ca.mcgill.ecse211.lab5.navigator.wallFollower;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
@@ -91,6 +90,7 @@ public class SearchPathTest {
     private static MedianDistanceSensor medianDistanceSensor;
     private static ColourLightSensor colourLightSensor;
     private static CircleFollow circleFollow;
+    private static URnavigator uRnavigator;
 
 	public static void main(String[] args) throws OdometerExceptions {
 		int buttonChoice;
@@ -139,11 +139,11 @@ public class SearchPathTest {
       
         angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
         
-
+        uRnavigator = new URnavigator(PURy, PURx, movementController, odometer);
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);
         medianDistanceSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
         //wallFollower = new wallFollower(movementController, odometer, medianDistanceSensor, colourLightSensor, TR);
-        circleFollow = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, 0);
+        circleFollow = new CircleFollow(movementController, odometer, medianDistanceSensor, colourLightSensor, TR, uRnavigator, angleCorrection);
      
         searchNavigator = new SearchNavigator(odometer, movementController, LLx, LLy, URx, URy, medianDistanceSensor, circleFollow,  angleCorrection);
        
