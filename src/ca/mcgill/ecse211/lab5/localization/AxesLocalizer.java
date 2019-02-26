@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.lab5.localization;
 
+import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
@@ -13,10 +14,9 @@ public class AxesLocalizer {
 	
 	private MovementController movCon;
 	private Odometer odo;
-	private DifferentialLightSensor diffLightSensor;
-    private DifferentialLightSensor rDiffLightSensor;
+	private DifferentialLightSensor rDiffLightSensor;
     private DifferentialLightSensor lDiffLightSensor;
-	private static int DIFFERENTIAL_THRESHOLD = 6;
+	private static float DIFFERENTIAL_THRESHOLD = 6.0f;
 	private static double LTSENSOR_TO_WHEELBASE = 11.9;
 	private static int TIME_OUT = 20;
 	
@@ -43,72 +43,48 @@ public class AxesLocalizer {
 	 */
 	public void estimatePosition() {
 
-	    rDiffLightSensor.getDeltaL();
-	    rDiffLightSensor.getDeltaL(); // TODO
+	    lDiffLightSensor.flush();
 		// go forward until light sensor detects the x-axis
+	    movCon.driveDistance(Lab5.TILE_SIZE * 0.3, false);
 		movCon.driveForward();
-		boolean lineDetected = false;
-		
-		try {
-            Thread.sleep(500);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
 
 		// keep checking for a black line
-		while (!lineDetected) {
-			int deltaL = (int) lDiffLightSensor.getDeltaL();
-		//	System.out.println(deltaL);
-			
-			try {
-				Thread.sleep(TIME_OUT);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (Math.abs(deltaL) > DIFFERENTIAL_THRESHOLD) {
-				lineDetected = true;
-				System.out.println("Line Difference: "+deltaL);
-			}
+		float deltaL;
+		
+		while ((deltaL = lDiffLightSensor.getDeltaL()) < DIFFERENTIAL_THRESHOLD) {
+		    try {
+                Thread.sleep(TIME_OUT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 		}
 		
 		// a line has been found, stop the motos and set the odometer's y-position
 		movCon.stopMotors();
+		System.out.println("saw 1st line, difference of "+deltaL);
 		odo.setY(LTSENSOR_TO_WHEELBASE);   //should the constant be in meters??
 
 		movCon.driveDistance(-20); //drives backwards
 		movCon.rotateAngle(90, true); //rotates parallel to x-axis
 		
+		rDiffLightSensor.flush();
 		
-		lineDetected = false;
 		movCon.driveForward();
-		rDiffLightSensor.getDeltaL();
 		
 		// check for the next line
-		while (!lineDetected) {
-			int deltaL = (int) rDiffLightSensor.getDeltaL();
-//           System.out.println(deltaL);
-			
-			try {
-				Thread.sleep(TIME_OUT);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (Math.abs(deltaL) > DIFFERENTIAL_THRESHOLD) {
-				lineDetected = true;
-				System.out.println("Line difference: "+deltaL);
-				
-			}
-		}
+		while ((deltaL = rDiffLightSensor.getDeltaL()) < DIFFERENTIAL_THRESHOLD) {
+            try {
+                Thread.sleep(TIME_OUT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 		
 		// the x-axis has been detected, set the odometer's x-position
 		movCon.stopMotors();
-		odo.setX(LTSENSOR_TO_WHEELBASE); //should the constant be in meters??
+		System.out.println("saw 2nd line, difference of "+deltaL);
+		odo.setX(LTSENSOR_TO_WHEELBASE);
 
-//		double[] currentPos = odo.getXYT();
-//		System.out.println("CURRENT POS: X: "+currentPos[0]+", Y: "+currentPos[1]);
-		
 		travelCloseToOrigin();
 		movCon.turnTo(180);
 		

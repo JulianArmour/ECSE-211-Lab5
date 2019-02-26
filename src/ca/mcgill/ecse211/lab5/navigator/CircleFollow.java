@@ -55,7 +55,7 @@ public class CircleFollow {
 	public void followCircularPath() {
 		odoBeforeWallFollow = odometer.getXYT();
 		
-		 double breakOutAngle = odoBeforeWallFollow[2] + 20.0;
+		 double breakOutAngle = (odoBeforeWallFollow[2] + 20.0) % 360;
 		 
 		 
 		 distance = medianDistanceSensor.getFilteredDistance();
@@ -118,7 +118,73 @@ public class CircleFollow {
 	        }
 	        LTdata.clear();
 	}
+	
 	/**
+     * The main method for moving the robot in a circular path and collecting colour samples
+     */
+    public void followCircularPathDemo() {
+        odoBeforeWallFollow = odometer.getXYT();
+        
+         double breakOutAngle = (odoBeforeWallFollow[2] + 20.0) % 360;
+         
+         
+         distance = medianDistanceSensor.getFilteredDistance();
+         movementController.driveDistance(-3, false);
+         if (distance > 4) {
+            
+            movementController.rotateAngle(90, false);
+            movementController.driveDistance((distance-4), false);
+            movementController.rotateAngle(90, true);
+         } else {
+             movementController.rotateAngle(90, false);
+             movementController.driveDistance(-(4-distance), false);//move backwards
+             movementController.rotateAngle(90, true);
+         }
+         
+         movementController.goInCircularPath();
+         
+         //((odometer.getXYT()[2] - breakOutAngle + 360) % 360);
+         while (((odometer.getXYT()[2] - breakOutAngle + 360) % 360) > 20) {
+             // polls the ColorSensor and puts it in an array
+             float[] colorData = colourLightSensor.fetchColorSamples();
+             
+             if (colorData[0] > 0.001 && colorData[1] > 0.001 && colorData[2] > 0.001) {
+                 LTdata.add(colorData);
+             }
+             
+             
+             try {
+                 Thread.sleep(100);
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+
+             }
+                
+            }
+            movementController.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
+            movementController.turnTo(odoBeforeWallFollow[2]);
+//          /**colourData = new float[LTdata.size()];
+            colourData = new float[LTdata.size()][3];
+            int i = 0;
+            for (Iterator<float[]> iterator = LTdata.iterator(); iterator.hasNext();) {
+                colourData[i] = (float[]) iterator.next();
+                i++;
+            }
+            
+            int canColor = ColourDetector.verifyCan(colourData);
+            displayColor(canColor);
+            printColourVals(LTdata);// TODO REMOVE THIS BEFORE DEMO!!!!!!!!
+            LTdata.clear();
+    }
+	
+	private void printColourVals(List<float[]> colourData) {
+	    for (Iterator<float[]> iterator = colourData.iterator(); iterator.hasNext();) {
+            float[] fs = (float[]) iterator.next();
+            System.out.println(fs[0]+"\t"+fs[1]+"\t"+fs[2]);
+        }
+    }
+
+    /**
 	 * displays on the screen which can colour has been detected
 	 * @param canColor the colour to be displayed
 	 */
@@ -135,8 +201,9 @@ public class CircleFollow {
         	break;
         case 1: 
         	System.out.println("Can color: Blue");
-        	default:
-        	System.out.println("Can color: N/A");
+        	break;
+        default:
+        System.out.println("Can color: N/A");
 		}
 	}
 

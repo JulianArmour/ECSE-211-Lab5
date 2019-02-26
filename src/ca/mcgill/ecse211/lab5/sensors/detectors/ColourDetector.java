@@ -50,9 +50,9 @@ public class ColourDetector {
 		NGMean = (float) (GMean / Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2)));
 		NBMean = (float) (BMean / Math.sqrt(Math.pow(RMean, 2) + Math.pow(GMean, 2) + Math.pow(BMean, 2)));
 		
-		System.out.println("NR: " + NRMean);
-		System.out.println("NG: " + NGMean);
-		System.out.println("NB: " + NBMean);
+//		System.out.println("NR: " + NRMean);
+//		System.out.println("NG: " + NGMean);
+//		System.out.println("NB: " + NBMean);
 		
 		return colorMatch(NRMean, NGMean, NBMean);
 	}
@@ -74,7 +74,7 @@ public class ColourDetector {
 		
 		min = Collections.min(dArray);
 		
-		System.out.println("min: " + min);
+//		System.out.println("min: " + min);
 		
 		if(min == dRCan) dataCanColor = 4;
 		else if(min == dYCan) dataCanColor = 3;

@@ -1,12 +1,9 @@
 package ca.mcgill.ecse211.lab5.navigator;
 
-import java.awt.image.TileObserver;
-
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.localization.AngleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
-import lejos.hardware.lcd.LCD;
 import lejos.utility.Timer;
 import lejos.utility.TimerListener;
 
@@ -29,9 +26,6 @@ public class SearchNavigator implements TimerListener {
 	
 	private int deltaY;
 	private int deltaX;
-	private double distanceLeft;
-	private double canDist;
-	private double[] referencePos;
 	private double Xdistance;
 	private double Ydistance;
 	boolean canDetected = false;
@@ -67,7 +61,7 @@ public class SearchNavigator implements TimerListener {
 		deltaY =  (urY - llY);
 		deltaX =  (urX - llX);
 
-		movementController.driveDistance(-TILE_LENGTH * 0.5);
+		movementController.driveDistance(-TILE_LENGTH * 0.8);
 		movementController.turnTo(90);
 		
 		
@@ -79,7 +73,7 @@ public class SearchNavigator implements TimerListener {
 		
 
 
-		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
+		Xdistance = (deltaX + 1.1)*TILE_LENGTH;
 
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };

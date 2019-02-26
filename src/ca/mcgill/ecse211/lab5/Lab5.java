@@ -1,6 +1,5 @@
 package ca.mcgill.ecse211.lab5;
 
-import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.AxesLocalizer;
 import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
@@ -12,10 +11,10 @@ import ca.mcgill.ecse211.lab5.navigator.SearchNavigator;
 import ca.mcgill.ecse211.lab5.navigator.URnavigator;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
+import ca.mcgill.ecse211.lab5.sensors.detectors.Colours;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.DifferentialLightSensor;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
-import ca.mcgill.ecse211.lab5.tests.colordetection.ColorDetector;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -27,20 +26,18 @@ import lejos.hardware.sensor.SensorMode;
 
 public class Lab5 {
     // Global Parameters
-    private static final int LLx = 1;
-    private static final int LLy = 3;
-    private static final int URx = 3;
-    private static final int URy = 5;
+    private static final int LLx = 2;
+    private static final int LLy = 2;
+    private static final int URx = 4;
+    private static final int URy = 4;
     private static final int SC = 0;
-    private static final int TR = 2;
+    private static final int TR = 4;
 
     // physical values for LLx, LLy, URx, URy
     private static double PLLx;
     private static double PLLy;
     private static double PURx;
     private static double PURy;
-
-    private static final int CAN_COLOR = 0;
 
     private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
     private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
@@ -49,7 +46,7 @@ public class Lab5 {
     /** The tile's length. */
     public static final double TILE_SIZE = 30.48;
     public static final double WHEEL_RAD = 2.2;
-    public static final double TRACK = 11.2;
+    public static final double TRACK = 11.9;
     public static boolean wall;
 
     private static MovementController movementController;
@@ -70,8 +67,6 @@ public class Lab5 {
     private static EV3ColorSensor sideLS;
     private static SensorMode sideLSProvider;
     private static float[] sideLSSample;
-    private static float[][] arrayColor;
-
     private static Odometer odometer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
@@ -142,10 +137,6 @@ public class Lab5 {
         llNavigator = new LLnavigator(SC, PLLx, PLLy, usAngleCorrector, intersectionLocalizer, axesLocalizer, movementController, odometer);
 
         do {
-            /**
-             * Clears the LCD and displays the main question: Do we want Rising Edge or Falling Edge?
-             * On the left is RisingEdge method is needed, or on the right if FallingEdge method is required.
-             */
             lcd.clear();
 
             lcd.drawString("left for routine", 0, 0);
@@ -153,20 +144,10 @@ public class Lab5 {
             
             buttonChoice = Button.waitForAnyPress();
         }
-        while (buttonChoice != Button.ID_RIGHT && buttonChoice != Button.ID_LEFT);
-        System.out.println(buttonChoice);
+        while (buttonChoice != Button.ID_RIGHT && buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_DOWN);
 
         if (buttonChoice == Button.ID_LEFT) {
-//            System.out.println("going up");
             lcd.clear();
-            /**
-             * usAngleCorrector.fallingEdge(); axesLocalizer.estimatePosition();
-             * axesLocalizer.travelCloseToOrigin();
-             * intersectionLocalizer.getIntersections();
-             * intersectionLocalizer.correctAngle();
-             * intersectionLocalizer.correctPosition(); movementController.travelTo(0, 0,
-             * false); movementController.turnTo(0);
-             **/
 
             llNavigator.navigateToLL();
 
@@ -176,11 +157,23 @@ public class Lab5 {
 
         }
         else if (buttonChoice == Button.ID_RIGHT) {
+            lcd.clear();
             medSensor.flush();
-            searchNavigator.timedOut();
+            while (medSensor.getFilteredDistance() > 10) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("Can detected");
+//            searchNavigator.colourDemo();
+            circleFollow.followCircularPathDemo();
+        }
+        else if (buttonChoice == Button.ID_DOWN) {
+            movementController.rotateAngle(360, true);
         }
 
-//        System.out.println("Big wtf");
         while (Button.waitForAnyPress() != Button.ID_ESCAPE);
         System.exit(0);
     }
