@@ -56,6 +56,10 @@ public class SearchNavigator implements TimerListener {
 		this.canFollowing = false;
 	}
 
+	/**
+	 * Causes the robot to travel in a spiral shaped path. During this it checks for cans.
+	 * @see SearchNavigator#timedOut();
+	 */
 	public void searchPath() {
 		
 		// start an angle correction thread
@@ -211,6 +215,9 @@ public class SearchNavigator implements TimerListener {
 		//
 	}
 
+	/**
+	 * @return the distance between the robot and the current destination
+	 */
 	private double distanceToDestination() {
 		double[] curPos = odometer.getXYT();
 		double dX = destination[0] - curPos[0];
@@ -218,6 +225,11 @@ public class SearchNavigator implements TimerListener {
 		return Math.sqrt(dX * dX + dY * dY);
 	}
 
+	/**
+	 * {@link Timer} method for checking if a can is directly beside the robot. If there is a can
+	 * it causes the robot to rotate around it and collect colour samples.
+	 * @see CircleFollow#followCircularPath()
+	 */
 	@Override
 	public void timedOut() {
 

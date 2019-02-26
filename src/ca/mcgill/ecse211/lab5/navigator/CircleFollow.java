@@ -49,6 +49,9 @@ public class CircleFollow {
 		this.urNavigator = uRnavigator;
 	}
 	
+	/**
+	 * The main method for moving the robot in a circular path and collecting colour samples
+	 */
 	public void followCircularPath() {
 		odoBeforeWallFollow = odometer.getXYT();
 		
@@ -56,7 +59,7 @@ public class CircleFollow {
 		 
 		 
 		 distance = medianDistanceSensor.getFilteredDistance();
-		 movementController.driveDistance(-4, false);
+		 movementController.driveDistance(-3, false);
          if (distance > 4) {
          	
          	movementController.rotateAngle(90, false);
@@ -113,7 +116,7 @@ public class CircleFollow {
 	            Sound.twoBeeps();
 	            displayColor(canColor);
 	        }
-		
+	        LTdata.clear();
 	}
 	private void displayColor(int canColor) {
 		switch (canColor) {

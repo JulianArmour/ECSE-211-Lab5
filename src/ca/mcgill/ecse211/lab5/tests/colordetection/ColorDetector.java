@@ -22,7 +22,12 @@ public class ColorDetector {
 	private static final float GCAN_GMEAN = 0.7849f; 
 	private static final float GCAN_BMEAN = 0.4489f;
 	
-	
+	/**
+	 * 
+	 * @param data the color data recorded when moving around the can
+	 * @param canColor the colour being searched for
+	 * @return whether the can is the one being searched for
+	 */
 	public static boolean verifyCan(float[][] data, int canColor) {
 		float RMean = 0.0f;
 		float GMean = 0.0f;
@@ -54,6 +59,13 @@ public class ColorDetector {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param RMean the mean red value from the sample
+	 * @param GMean the mean green value from the sample
+	 * @param BMean the mean blue value from the sample
+	 * @return the detected colour of the can
+	 */
 	private static int colorMatch(float RMean, float GMean, float BMean) {
 		Float dRCan, dBCan, dYCan, dGCan;
 		float min;
