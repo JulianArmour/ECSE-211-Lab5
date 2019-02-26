@@ -10,17 +10,17 @@ import java.util.Collections;
  */
 public class ColourDetector {
 
-	private static final float RCAN_RMEAN = 0.8371f;
-	private static final float RCAN_GMEAN = 0.4640f;
-	private static final float RCAN_BMEAN = 0.2895f;
+	private static final float RCAN_RMEAN = 0.8725f;
+	private static final float RCAN_GMEAN = 0.4058f;
+	private static final float RCAN_BMEAN = 0.2721f;
 	
 	private static final float BCAN_RMEAN = 0.5583f;
 	private static final float BCAN_GMEAN = 0.6786f;
 	private static final float BCAN_BMEAN = 0.4771f;
 	
-	private static final float YCAN_RMEAN = 0.8515f;
-	private static final float YCAN_GMEAN = 0.5303f;
-	private static final float YCAN_BMEAN = 0.2114f;
+	private static final float YCAN_RMEAN = 0.7545f;
+	private static final float YCAN_GMEAN = 0.5982f;
+	private static final float YCAN_BMEAN = 0.2701f;
 	
 	private static final float GCAN_RMEAN = 0.6558f;
 	private static final float GCAN_GMEAN = 0.6608f; 
