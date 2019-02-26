@@ -13,8 +13,7 @@ public class ColourLightSensor {
 	}
 
 	public float[] fetchColorSamples(){
-		
 	 LSSampleProvider.fetchSample(LSSample, 0);
-	 return LSSample;
+	 return LSSample.clone();
 	}
 }

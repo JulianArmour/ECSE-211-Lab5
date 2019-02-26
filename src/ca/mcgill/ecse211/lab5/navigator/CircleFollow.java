@@ -145,7 +145,7 @@ public class CircleFollow {
          
          //((odometer.getXYT()[2] - breakOutAngle + 360) % 360);
          while (((odometer.getXYT()[2] - breakOutAngle + 360) % 360) > 20) {
-             // polls the ColorSensor and puts it in an array
+             // polls the ColorSensor and puts it in a list
              float[] colorData = colourLightSensor.fetchColorSamples();
              
              if (colorData[0] > 0.001 && colorData[1] > 0.001 && colorData[2] > 0.001) {
@@ -160,27 +160,27 @@ public class CircleFollow {
 
              }
                 
-            }
+          }
             movementController.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
             movementController.turnTo(odoBeforeWallFollow[2]);
 //          /**colourData = new float[LTdata.size()];
             colourData = new float[LTdata.size()][3];
             int i = 0;
-            for (Iterator<float[]> iterator = LTdata.iterator(); iterator.hasNext();) {
+            Iterator<float[]> iterator = LTdata.iterator();
+            while (iterator.hasNext()) {
                 colourData[i] = (float[]) iterator.next();
                 i++;
             }
             
             int canColor = ColourDetector.verifyCan(colourData);
             displayColor(canColor);
-            printColourVals(LTdata);// TODO REMOVE THIS BEFORE DEMO!!!!!!!!
+            printColourVals(colourData);// TODO REMOVE THIS BEFORE DEMO!!!!!!!!
             LTdata.clear();
     }
 	
-	private void printColourVals(List<float[]> colourData) {
-	    for (Iterator<float[]> iterator = colourData.iterator(); iterator.hasNext();) {
-            float[] fs = (float[]) iterator.next();
-            System.out.println(fs[0]+"\t"+fs[1]+"\t"+fs[2]);
+	private void printColourVals(float[][] colourData) {
+	    for (int i = 0; i < colourData.length; i++) {
+            System.out.println(colourData[i][0]+"\t"+colourData[i][1]+"\t"+colourData[i][2]);
         }
     }
 

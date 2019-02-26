@@ -10,21 +10,21 @@ import java.util.Collections;
  */
 public class ColourDetector {
 
-	private static final float RCAN_RMEAN = 0.8920f;
-	private static final float RCAN_GMEAN = 0.3672f;
-	private static final float RCAN_BMEAN = 0.2668f;
+	private static final float RCAN_RMEAN = 0.8371f;
+	private static final float RCAN_GMEAN = 0.4640f;
+	private static final float RCAN_BMEAN = 0.2895f;
 	
-	private static final float BCAN_RMEAN = 0.4212f;
-	private static final float BCAN_GMEAN = 0.5010f;
-	private static final float BCAN_BMEAN = 0.7568f;
+	private static final float BCAN_RMEAN = 0.5583f;
+	private static final float BCAN_GMEAN = 0.6786f;
+	private static final float BCAN_BMEAN = 0.4771f;
 	
 	private static final float YCAN_RMEAN = 0.8515f;
 	private static final float YCAN_GMEAN = 0.5303f;
 	private static final float YCAN_BMEAN = 0.2114f;
 	
-	private static final float GCAN_RMEAN = 0.5435f;
-	private static final float GCAN_GMEAN = 0.7849f; 
-	private static final float GCAN_BMEAN = 0.4489f;
+	private static final float GCAN_RMEAN = 0.6558f;
+	private static final float GCAN_GMEAN = 0.6608f; 
+	private static final float GCAN_BMEAN = 0.3649f;
 	
 	
 	public static int verifyCan(float[][] data) {
