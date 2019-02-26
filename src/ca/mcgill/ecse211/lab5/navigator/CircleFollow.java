@@ -88,8 +88,8 @@ public class CircleFollow {
              }
 	        	
 	        }
-	     	movementController.stopMotor(true, true);
-	     	movementController.stopMotor(false, false);
+//	     	movementController.stopMotor(true, true);
+//	     	movementController.stopMotor(false, false);
 	     	movementController.travelTo(odoBeforeWallFollow[0], odoBeforeWallFollow[1], false);
 	        movementController.turnTo(odoBeforeWallFollow[2]);
 //	        /**colourData = new float[LTdata.size()];
@@ -103,18 +103,10 @@ public class CircleFollow {
             int canColor = ColourDetector.verifyCan(colourData);
 	        if(TARGET_COLOR == canColor) {
 	            //beep once if it is the colour we're looking for
-<<<<<<< HEAD
 	            Sound.beep();
-	            
 	            angleCorrector.quickThetaCorrection();
-				
+				displayColor(canColor);
 	            urNavigator.navigateToUr();
-=======
-	            Sound.beep();
-	            displayColor(canColor);
-
-	            urNavigator.navigateToUr();
->>>>>>> branch 'master' of https://github.com/JulianArmour/ECSE-211-Lab5.git
 	        }
 	        else {
 	            //beep twice if it is not the colour we're looking for

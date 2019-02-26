@@ -75,7 +75,7 @@ public class SearchNavigator implements TimerListener {
 		
 
 
-		Xdistance = (deltaX + 0.)*TILE_LENGTH;
+		Xdistance = (deltaX + 0.5)*TILE_LENGTH;
 
 		currentPos = odometer.getXYT();
 		destination = new double[] {currentPos[0] + Xdistance, currentPos[1], currentPos[2] };
@@ -226,9 +226,9 @@ public class SearchNavigator implements TimerListener {
 			//System.out.println(canDist);
 			movementController.stopMotors();
 			canFollowing = true;
-			currentPos = odometer.getXYT();
+//			currentPos = odometer.getXYT();
 
-			canDetected = true; // maybe use this to influence the for loop to interrupt
+//			canDetected = true; // maybe use this to influence the for loop to interrupt
 
 
 			// goes into wallfollowing mode and collects colour data
@@ -241,6 +241,7 @@ public class SearchNavigator implements TimerListener {
 			// angle correction
 			angleCorrector.quickThetaCorrection();
 			
+			// move away from the can so it's not detected again
 			movementController.driveDistance(TILE_LENGTH*0.8, false);
 			USdata.flush();
 			

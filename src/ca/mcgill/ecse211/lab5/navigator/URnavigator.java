@@ -29,22 +29,20 @@ public class URnavigator {
 			movCon.driveDistance(urY-currentPos[1]+TILE_LENGTH/2, false);
 			movCon.travelTo(urX, urY, false);
 		}
-
-		if(movCon.roundAngle() == 90) {
+		else if(movCon.roundAngle() == 90) {
 			movCon.driveDistance(Lab5.TILE_SIZE/2); //just to be in the middle of tile
 			movCon.rotateAngle(90, false);
 			 movCon.driveDistance(urY-currentPos[1]+TILE_LENGTH/2, false);
 			movCon.travelTo(urX, urY, false);
 		}
-		if(movCon.roundAngle() == 180) {
+		else if(movCon.roundAngle() == 180) {
 
 			movCon.rotateAngle(180, false);
 			 movCon.driveDistance(urY-currentPos[1]+TILE_LENGTH/2, false);
 			movCon.travelTo(urX, urY,false);
 
 		}
-
-		if(movCon.roundAngle() == 270) {
+		else if(movCon.roundAngle() == 270) {
 			movCon.driveDistance(Lab5.TILE_SIZE/2); //just to be in the middle of tile
 			movCon.rotateAngle(90, true);
 			 movCon.driveDistance(urY-currentPos[1]+TILE_LENGTH/2, false);
