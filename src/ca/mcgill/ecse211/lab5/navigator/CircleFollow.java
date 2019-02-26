@@ -14,7 +14,7 @@ import lejos.hardware.Sound;
 import lejos.robotics.chassis.Wheel;
 
 /**
- * Provides the methodology for causing the robot to move in a circular path around a can.
+ * Provides the methodology for causing the robot to move in a circular path around a can and collect colour data.
  * @author Alice Kazarine
  * @since Feb 24, 2019
  */
@@ -118,6 +118,10 @@ public class CircleFollow {
 	        }
 	        LTdata.clear();
 	}
+	/**
+	 * displays on the screen which can colour has been detected
+	 * @param canColor the colour to be displayed
+	 */
 	private void displayColor(int canColor) {
 		switch (canColor) {
         case 4:

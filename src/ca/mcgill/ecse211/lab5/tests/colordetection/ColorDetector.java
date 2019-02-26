@@ -3,6 +3,12 @@ package ca.mcgill.ecse211.lab5.tests.colordetection;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Provides methods for detecting the colour of a can.
+ * 
+ * @author Cedric Barre
+ *
+ */
 public class ColorDetector {
 
 

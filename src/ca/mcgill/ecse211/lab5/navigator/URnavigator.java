@@ -3,7 +3,11 @@ package ca.mcgill.ecse211.lab5.navigator;
 import ca.mcgill.ecse211.lab5.Lab5;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 
-//navigateToUr() is called after the right-colored can is found
+/**
+ * provides methods for moving the robot to the upper right of the search zone
+ * @author Alice Kazarine
+ *
+ */
 public class URnavigator {
 	//
 	private MovementController movCon;
@@ -22,6 +26,9 @@ public class URnavigator {
 
 	}
 
+	/**
+	 * moves the robot to the upper right of the search zone.
+	 */
 	public void navigateToUr() {
 		currentPos=odo.getXYT();
 

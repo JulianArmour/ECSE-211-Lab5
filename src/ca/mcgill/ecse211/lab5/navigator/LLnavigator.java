@@ -6,6 +6,11 @@ import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 
+/**
+ * provides the method for moving the robot to the lower left of the search zone.
+ * @author Alice Kazarine
+ *
+ */
 public class LLnavigator {
 
 	private static int StartC;
@@ -34,6 +39,9 @@ public class LLnavigator {
 		
 	}
 
+	/**
+	 * moves the robot to the lower left of the search zone.
+	 */
 	public void navigateToLL() {
 
 		if (StartC == 0) {
