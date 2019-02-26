@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.localization.AngleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.detectors.ColourDetector;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
@@ -34,11 +34,11 @@ public class CircleFollow {
 	 private double[] odoBeforeWallFollow;
 	 private LinkedList<float[]> LTdata;
     private URnavigator urNavigator;
-    private angleCorrection angleCorrector;
+    private AngleCorrection angleCorrector;
 	
 	
 	public CircleFollow(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
-    		ColourLightSensor colorsensor, int TARGET_COLOR, URnavigator uRnavigator, angleCorrection angleCorrection){
+    		ColourLightSensor colorsensor, int TARGET_COLOR, URnavigator uRnavigator, AngleCorrection angleCorrection){
 		this.movementController = movementCtr;
 		this.odometer = odometer;
 		this.medianDistanceSensor = USfilter;

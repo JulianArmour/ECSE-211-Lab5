@@ -11,7 +11,7 @@ import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 import lejos.hardware.Sound;
 import lejos.robotics.ColorDetector;
 
-public class wallFollower {
+public class WallFollower {
 
     private static int BAND_CENTER = 2; // (in cm)
     private static int BAND_WIDTH = 1; // (in cm)
@@ -34,7 +34,7 @@ public class wallFollower {
 	private float[][] colourdata;
 
     // constructor for wallFollower class
-    public wallFollower(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
+    public WallFollower(MovementController movementCtr, Odometer odometer, MedianDistanceSensor USfilter,
     		ColourLightSensor colorsensor, int TARGET_COLOR) {
 
         this.movementControler = movementCtr;

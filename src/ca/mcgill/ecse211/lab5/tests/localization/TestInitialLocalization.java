@@ -3,7 +3,7 @@ package ca.mcgill.ecse211.lab5.tests.localization;
 import ca.mcgill.ecse211.lab5.localization.AxesLocalizer;
 import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
-import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.localization.AngleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
@@ -67,7 +67,7 @@ public class TestInitialLocalization {
     private static Odometer odometer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
-    private static angleCorrection angleCorrection;
+    private static AngleCorrection angleCorrection;
     private static MedianDistanceSensor medSensor;
     private static USAngleCorrector usAngleCorrector;
     private static AxesLocalizer axesLocalizer;
@@ -115,7 +115,7 @@ public class TestInitialLocalization {
         leftDifferentialLightSensor = new DifferentialLightSensor(backLeftLSProvider, backLeftLSSample);
         rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
         
-        angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
+        angleCorrection = new AngleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor,
                                               movementController, odometer);
         medSensor = new MedianDistanceSensor(sideDistanceProvider, sideUSSample, odometer);
         usAngleCorrector = new USAngleCorrector(movementController, odometer, medSensor);

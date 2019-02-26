@@ -5,13 +5,13 @@ import ca.mcgill.ecse211.lab5.display.Display;
 import ca.mcgill.ecse211.lab5.localization.AxesLocalizer;
 import ca.mcgill.ecse211.lab5.localization.IntersectionLocalizer;
 import ca.mcgill.ecse211.lab5.localization.USAngleCorrector;
-import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.localization.AngleCorrection;
 import ca.mcgill.ecse211.lab5.navigator.CircleFollow;
 import ca.mcgill.ecse211.lab5.navigator.LLnavigator;
 import ca.mcgill.ecse211.lab5.navigator.MovementController;
 import ca.mcgill.ecse211.lab5.navigator.SearchNavigator;
 import ca.mcgill.ecse211.lab5.navigator.URnavigator;
-import ca.mcgill.ecse211.lab5.navigator.wallFollower;
+import ca.mcgill.ecse211.lab5.navigator.WallFollower;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.odometer.OdometerExceptions;
 import ca.mcgill.ecse211.lab5.sensors.lightSensor.ColourLightSensor;
@@ -81,7 +81,7 @@ public class StartAndEndPointsTest {
     private static USAngleCorrector usLocalizer;
     private static DifferentialLightSensor leftDifferentialLightSensor;
     private static DifferentialLightSensor rightDifferentialLightSensor;
-    private static angleCorrection angleCorrection;
+    private static AngleCorrection angleCorrection;
     private static SearchNavigator searchNavigator;
     private static CircleFollow circleFollower;
     private static MedianDistanceSensor medianDistanceSensor;
@@ -139,7 +139,7 @@ public class StartAndEndPointsTest {
         rightDifferentialLightSensor = new DifferentialLightSensor(backRightLSProvider, backRightLSSample);
         
       
-        angleCorrection = new angleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
+        angleCorrection = new AngleCorrection(rightDifferentialLightSensor, leftDifferentialLightSensor, movementController, odometer);
         
 
         colourLightSensor = new ColourLightSensor(sideLSProvider, sideLSSample);

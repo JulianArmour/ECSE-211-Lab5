@@ -10,7 +10,7 @@ import lejos.hardware.lcd.LCD;
  * @author Julian Armour, Alice Kazarine
  * @since Feb 25, 2019
  */
-public class angleCorrection {
+public class AngleCorrection {
 
 	private DifferentialLightSensor dLTright;
 	private DifferentialLightSensor dLTleft;
@@ -28,7 +28,7 @@ public class angleCorrection {
 	 * @param movCon the {@link MovementController}
 	 * @param odo the {@link Odometer}
 	 */
-	public angleCorrection(DifferentialLightSensor diffLTright, DifferentialLightSensor diffLTleft,
+	public AngleCorrection(DifferentialLightSensor diffLTright, DifferentialLightSensor diffLTleft,
 			MovementController movCon,Odometer odo) {
 		this.dLTleft=diffLTleft;
 		this.dLTright=diffLTright;

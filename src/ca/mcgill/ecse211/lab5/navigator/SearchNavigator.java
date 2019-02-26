@@ -3,7 +3,7 @@ package ca.mcgill.ecse211.lab5.navigator;
 import java.awt.image.TileObserver;
 
 import ca.mcgill.ecse211.lab5.Lab5;
-import ca.mcgill.ecse211.lab5.localization.angleCorrection;
+import ca.mcgill.ecse211.lab5.localization.AngleCorrection;
 import ca.mcgill.ecse211.lab5.odometer.Odometer;
 import ca.mcgill.ecse211.lab5.sensors.ultrasonicSensor.MedianDistanceSensor;
 import lejos.hardware.lcd.LCD;
@@ -21,7 +21,7 @@ public class SearchNavigator implements TimerListener {
 	private MovementController movementController;
 	private MedianDistanceSensor USdata;
 	private CircleFollow circleFollower;
-	private angleCorrection angleCorrector;
+	private AngleCorrection angleCorrector;
 	private int llX;
 	private int llY;
 	private int urX;
@@ -41,7 +41,7 @@ public class SearchNavigator implements TimerListener {
     private boolean canFollowing;
 
 	public SearchNavigator(Odometer odometer, MovementController movementController, int llX, int llY, int urX, int urY,
-			MedianDistanceSensor USdata, CircleFollow circleFollow, angleCorrection angleCorrector) {
+			MedianDistanceSensor USdata, CircleFollow circleFollow, AngleCorrection angleCorrector) {
 
 		this.odometer = odometer;
 		this.movementController = movementController;
